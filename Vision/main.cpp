@@ -22,6 +22,8 @@ int main(){
     // Cameron doesn't know how to do this
     // Testing github....--sorry zach and preston
 
+    //Hi it's Cameron
+
     //cap.set(CV_CAP_PROP_FRAME_WIDTH,320);
     //cap.set(CV_CAP_PROP_FRAME_HEIGHT,240);
     //cap.set(CV_CAP_PROP_FRAME_WIDTH,176);
