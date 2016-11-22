@@ -6,10 +6,11 @@
 #define INC_2017_PRESEASON_CODE_NETWORK_H
 
 
-struct network {
+struct Network {
     int testInt;
-    network(int testInt_s);
+    Network(int testInt_s);
     int getTestInt();
+    void run();
 };
 
 

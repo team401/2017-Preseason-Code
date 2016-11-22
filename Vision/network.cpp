@@ -3,11 +3,18 @@
 //
 
 #include "network.h"
+#include "iostream"
 
-network::network(int testInt_s) {
+Network::Network(int testInt_s) {
     testInt = testInt_s;
 }
 
-int network::getTestInt() {
+int Network::getTestInt() {
     return testInt;
+}
+
+void Network::run() {
+    for (int i = 0; i < 10; i++) {
+        std::cout << i << std::endl;
+    }
 }

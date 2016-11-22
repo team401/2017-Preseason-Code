@@ -8,6 +8,7 @@
 #include "opencv2/videoio.hpp"
 #include "opencv2/highgui.hpp"
 #include "network.h"
+#include "boost/thread/thread.hpp"
 //This is a test header for testing objects
 #include "iostream"
 //We also need this (Liam why did you not import this and java does this for you so rip C++)
@@ -17,8 +18,10 @@ using namespace cv;
 
 int main(){
 
-    network myNetwork(123); //This should make our object
+    Network myNetwork(123); //This should make our object
     cout << myNetwork.getTestInt() << endl; //Print our instance var
+
+    boost::thread myThread(boost::bind(&Network::run, myNetwork));
 
     VideoCapture cap;
     Mat frame;
