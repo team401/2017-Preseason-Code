@@ -19,11 +19,12 @@ int main(){
     if(!cap.open(0))
         return 0;
 
+    // Cameron doesn't know how to do this
 
     //cap.set(CV_CAP_PROP_FRAME_WIDTH,320);
     //cap.set(CV_CAP_PROP_FRAME_HEIGHT,240);
-    cap.set(CV_CAP_PROP_FRAME_WIDTH,176);
-    cap.set(CV_CAP_PROP_FRAME_HEIGHT,144);
+    //cap.set(CV_CAP_PROP_FRAME_WIDTH,176);
+    //cap.set(CV_CAP_PROP_FRAME_HEIGHT,144);
 
     for(;;){
         // Passes camera cap to frame
