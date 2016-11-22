@@ -19,7 +19,7 @@ int main(){
     if(!cap.open(0))
         return 0;
 
-    // Cameron doesn't know how to do this
+    //Cameron's test commit
 
     //cap.set(CV_CAP_PROP_FRAME_WIDTH,320);
     //cap.set(CV_CAP_PROP_FRAME_HEIGHT,240);
