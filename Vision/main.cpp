@@ -20,6 +20,7 @@ int main(){
         return 0;
 
     // Cameron doesn't know how to do this
+    // Testing github....--sorry zach and preston
 
     //cap.set(CV_CAP_PROP_FRAME_WIDTH,320);
     //cap.set(CV_CAP_PROP_FRAME_HEIGHT,240);
