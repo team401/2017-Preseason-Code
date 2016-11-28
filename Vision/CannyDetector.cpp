@@ -25,7 +25,7 @@ void CannyDetector::run() {
             break;
         }
 
-        cap >> frame; //Grap a Mat frame from the capture stream
+        cap >> frame; //Grab a Mat frame from the capture stream
 
         cvtColor(frame, edges, CV_BGR2GRAY); //Convert the image to greyscale
 
