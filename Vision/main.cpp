@@ -10,8 +10,9 @@ int main(){
 
     VideoCapture cap;
 
-    if(!cap.open(0))
+    if(!cap.open(1)) {
         return 0;
+    }
 
     CannyDetector cannyDetector(cap, 30, 60);
     boost::thread myThread(boost::bind(&CannyDetector::run, cannyDetector));
