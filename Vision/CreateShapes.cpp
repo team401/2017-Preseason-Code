@@ -1,6 +1,6 @@
-//
-// Created by and3212 on 11/28/16.
-//
+/* Class CreatesShapes by Liam Lawrence on 11.28.16
+ * Takes a frame and draws a specified shape on the largest contour
+ */
 
 #include "opencv2/videoio.hpp"
 #include "opencv2/opencv.hpp"

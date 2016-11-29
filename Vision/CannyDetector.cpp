@@ -13,18 +13,25 @@ using namespace std;
 void CannyDetector::run() {
     Mat frame; //Set up a Mat for the image from the camera
     Mat edges; //Set up a Mat for the canny image
+    Mat hsvFrame;   // Set up a Mat for the hsv frame
+    Mat rangeFrame; // Set up a Mat for the thresholded frame
+
     Mat contoursMat; //Set up a Mat for the contour image
     vector<vector<Point>> contours;
     vector<Vec4i> hierarchy;
+
+    Scalar lowerThresh(50,115,205);     //Lower bound BGR for the inRange function
+    Scalar upperThresh(135,185,255);    //Upper bound BGR for the inRange function
+
+    //Variables for contours
     int area = 0;
     int idx;
-
-    RNG rng(12345);
-    Scalar color = Scalar( rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255) );
 
     namedWindow("Original", WINDOW_AUTOSIZE); //Create a window for the original image
     namedWindow("Canny", WINDOW_AUTOSIZE); //Create a window for the canny image
     namedWindow("Contours", WINDOW_AUTOSIZE); //Create a window for showing contours
+    namedWindow("Thresh", WINDOW_AUTOSIZE);    //Create a window for showing the threshold
+
 
     for(;;) {
         if(waitKey(1) == 27) { //If ESC is pressed, break the loop
@@ -33,27 +40,29 @@ void CannyDetector::run() {
 
         cap >> frame; //Grab a Mat frame from the capture stream
 
-        cvtColor(frame, edges, CV_BGR2GRAY); //Convert the image to greyscale
-
-        Canny(edges, edges, thresh1, thresh2); //Get canny image and write the data to it
+        cvtColor(frame, hsvFrame, CV_BGR2HSV);  // Convert the image stream to HSV
+        inRange(hsvFrame, lowerThresh, upperThresh, rangeFrame); // Filters out everything but the goal
+        Canny(rangeFrame, edges, thresh1, thresh2); //Get canny image and write the data to it (rangeFrame is already gray)
 
         findContours(edges, contours, hierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE, Point(0, 0) ); //Find the contours
 
         contoursMat = Mat::zeros( edges.size(), CV_8UC3 ); //Initialize the contour Mat
 
-        // Finds the contour with the largest area, draw & record them.
-
+        // Finds the contour with the largest area, & records them.
         for(int i=0; i<contours.size();i++) {
-            drawContours(frame, contours, i, Scalar(0,150,255), 2, 8);
+            cv::drawContours(contoursMat, contours, i, Scalar(0,150,255), 2, 8);
             if(area < contours[i].size()){
                 idx = i;
             }
         }
 
-       // CreateShapes::square(frame, idx, contours);
+        // Draws the square on contoursMat
+        CreateShapes::square(contoursMat, idx, contours);
 
-        imshow("Original", frame); //Write the original frame to the Original window
-        imshow("Canny", edges); //Write the canny frame to the Canny window
+        // Writes specific frames to their respective windows
+        imshow("Original", frame);
+        imshow("Canny", edges);
         imshow("Contours", contoursMat);
+        imshow("Thresh", rangeFrame);
     }
 }

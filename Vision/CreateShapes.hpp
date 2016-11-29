@@ -1,6 +1,6 @@
-//
-// Created by Liam Lawrence on 11.28.16
-//
+/* Class CreateShapes by Liam Lawrence on 11.28.16
+ * Sets up constructor for the CreateShapes class
+ */
 
 #include "opencv2/videoio.hpp"
 #ifndef INC_2017_PRESEASON_CODE_CREATESSHAPES_HPP
