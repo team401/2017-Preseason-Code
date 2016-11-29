@@ -7,6 +7,7 @@
 //#include "networktables/NetworkTable.h"   TODO build binaries for this (need ARM)
 
 // Sends the data from the Jetson to the RoboRIO
+/*
 void NetworkTables::sendData(float xDif, float yDif, float yaw, float pitch){
     NetworkTable::SetClientMode();  // Should we do this only once?
     NetworkTable::SetTeam(401);     // Maybe put in initialization of CannyDetector?
@@ -17,3 +18,4 @@ void NetworkTables::sendData(float xDif, float yDif, float yaw, float pitch){
     table->PutNumber("yaw", yaw);
     table->PutNumber("pitch", pitch);
 }
+ */ //TODO reimplement this but right now don't because I don't have binaries
