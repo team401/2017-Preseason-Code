@@ -9,8 +9,8 @@ using namespace cv;
 using namespace std;
 
 struct CreateShapes {
-    static void circle(Mat &frame);
-    static void square(Mat &frame, int idx, vector<vector<Point>> contours);
+    static cv::Point shapes(Mat &frame, int idx, vector<vector<Point>> contours);
+    static std::vector<float> findAngles(float cx, float cy, float focalLength, cv::Point circleCenter);
 };
 
 

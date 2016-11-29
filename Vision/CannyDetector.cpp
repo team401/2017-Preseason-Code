@@ -27,6 +27,13 @@ void CannyDetector::run() {
     int area = 0;
     int idx;
 
+    // Variables for math
+    float FOV = (60 * 3.141592) / 180;  // FOV is 60 degrees, but we want it in radians
+    float cy = (640 / 2) - 0.5; // 640 is the image height
+    float cx = (480 / 2) - 0.5; // 480 is the image width
+    float focalLength = 480 / (2*tan(FOV/2));
+    //CAM should we move this to somewhere else?.... I don't want it to run more than once
+
     namedWindow("Original", WINDOW_AUTOSIZE); //Create a window for the original image
     namedWindow("Canny", WINDOW_AUTOSIZE); //Create a window for the canny image
     namedWindow("Contours", WINDOW_AUTOSIZE); //Create a window for showing contours
