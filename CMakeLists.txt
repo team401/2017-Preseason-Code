@@ -15,3 +15,4 @@ file(GLOB vision_SRC
 include_directories(${Boost_INCLUDE_DIRS})
 add_executable(2017-Preseason-Code ${vision_SRC})
 target_link_libraries(2017-Preseason-Code ${OpenCV_LIBS} ${Boost_LIBRARIES})
+#TODO build network table binaries and then add it to the link libraries

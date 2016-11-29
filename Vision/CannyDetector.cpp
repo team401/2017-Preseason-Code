@@ -6,6 +6,7 @@
 #include "CannyDetector.hpp"
 #include "opencv2/opencv.hpp"
 #include "CreateShapes.hpp"
+#include "NetworkTables.hpp"
 
 using namespace cv;
 using namespace std;
@@ -15,6 +16,7 @@ void CannyDetector::run() {
     Mat edges; //Set up a Mat for the canny image
     Mat hsvFrame;   // Set up a Mat for the hsv frame
     Mat rangeFrame; // Set up a Mat for the thresholded frame
+    Mat erosionMat;    // Set up a Mat for the noise reduced frame
 
     Mat contoursMat; //Set up a Mat for the contour image
     vector<vector<Point>> contours;
@@ -27,12 +29,13 @@ void CannyDetector::run() {
     int area = 0;
     int idx;
 
-    // Variables for math
+    // Variables for math -- TODO should these be doubles?
     float FOV = (60 * 3.141592) / 180;  // FOV is 60 degrees, but we want it in radians
     float cy = (640 / 2) - 0.5; // 640 is the image height
     float cx = (480 / 2) - 0.5; // 480 is the image width
     float focalLength = 480 / (2*tan(FOV/2));
-    //CAM should we move this to somewhere else?.... I don't want it to run more than once
+
+    bool firstCycle = true;
 
     namedWindow("Original", WINDOW_AUTOSIZE); //Create a window for the original image
     namedWindow("Canny", WINDOW_AUTOSIZE); //Create a window for the canny image
@@ -47,20 +50,26 @@ void CannyDetector::run() {
         }
 
         cap >> frame; //Grab a Mat frame from the capture stream
-        edges = Mat::zeros(frame.size(), frame.type());
-        hsvFrame = Mat::zeros(frame.size(), frame.type());
-        rangeFrame = Mat::zeros(frame.size(), frame.type());
-        contoursMat = Mat::zeros(frame.size(), frame.type());
 
+        // We don't want to run this every single time TODO(wouldn't that waste memory?)
+        if(firstCycle) {
+            edges = Mat::zeros(frame.size(), frame.type());
+            hsvFrame = Mat::zeros(frame.size(), frame.type());
+            rangeFrame = Mat::zeros(frame.size(), frame.type());
+            contoursMat = Mat::zeros(frame.size(), frame.type());
+            erosionMat = Mat::zeros(frame.size(), frame.type());
+            firstCycle = false;
+        }
 
+        // Filters everything we don't want
         cvtColor(frame, hsvFrame, CV_BGR2HSV);  // Convert the image stream to HSV
+        inRange(hsvFrame, lowerThresh, upperThresh, rangeFrame);        // Filters out everything but the goal
+        erode( rangeFrame, erosionMat,  Mat(), Point(-1, -1), 2, 1, 1); // Filters out the unwanted noise
+        Canny(erosionMat, edges, thresh1, thresh2); //Get canny image and write the data to it (rangeFrame is already gray)
 
-        inRange(hsvFrame, lowerThresh, upperThresh, rangeFrame); // Filters out everything but the goal
-        Canny(rangeFrame, edges, thresh1, thresh2); //Get canny image and write the data to it (rangeFrame is already gray)
-
+        // Finds contours and draws shapes
         findContours(edges, contours, hierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE, Point(0, 0) ); //Find the contours
-
-        //contoursMat = Mat::zeros( edges.size(), CV_8UC3 ); //Initialize the contour Mat
+        //contoursMat = Mat::zeros( edges.size(), CV_8UC3 ); //Initialize the contour Mat TODO Why is this moved
 
         // Finds the contour with the largest area, & records them.
         for(int i=0; i<contours.size();i++) {
@@ -70,8 +79,12 @@ void CannyDetector::run() {
             }
         }
 
-        // Draws the square on contoursMat
-        //CreateShapes::square(contoursMat, idx, contours);
+        // Draws the square on contoursMat and gets the angles we need to turn the robot
+        Point center = CreateShapes::shapes(contoursMat, idx, contours);
+        vector<float> angles = CreateShapes::findAngles(cx, cy, focalLength, center);
+
+        // Sends data to the RoboRIO
+        NetworkTables::sendData(angles[0], angles[1], angles[2], angles[3]);
 
         // Writes specific frames to their respective windows
         imshow("Original", frame);
