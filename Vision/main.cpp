@@ -1,30 +1,27 @@
 #include "opencv2/videoio.hpp"
-#include "opencv2/highgui.hpp"
+#include "boost/thread/thread.hpp"
+#include "CannyDetector.hpp"
+#include "MathData.hpp"
 
 using namespace std;
 using namespace cv;
-
 int main(){
 
 
     VideoCapture cap;
-    Mat frame;
 
-    if(!cap.open(0))
+    if(!cap.open(0)) {
         return 0;
-
-
-    for(;;){
-        // Passes camera cap to frame
-        cap >> frame;
-
-        // If the frame is blank or we hit ESC, break
-        if(frame.empty() || waitKey(1) == 27)
-            break;
-
-
-        // Creates the GUI for us
-        namedWindow("video", WINDOW_AUTOSIZE);
-        imshow("video", frame);
     }
+
+    MathData mathData;
+    mathData.setFOV((60 * 3.141592) / 180);
+    mathData.setCy((640 / 2) - 0.5);
+    mathData.setCx((480 / 2) - 0.5);
+    mathData.setFocalLength(480 / (2*tan(mathData.getFOV()/2)));
+
+    CannyDetector cannyDetector(cap, mathData, Scalar(50,115,205), Scalar(135,185,255), 30, 60);
+    boost::thread myThread(boost::bind(&CannyDetector::run, cannyDetector));
+    myThread.join();
+
 }
