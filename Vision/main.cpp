@@ -9,7 +9,7 @@ int main(){
 
     VideoCapture cap;
 
-    if(!cap.open(1)) {
+    if(!cap.open(0)) {
         return 0;
     }
 

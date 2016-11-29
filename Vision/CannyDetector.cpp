@@ -30,7 +30,8 @@ void CannyDetector::run() {
     namedWindow("Original", WINDOW_AUTOSIZE); //Create a window for the original image
     namedWindow("Canny", WINDOW_AUTOSIZE); //Create a window for the canny image
     namedWindow("Contours", WINDOW_AUTOSIZE); //Create a window for showing contours
-    namedWindow("Thresh", WINDOW_AUTOSIZE);    //Create a window for showing the threshold
+    //namedWindow("Thresh", WINDOW_AUTOSIZE); //For now this doesn't work, believe it has something to do with
+    //                                          not being able to display hsv in its raw form, //TODO Fix this
 
 
     for(;;) {
@@ -39,14 +40,20 @@ void CannyDetector::run() {
         }
 
         cap >> frame; //Grab a Mat frame from the capture stream
+        edges = Mat::zeros(frame.size(), frame.type());
+        hsvFrame = Mat::zeros(frame.size(), frame.type());
+        rangeFrame = Mat::zeros(frame.size(), frame.type());
+        contoursMat = Mat::zeros(frame.size(), frame.type());
+
 
         cvtColor(frame, hsvFrame, CV_BGR2HSV);  // Convert the image stream to HSV
+
         inRange(hsvFrame, lowerThresh, upperThresh, rangeFrame); // Filters out everything but the goal
         Canny(rangeFrame, edges, thresh1, thresh2); //Get canny image and write the data to it (rangeFrame is already gray)
 
         findContours(edges, contours, hierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE, Point(0, 0) ); //Find the contours
 
-        contoursMat = Mat::zeros( edges.size(), CV_8UC3 ); //Initialize the contour Mat
+        //contoursMat = Mat::zeros( edges.size(), CV_8UC3 ); //Initialize the contour Mat
 
         // Finds the contour with the largest area, & records them.
         for(int i=0; i<contours.size();i++) {
@@ -57,12 +64,12 @@ void CannyDetector::run() {
         }
 
         // Draws the square on contoursMat
-        CreateShapes::square(contoursMat, idx, contours);
+        //CreateShapes::square(contoursMat, idx, contours);
 
         // Writes specific frames to their respective windows
         imshow("Original", frame);
         imshow("Canny", edges);
         imshow("Contours", contoursMat);
-        imshow("Thresh", rangeFrame);
+        //imshow("Thresh", rangeFrame);
     }
 }
