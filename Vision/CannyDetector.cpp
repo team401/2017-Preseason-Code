@@ -32,6 +32,7 @@ void CannyDetector::run() {
     namedWindow("Original", WINDOW_AUTOSIZE); //Create a window for the original image
     namedWindow("Canny", WINDOW_AUTOSIZE); //Create a window for the canny image
     namedWindow("Contours", WINDOW_AUTOSIZE); //Create a window for showing contours
+    namedWindow("HSV", WINDOW_AUTOSIZE);
     namedWindow("Masked", WINDOW_AUTOSIZE); //Create a window for showing a masked image
 
     bool firstCycle = true;
@@ -85,6 +86,7 @@ void CannyDetector::run() {
         imshow("Original", frame);
         imshow("Canny", edges);
         imshow("Contours", contoursMat);
+        imshow("HSV", hsvFrame);
         imshow("Masked", maskedMat);
     }
 }
