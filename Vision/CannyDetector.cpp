@@ -75,9 +75,9 @@ void CannyDetector::run() {
         frame.copyTo(maskedMat, rangeFrame); //Create a "masked" frame containing original frame data, only matching a certain color
 
 
-        // Draws the square on contoursMat and gets the angles we need to turn the robot TODO ok shapes are super broken
-        //Point center = CreateShapes::shapes(contoursMat, idx, contours);
-        //vector<float> angles = CreateShapes::findAngles(cx, cy, focalLength, center);
+        // Draws the square on contoursMat and gets the angles we need to turn the robot
+        Point center = CreateShapes::shapes(contoursMat, idx, contours);
+        //vector<float> angles = CreateShapes::findAngles(mathData.getCx(), mathData.getCy(), mathData.getFocalLength(), center); TODO Make this work
 
         // Sends data to the RoboRIO TODO We'll readd this later
         //NetworkTables::sendData(angles[0], angles[1], angles[2], angles[3]);

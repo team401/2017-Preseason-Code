@@ -10,7 +10,7 @@
 class CannyDetector {
 private:
     cv::VideoCapture cap;
-    MathData data;
+    MathData mathData;
     cv::Scalar rangeThreshLower;
     cv::Scalar rangeThreshUpper;
     int thresh1;
@@ -18,7 +18,7 @@ private:
 public:
     CannyDetector(cv::VideoCapture cap_, MathData data_, cv::Scalar rangeThresh1_, cv::Scalar rangeThresh2_, int thresh1_, int thresh2_) {
         cap = cap_;
-        data = data_;
+        mathData = data_;
         rangeThreshLower = rangeThresh1_;
         rangeThreshUpper = rangeThresh2_;
         thresh1 = thresh1_;

@@ -5,11 +5,16 @@
 #include "opencv2/videoio.hpp"
 #include "opencv2/opencv.hpp"
 #include "CreateShapes.hpp"
+#include "iostream"
 
 using namespace std;
 
 // Draws two bounding shapes
 cv::Point CreateShapes::shapes(cv::Mat &frame, int idx, vector<vector<Point>> contours) {
+    if (contours.size() <= 0) {
+        return cv::Point(); //VERY VERY IMPORTANT!!! If there are no contours, just return a blank point!!!
+    }
+
     cv::Point center;
     Point pt1, pt2;
     Point circleCenter;
