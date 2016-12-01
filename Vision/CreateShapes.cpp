@@ -12,7 +12,7 @@ using namespace std;
 // Draws two bounding shapes
 cv::Point CreateShapes::shapes(cv::Mat &frame, int idx, vector<vector<Point>> contours) {
     if (contours.size() <= 0) {
-        return cv::Point(); //VERY VERY IMPORTANT!!! If there are no contours, just return a blank point!!!
+        return cv::Point(-1, -1); //VERY VERY IMPORTANT!!! If there are no contours, just return a blank point!!!
     }
 
     cv::Point center;
@@ -36,12 +36,15 @@ cv::Point CreateShapes::shapes(cv::Mat &frame, int idx, vector<vector<Point>> co
 }
 
 // Finds the angles the robot needs to turn
-std::vector<float> CreateShapes::findAngles(float cx, float cy, float focalLength, cv::Point circleCenter){
+std::vector<float> CreateShapes::findAngles(float cx, float cy, float focalLength, cv::Point circleCenter) {
+    if (circleCenter.x == -1 && circleCenter.y == -1) {
+        return std::vector<float>();
+    }
     std::vector<float> angles;
-    angles[0] = cx - circleCenter.x;                        //xDif
-    angles[1] = cy - circleCenter.y;                        //yDif
-    angles[2] = atan(circleCenter.x - cx) / focalLength;    //yaw
-    angles[3] = atan(circleCenter.y - cy) / focalLength;    //pitch
+    angles.push_back(cx - circleCenter.x);                        //xDif
+    angles.push_back(cy - circleCenter.y);                        //yDif
+    angles.push_back(atan(circleCenter.x - cx) / focalLength);    //yaw
+    angles.push_back(atan(circleCenter.y - cy) / focalLength);    //pitch
 
     return angles;
 }

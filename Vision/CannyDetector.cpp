@@ -77,7 +77,7 @@ void CannyDetector::run() {
 
         // Draws the square on contoursMat and gets the angles we need to turn the robot
         Point center = CreateShapes::shapes(contoursMat, idx, contours);
-        //vector<float> angles = CreateShapes::findAngles(mathData.getCx(), mathData.getCy(), mathData.getFocalLength(), center); TODO Make this work
+        vector<float> angles = CreateShapes::findAngles(mathData.getCx(), mathData.getCy(), mathData.getFocalLength(), center);
 
         // Sends data to the RoboRIO TODO We'll readd this later
         //NetworkTables::sendData(angles[0], angles[1], angles[2], angles[3]);
