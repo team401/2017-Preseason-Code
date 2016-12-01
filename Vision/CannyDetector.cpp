@@ -60,7 +60,7 @@ void CannyDetector::run() {
         cvtColor(frame, hsvFrame, CV_BGR2HSV);  //Convert the original image to HSV, and write it to hsvFrame
         inRange(hsvFrame, rangeThreshLower, rangeThreshUpper, rangeFrame); //Get a binary mask of our desired colors, and write it to rangeFrame
         erode( rangeFrame, erosionMat,  Mat(), Point(-1, -1), 2, 1, 1); //Filter noise from the rangeFrame and write it to erosionMat TODO Is this right? Shouldn't we erode the original frame?
-        Canny(rangeFrame, edges, thresh1, thresh2); //Run canny on our ranged frame, and write the binary to edges TODO Ok this is definitely not right, we aren't even using erosionFrame in this!
+        Canny(erosionMat, edges, thresh1, thresh2); //Run canny on our ranged frame, and write the binary to edges
 
         findContours(edges, contours, hierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE, Point(0, 0) ); //Find the contours from the canny data, and get list and hierarchy info
 
