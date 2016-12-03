@@ -59,7 +59,7 @@ void CannyDetector::run() {
 
         cvtColor(frame, hsvFrame, CV_BGR2HSV);  //Convert the original image to HSV, and write it to hsvFrame
         inRange(hsvFrame, rangeThreshLower, rangeThreshUpper, rangeFrame); //Get a binary mask of our desired colors, and write it to rangeFrame
-        erode( rangeFrame, erosionMat,  Mat(), Point(-1, -1), 2, 1, 1); //Filter noise from the rangeFrame and write it to erosionMat TODO Is this right? Shouldn't we erode the original frame?
+        erode( rangeFrame, erosionMat,  Mat(), Point(-1, -1), 1, 0, 1); //Filter noise from the rangeFrame and write it to erosionMat TODO Is this right? Shouldn't we erode the original frame?
         Canny(erosionMat, edges, thresh1, thresh2); //Run canny on our ranged frame, and write the binary to edges
 
         findContours(edges, contours, hierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE, Point(0, 0) ); //Find the contours from the canny data, and get list and hierarchy info
@@ -79,6 +79,8 @@ void CannyDetector::run() {
         Point center = CreateShapes::shapes(contoursMat, idx, contours);
         vector<float> angles = CreateShapes::findAngles(mathData.getCx(), mathData.getCy(), mathData.getFocalLength(), center);
 
+        cout << center << "\n";
+        cout << angles[0] << " " << angles[1] << " " << angles[2] << " " << angles[3] << "\n";
         // Sends data to the RoboRIO TODO We'll readd this later
         //NetworkTables::sendData(angles[0], angles[1], angles[2], angles[3]);
 
@@ -86,7 +88,7 @@ void CannyDetector::run() {
         imshow("Original", frame);
         imshow("Canny", edges);
         imshow("Contours", contoursMat);
-        imshow("HSV", hsvFrame);
+        //imshow("HSV", hsvFrame);
         imshow("Masked", maskedMat);
     }
 }

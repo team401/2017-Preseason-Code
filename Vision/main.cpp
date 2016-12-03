@@ -10,7 +10,7 @@ int main(){
 
     VideoCapture cap;
 
-    if(!cap.open(0)) {
+    if(!cap.open(1)) {
         return 0;
     }
 
@@ -20,7 +20,7 @@ int main(){
     mathData.setCx((480 / 2) - 0.5);
     mathData.setFocalLength(480 / (2*tan(mathData.getFOV()/2)));
 
-    CannyDetector cannyDetector(cap, mathData, Scalar(50,115,205), Scalar(135,185,255), 30, 60);
+    CannyDetector cannyDetector(cap, mathData, Scalar(50,250,40), Scalar(70,255,140), 30, 60);
     boost::thread myThread(boost::bind(&CannyDetector::run, cannyDetector));
     myThread.join();
 

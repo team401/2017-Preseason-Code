@@ -15,9 +15,8 @@ cv::Point CreateShapes::shapes(cv::Mat &frame, int idx, vector<vector<Point>> co
         return cv::Point(-1, -1); //VERY VERY IMPORTANT!!! If there are no contours, just return a blank point!!!
     }
 
-    cv::Point center;
+    Point center;
     Point pt1, pt2;
-    Point circleCenter;
 
     // Draws a bounding rectangle on the frame
     cv::Rect rect = boundingRect(contours[idx]);
@@ -30,9 +29,9 @@ cv::Point CreateShapes::shapes(cv::Mat &frame, int idx, vector<vector<Point>> co
     // Draws a bounding circle in the center of the rectangle
     center.x = (pt1.x + pt2.x) / 2;
     center.y = (pt1.y + pt2.y) / 2;
-    cv::circle(frame, center, 5, Scalar(255,204,0), 2);
+    cv::circle(frame, center, 2, Scalar(255,204,10), 2);
 
-    return circleCenter;
+    return center;
 }
 
 // Finds the angles the robot needs to turn
