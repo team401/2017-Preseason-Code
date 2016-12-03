@@ -15,12 +15,12 @@ int main(){
     }
 
     MathData mathData;
-    mathData.setFOV((60 * 3.141592) / 180);
-    mathData.setCy((640 / 2) - 0.5);
-    mathData.setCx((480 / 2) - 0.5);
+    mathData.setFOV((57 * 3.141592) / 180);
+    mathData.setCy((480 / 2) - 0.5);
+    mathData.setCx((640 / 2) - 0.5);
     mathData.setFocalLength(480 / (2*tan(mathData.getFOV()/2)));
 
-    CannyDetector cannyDetector(cap, mathData, Scalar(50,250,40), Scalar(70,255,140), 30, 60);
+    CannyDetector cannyDetector(cap, mathData, Scalar(50,250,40), Scalar(70,255,160), 30, 60);
     boost::thread myThread(boost::bind(&CannyDetector::run, cannyDetector));
     myThread.join();
 

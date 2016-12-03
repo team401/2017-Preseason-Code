@@ -40,10 +40,11 @@ std::vector<float> CreateShapes::findAngles(float cx, float cy, float focalLengt
         return std::vector<float>{0,0,0,0};
     }
     std::vector<float> angles;
-    angles.push_back(cx - circleCenter.x);                        //xDif
-    angles.push_back(cy - circleCenter.y);                        //yDif
-    angles.push_back(atan(circleCenter.x - cx) / focalLength);    //yaw
-    angles.push_back(atan(circleCenter.y - cy) / focalLength);    //pitch
+    angles.push_back((circleCenter.x - cx) * 0.0890625);   //yaw
+    angles.push_back((circleCenter.y - cy) * 0.11875);     //pitch
+    //angles.push_back(cx - circleCenter.x);               //xDif
+    //angles.push_back(cy - circleCenter.y);               //yDif
+
 
     return angles;
 }

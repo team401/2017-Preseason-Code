@@ -79,8 +79,8 @@ void CannyDetector::run() {
         Point center = CreateShapes::shapes(contoursMat, idx, contours);
         vector<float> angles = CreateShapes::findAngles(mathData.getCx(), mathData.getCy(), mathData.getFocalLength(), center);
 
-        cout << center << "\n";
-        cout << angles[0] << " " << angles[1] << " " << angles[2] << " " << angles[3] << "\n";
+        //cout << center << "\n";
+        cout << "YAW:" << angles[0] << " | PITCH:" << angles[1] << "\n";
         // Sends data to the RoboRIO TODO We'll readd this later
         //NetworkTables::sendData(angles[0], angles[1], angles[2], angles[3]);
 
