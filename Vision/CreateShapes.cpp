@@ -37,7 +37,7 @@ cv::Point CreateShapes::shapes(cv::Mat &frame, int idx, vector<vector<Point>> co
 // Finds the angles the robot needs to turn
 std::vector<float> CreateShapes::findAngles(float cx, float cy, float focalLength, cv::Point circleCenter) {
     if (circleCenter.x == -1 && circleCenter.y == -1) {
-        return std::vector<float>();
+        return std::vector<float>{0,0,0,0};
     }
     std::vector<float> angles;
     angles.push_back(cx - circleCenter.x);                        //xDif
