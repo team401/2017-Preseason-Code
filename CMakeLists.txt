@@ -4,6 +4,7 @@ project(2017-Preseason-Code)
 include(Vision/cmake_modules/FindOpenCV.txt)
 include(Vision/cmake_modules/FindBoost.txt)
 include(Vision/cmake_modules/FindLibv4l2.txt)
+include(Vision/cmake_modules/FindZMQ.txt)
 
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
@@ -19,4 +20,4 @@ file(GLOB vision_SRC
         )
 
 add_executable(2017-Preseason-Code ${vision_SRC})
-target_link_libraries(2017-Preseason-Code ${OpenCV_LIBS} ${Boost_LIBRARIES} ${LIBV4L2_LIBRARY})
+target_link_libraries(2017-Preseason-Code ${OpenCV_LIBS} ${Boost_LIBRARIES} ${LIBV4L2_LIBRARY} ${ZMQ_LIBRARY})
