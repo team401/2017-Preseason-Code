@@ -7,9 +7,7 @@
 
 #include "string"
 
-std::string ld = "CameraSettings";
-
-struct CameraSettings {
+class CameraSettings {
 public:
     CameraSettings(char* uri);
     bool finish();
@@ -19,6 +17,7 @@ public:
 private:
     int descriptor;
     bool validity;
+    std::string ld = "CameraSettings";
 };
 
 

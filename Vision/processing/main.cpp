@@ -10,11 +10,11 @@ using namespace std;
 using namespace cv;
 int main(){
 
-    CameraSettings("/dev/video1").autoExposure(false).autoWB(false).finish();
+    CameraSettings("/dev/video0").autoExposure(false).autoWB(false).finish();
 
     VideoCapture cap;
 
-    if(!cap.open(1)) {
+    if(!cap.open(0)) {
         return 0;
     }
 
