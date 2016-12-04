@@ -6,8 +6,9 @@
 #include "CannyDetector.hpp"
 #include "opencv2/opencv.hpp"
 #include "CreateShapes.hpp"
-#include "NetworkTables.hpp"
+#include "FrameSender.hpp"
 #include "MathData.hpp"
+#include "Threads.hpp"
 
 using namespace cv;
 using namespace std;
@@ -37,12 +38,13 @@ void CannyDetector::run() {
 
     bool firstCycle = true;
 
-    while (true) {
+    while (VisionThreads::get(ThreadName::CANNY_DETECTOR)) {
         if(waitKey(1) == 27) { //If ESC is pressed, break the loop
             break;
         }
 
         cap >> frame; //Grab a Mat frame from the capture stream
+        FrameSender::addToQueue(frame);
 
         //Initialize "dynamic" mats
         contoursMat = Mat::zeros(frame.size(), frame.type());

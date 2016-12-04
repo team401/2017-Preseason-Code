@@ -5,11 +5,14 @@
 #include "iostream"
 #include "MathData.hpp"
 #include "CameraSettings.hpp"
+#include "FrameSender.hpp"
+#include "zmq.hpp"
+#include "Threads.hpp"
 
 using namespace std;
 using namespace cv;
-int main(){
 
+int main(){
     CameraSettings("/dev/video0").autoExposure(false).autoWB(false).finish();
 
     VideoCapture cap;
@@ -32,7 +35,11 @@ int main(){
     mathData.setFocalLength(480 / (2*tan(mathData.getFOV()/2)));
 
     CannyDetector cannyDetector(cap, mathData, Scalar(50,250,40), Scalar(70,255,160), 30, 60);
-    boost::thread myThread(boost::bind(&CannyDetector::run, cannyDetector));
-    myThread.join();
 
+    FrameSender frameSender(5800);
+
+    boost::thread cannyThread(boost::bind(&CannyDetector::run, cannyDetector));
+    boost::thread frameSenderThread(boost::bind(&FrameSender::run, frameSender));
+    cannyThread.join();
+    VisionThreads::set(ThreadName::GLOBAL, false);
 }
