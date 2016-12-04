@@ -21,25 +21,52 @@ package org.team401.robot;
 import edu.wpi.first.wpilibj.IterativeRobot;
 
 import org.strongback.Strongback;
-import org.strongback.components.TalonSRX;
+import org.strongback.components.Motor;
+import org.strongback.components.Solenoid;
 import org.strongback.components.ui.FlightStick;
+import org.strongback.drive.TankDrive;
 import org.strongback.hardware.Hardware;
 
 public class Robot extends IterativeRobot {
 
-    private TalonSRX test;
-    private FlightStick controller;
+    private TankDrive chassis;
+
+    private FlightStick leftDriveController, rightDriveController, armController;
+
+    private Motor dart, cannon;
+
+    private Solenoid s;
 
 
     @Override
     public void robotInit() {
-        // TODO fix motor ports
-        test = Hardware.Motors.talonSRX(9, -7);
-        controller = Hardware.HumanInterfaceDevices.logitechAttack3D(0);
+        Motor leftGearbox = Motor.compose(
+                Hardware.Motors.talonSRX(1).invert(),
+                Hardware.Motors.talonSRX(2).invert(),
+                Hardware.Motors.talonSRX(0));
+        Motor rightGearbox = Motor.compose(
+                Hardware.Motors.talonSRX(5),
+                Hardware.Motors.talonSRX(6),
+                Hardware.Motors.talonSRX(7).invert());
+
+        dart = Hardware.Motors.talonSRX(4);
+        cannon = Motor.compose(
+                Hardware.Motors.talonSRX(8).invert(),
+                Hardware.Motors.talonSRX(3));
+        // TODO add hi/lo gear solenoids
+        s = Hardware.Solenoids.doubleSolenoid(0, 4, Solenoid.Direction.EXTENDING);
+        //Solenoid rightSolenoid = Hardware.Solenoids.doubleSolenoid(0, 1, Solenoid.Direction.STOPPED);
+        chassis = new TankDrive(leftGearbox, rightGearbox);
+
+        leftDriveController = Hardware.HumanInterfaceDevices.logitechAttack3D(0);
+        rightDriveController = Hardware.HumanInterfaceDevices.logitechAttack3D(1);
+        armController = Hardware.HumanInterfaceDevices.logitechAttack3D(2);
 
         Strongback.configure()
                 .recordDataToFile("/home/lvuser/")
                 .recordEventsToFile("/home/lvuser/", 2097152);
+        Strongback.switchReactor().onTriggered(leftDriveController.getButton(3), () -> s.extend());
+        Strongback.switchReactor().onTriggered(leftDriveController.getButton(4), () -> s.retract());
     }
 
     @Override
@@ -55,9 +82,9 @@ public class Robot extends IterativeRobot {
     @Override
     public void teleopPeriodic() {
         // read values from joystick and drive (maybe)
-        double d = controller.getThrottle().read();
-        double pitch = controller.getPitch().read();
-        test.setSpeed(pitch);
+        chassis.tank(leftDriveController.getPitch().read(), rightDriveController.getPitch().read());
+
+        cannon.setSpeed(armController.getPitch().read());
     }
 
     @Override
