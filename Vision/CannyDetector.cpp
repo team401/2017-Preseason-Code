@@ -88,7 +88,7 @@ void CannyDetector::run() {
         imshow("Original", frame);
         imshow("Canny", edges);
         imshow("Contours", contoursMat);
-        //imshow("HSV", hsvFrame);
+        imshow("HSV", hsvFrame);
         imshow("Masked", maskedMat);
     }
 }

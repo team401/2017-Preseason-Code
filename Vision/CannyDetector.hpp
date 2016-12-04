@@ -15,6 +15,7 @@ private:
     cv::Scalar rangeThreshUpper;
     int thresh1;
     int thresh2;
+    std::string ld = "CannyDetector";
 public:
     CannyDetector(cv::VideoCapture cap_, MathData data_, cv::Scalar rangeThresh1_, cv::Scalar rangeThresh2_, int thresh1_, int thresh2_) {
         cap = cap_;
