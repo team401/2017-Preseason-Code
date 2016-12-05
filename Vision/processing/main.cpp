@@ -14,7 +14,7 @@ using namespace std;
 using namespace cv;
 
 int main(){
-    Log::init();
+    Log::init(Log::Level::INFO, true);
     std::string ld = "main";
     Log::i(ld, "Vision Processor Starting!");
     CameraSettings("/dev/video0").autoExposure(false).autoWB(false).finish();

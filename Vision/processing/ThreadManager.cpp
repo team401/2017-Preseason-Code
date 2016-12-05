@@ -3,21 +3,26 @@
 //
 
 #include "ThreadManager.hpp"
+#include "Log.hpp"
 
 std::atomic<bool> ThreadManager::GLOBAL_RUNNING(true);
 std::atomic<bool> ThreadManager::CANNY_DETECTOR_RUNNING(true);
 std::atomic<bool> ThreadManager::FRAME_SENDER_RUNNING(true);
+std::string ThreadManager::ld = "ThreadManager";
 
 void ThreadManager::set(Thread thread_, bool value_) {
     switch (thread_) {
         case GLOBAL:
             GLOBAL_RUNNING = value_;
+            Log::d(ld, "Set thread GLOBAL to " + std::to_string(value_));
             break;
         case CANNY_DETECTOR:
             CANNY_DETECTOR_RUNNING = value_;
+            Log::d(ld, "Set thread CANNY_DETECTOR to " + std::to_string(value_));
             break;
         case FRAME_SENDER:
             FRAME_SENDER_RUNNING = value_;
+            Log::d(ld, "Set thread FRAME_SENDER1 to " + std::to_string(value_));
             break;
     }
 }

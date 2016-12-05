@@ -6,6 +6,7 @@
 #define INC_2017_PRESEASON_CODE_THREADS_HPP
 
 #include <atomic>
+#include <string>
 
 class ThreadManager {
 public:
@@ -20,6 +21,7 @@ private:
     static std::atomic<bool> GLOBAL_RUNNING;
     static std::atomic<bool> CANNY_DETECTOR_RUNNING;
     static std::atomic<bool> FRAME_SENDER_RUNNING;
+    static std::string ld;
 };
 
 #endif //INC_2017_PRESEASON_CODE_THREADS_HPP
