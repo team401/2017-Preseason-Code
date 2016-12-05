@@ -8,7 +8,7 @@
 #include "CreateShapes.hpp"
 #include "FrameSender.hpp"
 #include "MathData.hpp"
-#include "Threads.hpp"
+#include "ThreadManager.hpp"
 
 using namespace cv;
 using namespace std;
@@ -38,7 +38,7 @@ void CannyDetector::run() {
 
     bool firstCycle = true;
 
-    while (VisionThreads::get(ThreadName::CANNY_DETECTOR)) {
+    while (ThreadManager::get(ThreadManager::Thread::CANNY_DETECTOR)) {
         if(waitKey(1) == 27) { //If ESC is pressed, break the loop
             break;
         }

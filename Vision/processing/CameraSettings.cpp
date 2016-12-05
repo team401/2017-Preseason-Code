@@ -20,6 +20,7 @@ bool CameraSettings::finish() {
 
 CameraSettings CameraSettings::autoExposure(bool set) {
     if (!validity) {
+        Log::w(ld, "Didn't set camera setting AUTO_EXPOSURE because another setting failed");
         return *this;
     }
     v4l2_control c;
@@ -30,9 +31,9 @@ CameraSettings CameraSettings::autoExposure(bool set) {
         c.value = V4L2_EXPOSURE_MANUAL;
     }
     if(v4l2_ioctl(descriptor, VIDIOC_S_CTRL, &c) == 0) {
-        Log::d(ld, "Modified property: AUTO EXPOSURE to value " + std::to_string(set));
+        Log::i(ld, "Modified property AUTO_EXPOSURE to value " + std::to_string(set));
     } else {
-        Log::e(ld, "Failed to modify property: AUTO EXPOSURE");
+        Log::e(ld, "Failed to modify property AUTO_EXPOSURE");
         validity = false;
     }
     return *this;
@@ -40,6 +41,7 @@ CameraSettings CameraSettings::autoExposure(bool set) {
 
 CameraSettings CameraSettings::autoWB(bool set) {
     if (!validity) {
+        Log::w(ld, "Didn't set camera setting AUTO_WHITE_BALANCE because another setting failed");
         return *this;
     }
     v4l2_control c;
@@ -50,9 +52,9 @@ CameraSettings CameraSettings::autoWB(bool set) {
         c.value = V4L2_WHITE_BALANCE_MANUAL;
     }
     if(v4l2_ioctl(descriptor, VIDIOC_S_CTRL, &c) == 0) {
-        Log::d(ld, "Modified property: AUTO WHITE BALANCE to value " + std::to_string(set));
+        Log::i(ld, "Modified property AUTO WHITE BALANCE to value " + std::to_string(set));
     } else {
-        Log::e(ld, "Failed to modify property: AUTO WHITE BALANCE");
+        Log::e(ld, "Failed to modify property AUTO WHITE BALANCE");
         validity = false;
     }
     return *this;

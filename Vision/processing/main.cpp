@@ -7,12 +7,16 @@
 #include "CameraSettings.hpp"
 #include "FrameSender.hpp"
 #include "zmq.hpp"
-#include "Threads.hpp"
+#include "ThreadManager.hpp"
+#include "Log.hpp"
 
 using namespace std;
 using namespace cv;
 
 int main(){
+    Log::init();
+    std::string ld = "main";
+    Log::i(ld, "Vision Processor Starting!");
     CameraSettings("/dev/video0").autoExposure(false).autoWB(false).finish();
 
     VideoCapture cap;
@@ -41,5 +45,5 @@ int main(){
     boost::thread cannyThread(boost::bind(&CannyDetector::run, cannyDetector));
     boost::thread frameSenderThread(boost::bind(&FrameSender::run, frameSender));
     cannyThread.join();
-    VisionThreads::set(ThreadName::GLOBAL, false);
+    ThreadManager::set(ThreadManager::Thread::GLOBAL, false);
 }
