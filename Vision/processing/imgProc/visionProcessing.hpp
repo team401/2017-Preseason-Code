@@ -2,7 +2,7 @@
 //Sets up constructor for the CannyDetector class
 
 #include "opencv2/videoio.hpp"
-#include "MathData.hpp"
+#include "../MathData.hpp"
 
 #ifndef INC_2017_PRESEASON_CODE_CANNY_HPP
 #define INC_2017_PRESEASON_CODE_CANNY_HPP

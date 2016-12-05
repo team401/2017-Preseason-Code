@@ -1,14 +1,14 @@
 #include <opencv2/videoio/videoio_c.h>
 #include "opencv2/videoio.hpp"
 #include "boost/thread/thread.hpp"
-#include "CannyDetector.hpp"
+#include "imgProc/visionProcessing.hpp"
 #include "iostream"
 #include "MathData.hpp"
 #include "CameraSettings.hpp"
-#include "FrameSender.hpp"
+#include "networking/FrameSender.hpp"
 #include "zmq.hpp"
 #include "ThreadManager.hpp"
-#include "Log.hpp"
+#include "dataLogging/Log.hpp"
 
 using namespace std;
 using namespace cv;

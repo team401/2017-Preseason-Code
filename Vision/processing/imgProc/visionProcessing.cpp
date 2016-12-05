@@ -3,13 +3,13 @@
 //until esc is pressed
 
 
-#include "CannyDetector.hpp"
+#include "visionProcessing.hpp"
 #include "opencv2/opencv.hpp"
 #include "CreateShapes.hpp"
-#include "FrameSender.hpp"
-#include "MathData.hpp"
-#include "ThreadManager.hpp"
-#include "MathFunctions.hpp"
+#include "../networking/FrameSender.hpp"
+#include "../MathData.hpp"
+#include "../ThreadManager.hpp"
+#include "../MathFunctions.hpp"
 
 using namespace cv;
 using namespace std;

@@ -5,7 +5,7 @@
 #include <libv4l2.h>
 #include <linux/videodev2.h>
 #include <fcntl.h>
-#include "Log.hpp"
+#include "dataLogging/Log.hpp"
 
 
 CameraSettings::CameraSettings(char *uri) {

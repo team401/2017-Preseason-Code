@@ -10,7 +10,7 @@
 
 using namespace std;
 
-// distance = (realWidth * focalLength) / pixelWidth
+// distance = (realWidth * focalLength) / pixelWidth --- you can replace realWidth and pixelWidth with height instead
 float MathFunctions::findDistance(float focalLength, cv::Point pt1, cv::Point pt2) {
     if (pt1.x == -1 && pt1.y == -1 && pt2.x == -1 & pt2.y == -1) {
         return 0;
@@ -26,10 +26,9 @@ std::vector<float> MathFunctions::findAngles(float cx, float cy, float focalLeng
         return std::vector<float>({0,0,0,0});
     }
     std::vector<float> angles;
+    // The thing we multiply is degrees per pixel in each direction
     angles.push_back((circleCenter.x - cx) * 0.0890625);   //yaw
     angles.push_back((circleCenter.y - cy) * 0.11875);     //pitch
-    //angles.push_back(cx - circleCenter.x);               //xDif
-    //angles.push_back(cy - circleCenter.y);               //yDif
 
     return angles;
 }

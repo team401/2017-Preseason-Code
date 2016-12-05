@@ -3,7 +3,7 @@
 //
 
 #include "ThreadManager.hpp"
-#include "Log.hpp"
+#include "dataLogging/Log.hpp"
 
 std::atomic<bool> ThreadManager::GLOBAL_RUNNING(true);
 std::atomic<bool> ThreadManager::CANNY_DETECTOR_RUNNING(true);

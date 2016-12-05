@@ -6,7 +6,7 @@
 #include "zhelpers.hpp"
 #include "boost/thread/thread.hpp"
 #include "boost/date_time/posix_time/posix_time.hpp"
-#include "ThreadManager.hpp"
+#include "../ThreadManager.hpp"
 
 
 boost::lockfree::spsc_queue<cv::Mat> FrameSender::sendQueue(512);
