@@ -79,7 +79,7 @@ void CannyDetector::run() {
 
 
         // Draws the square on contoursMat and gets the angles we need to turn the robot
-        vector<Point> points = CreateShapes::shapes(contoursMat, idx, contours);
+        vector<Point> shapePoints = CreateShapes::shapes(contoursMat, idx, contours);
         Point center = shapePoints[0];   // Grabs the circle center point
 
         // Finds the angles that we need to turn in order to turn the robot

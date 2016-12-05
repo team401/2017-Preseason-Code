@@ -42,8 +42,12 @@ int main(){
 
     FrameSender frameSender(5800);
 
+    Log::i(ld, "Setup complete, starting threads");
+
     boost::thread cannyThread(boost::bind(&CannyDetector::run, cannyDetector));
     boost::thread frameSenderThread(boost::bind(&FrameSender::run, frameSender));
     cannyThread.join();
     ThreadManager::set(ThreadManager::Thread::GLOBAL, false);
+
+    Log::i(ld, "Program finished, exiting!");
 }

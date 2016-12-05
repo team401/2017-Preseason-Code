@@ -9,10 +9,12 @@
 
 using namespace std;
 
+std::string CreateShapes::ld = "CreateShapes";
+
 // Draws two bounding shapes
 vector<Point> CreateShapes::shapes(cv::Mat &frame, int idx, vector<vector<Point>> contours) {
     if (contours.size() <= 0) {
-        return cv::Point(-1, -1); //VERY VERY IMPORTANT!!! If there are no contours, just return a blank point!!!
+        return vector<cv::Point>{cv::Point(-1, -1),cv::Point(-1, -1),cv::Point(-1, -1)}; //VERY VERY IMPORTANT!!! If there are no contours, just return a blank point!!!
     }
 
     Point center;

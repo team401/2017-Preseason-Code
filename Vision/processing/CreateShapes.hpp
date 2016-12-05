@@ -10,9 +10,9 @@ using namespace std;
 
 class CreateShapes {
 public:
-    static std::vector<std::Point> shapes(Mat &frame, int idx, vector<vector<Point>> contours);
+    static std::vector<cv::Point> shapes(Mat &frame, int idx, vector<vector<Point>> contours);
 private:
-    std::string ld = "CreateShapes";
+    static std::string ld;
 };
 
 

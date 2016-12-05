@@ -5,11 +5,16 @@
  *
  */
 #include "MathFunctions.hpp"
+#include <vector>
+#include "opencv2/core.hpp"
 
 using namespace std;
 
 // distance = (realWidth * focalLength) / pixelWidth
-float MathFunctions::findDistance(float focalLength, Point pt1, Point pt2) {
+float MathFunctions::findDistance(float focalLength, cv::Point pt1, cv::Point pt2) {
+    if (pt1.x == -1 && pt1.y == -1 && pt2.x == -1 & pt2.y == -1) {
+        return 0;
+    }
     float pixelWidth = (pt1.x - pt2.x);
 
     return (12 * focalLength) / pixelWidth;
