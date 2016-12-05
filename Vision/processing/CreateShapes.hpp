@@ -10,8 +10,7 @@ using namespace std;
 
 class CreateShapes {
 public:
-    static cv::Point shapes(Mat &frame, int idx, vector<vector<Point>> contours);
-    static std::vector<float> findAngles(float cx, float cy, float focalLength, cv::Point circleCenter);
+    static std::vector<std::Point> shapes(Mat &frame, int idx, vector<vector<Point>> contours);
 private:
     std::string ld = "CreateShapes";
 };

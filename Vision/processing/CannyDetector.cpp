@@ -9,6 +9,7 @@
 #include "FrameSender.hpp"
 #include "MathData.hpp"
 #include "ThreadManager.hpp"
+#include "MathFunctions.hpp"
 
 using namespace cv;
 using namespace std;
@@ -78,11 +79,16 @@ void CannyDetector::run() {
 
 
         // Draws the square on contoursMat and gets the angles we need to turn the robot
-        Point center = CreateShapes::shapes(contoursMat, idx, contours);
-        vector<float> angles = CreateShapes::findAngles(mathData.getCx(), mathData.getCy(), mathData.getFocalLength(), center);
+        vector<Point> points = CreateShapes::shapes(contoursMat, idx, contours);
+        Point center = shapePoints[0];   // Grabs the circle center point
 
-        //cout << center << "\n";
-        cout << "YAW:" << angles[0] << " | PITCH:" << angles[1] << "\n";
+        // Finds the angles that we need to turn in order to turn the robot
+        vector<float> angles = MathFunctions::findAngles(mathData.getCx(), mathData.getCy(), mathData.getFocalLength(), center);
+
+        // calculates distance from camera to the goal
+        float distance = MathFunctions::findDistance(mathData.getFocalLength(), shapePoints[1], shapePoints[2]);
+
+        cout << "YAW:" << angles[0] << " | PITCH:" << angles[1] << " | DISTANCE:" << distance << "\n";
         // Sends data to the RoboRIO TODO We'll readd this later
         //NetworkTables::sendData(angles[0], angles[1], angles[2], angles[3]);
 

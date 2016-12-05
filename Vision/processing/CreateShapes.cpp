@@ -10,13 +10,14 @@
 using namespace std;
 
 // Draws two bounding shapes
-cv::Point CreateShapes::shapes(cv::Mat &frame, int idx, vector<vector<Point>> contours) {
+vector<Point> CreateShapes::shapes(cv::Mat &frame, int idx, vector<vector<Point>> contours) {
     if (contours.size() <= 0) {
         return cv::Point(-1, -1); //VERY VERY IMPORTANT!!! If there are no contours, just return a blank point!!!
     }
 
     Point center;
     Point pt1, pt2;
+    vector<Point> points;
 
     // Draws a bounding rectangle on the frame
     cv::Rect rect = boundingRect(contours[idx]);
@@ -31,20 +32,8 @@ cv::Point CreateShapes::shapes(cv::Mat &frame, int idx, vector<vector<Point>> co
     center.y = (pt1.y + pt2.y) / 2;
     cv::circle(frame, center, 2, Scalar(255,204,10), 2);
 
-    return center;
-}
-
-// Finds the angles the robot needs to turn
-std::vector<float> CreateShapes::findAngles(float cx, float cy, float focalLength, cv::Point circleCenter) {
-    if (circleCenter.x == -1 && circleCenter.y == -1) {
-        return std::vector<float>{0,0,0,0};
-    }
-    std::vector<float> angles;
-    angles.push_back((circleCenter.x - cx) * 0.0890625);   //yaw
-    angles.push_back((circleCenter.y - cy) * 0.11875);     //pitch
-    //angles.push_back(cx - circleCenter.x);               //xDif
-    //angles.push_back(cy - circleCenter.y);               //yDif
-
-
-    return angles;
+    points.push_back(center);
+    points.push_back(pt1);
+    points.push_back(pt2);
+    return points;
 }
