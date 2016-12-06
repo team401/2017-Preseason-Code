@@ -23,50 +23,64 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import org.strongback.Strongback;
 import org.strongback.components.Motor;
 import org.strongback.components.Solenoid;
+import org.strongback.components.ui.ContinuousRange;
 import org.strongback.components.ui.FlightStick;
 import org.strongback.drive.TankDrive;
 import org.strongback.hardware.Hardware;
 
 public class Robot extends IterativeRobot {
+//NOTE: NEED TO PROPERLY ASSIGNS JOYSTICK PORTS!!!!!
+private static final int JOYSTICK_PORT_LEFT = 0;
+private static final int JOYSTICK_PORT_RIGHT = 1;
 
-    private TankDrive chassis;
+private static final int MIDDLE_LEFT_MOTOR_PORT = 0;
+private static final int REAR_LEFT_MOTOR_PORT = 1;
+private static final int FRONT_LEFT_MOTOR_PORT = 2;
+//private static final int LEFT_SHOOTER_MOTOR_PORT = 3;
+//private static final int DART_PORT = 4;
+private static final int REAR_RIGHT_MOTOR_PORT = 5;
+private static final int FRONT_RIGHT_MOTOR_PORT = 6;
+private static final int MIDDLE_RIGHT_MOTOR_PORT = 7;
+//private static final int RIGHT_SHOOTER_MOTOR_PORT = 8;
 
-    private FlightStick leftDriveController, rightDriveController, armController;
-
-    private Motor dart, cannon;
-
-    private Solenoid s;
-
+private TankDrive drive;
+private ContinuousRange driveSpeedRight;
+private ContinuousRange driveSpeedLeft;
+private Solenoid gearShift;
+private FlightStick joystickLeft;
+private FlightStick joystickRight;
 
     @Override
     public void robotInit() {
-        Motor leftGearbox = Motor.compose(
-                Hardware.Motors.talonSRX(1).invert(),
-                Hardware.Motors.talonSRX(2).invert(),
-                Hardware.Motors.talonSRX(0));
-        Motor rightGearbox = Motor.compose(
-                Hardware.Motors.talonSRX(5),
-                Hardware.Motors.talonSRX(6),
-                Hardware.Motors.talonSRX(7).invert());
+    	
+    	//initiates the motors on the left and right as essentually one motor
+Motor leftMotor = Motor.compose(Hardware.Motors.talonSRX(REAR_LEFT_MOTOR_PORT),
+		Hardware.Motors.talonSRX(MIDDLE_LEFT_MOTOR_PORT),
+		Hardware.Motors.talonSRX(FRONT_LEFT_MOTOR_PORT));
+Motor rightMotor = Motor.compose(Hardware.Motors.talonSRX(REAR_RIGHT_MOTOR_PORT),
+		Hardware.Motors.talonSRX(MIDDLE_RIGHT_MOTOR_PORT),
+		Hardware.Motors.talonSRX(FRONT_RIGHT_MOTOR_PORT));
 
-        dart = Hardware.Motors.talonSRX(4);
-        cannon = Motor.compose(
-                Hardware.Motors.talonSRX(8).invert(),
-                Hardware.Motors.talonSRX(3));
-        // TODO add hi/lo gear solenoids
-        s = Hardware.Solenoids.doubleSolenoid(0, 4, Solenoid.Direction.EXTENDING);
-        //Solenoid rightSolenoid = Hardware.Solenoids.doubleSolenoid(0, 1, Solenoid.Direction.STOPPED);
-        chassis = new TankDrive(leftGearbox, rightGearbox);
+//initiates the two joysticks
+joystickLeft = Hardware.HumanInterfaceDevices.logitechAttack3D(JOYSTICK_PORT_LEFT);
+joystickRight = Hardware.HumanInterfaceDevices.logitechAttack3D(JOYSTICK_PORT_RIGHT);
 
-        leftDriveController = Hardware.HumanInterfaceDevices.logitechAttack3D(0);
-        rightDriveController = Hardware.HumanInterfaceDevices.logitechAttack3D(1);
-        armController = Hardware.HumanInterfaceDevices.logitechAttack3D(2);
+//initiates the drive
+drive = new TankDrive(leftMotor, rightMotor);
 
+//assigns each joystick to power the left and right side 
+driveSpeedLeft = joystickLeft.getPitch();
+driveSpeedRight = joystickRight.getPitch().invert();
+
+//initiates the gearShift solenoid
+//NOTE: NEED TO DETERMIN WHICH PORTS THE SOLENOID IS AND HOW FAR IT SHOULD MOVE ETC.
+gearShift = Hardware.Solenoids.doubleSolenoid(0, 1, Solenoid.Direction.STOPPED);
+
+//starts strongback
         Strongback.configure()
                 .recordDataToFile("/home/lvuser/")
                 .recordEventsToFile("/home/lvuser/", 2097152);
-        Strongback.switchReactor().onTriggered(leftDriveController.getButton(3), () -> s.extend());
-        Strongback.switchReactor().onTriggered(leftDriveController.getButton(4), () -> s.retract());
+      
     }
 
     @Override
@@ -82,9 +96,18 @@ public class Robot extends IterativeRobot {
     @Override
     public void teleopPeriodic() {
         // read values from joystick and drive (maybe)
-        chassis.tank(leftDriveController.getPitch().read(), rightDriveController.getPitch().read());
+    	//assigns the tank drive
+    	drive.tank(driveSpeedLeft.read(), driveSpeedRight.read());
+    	
+    	//activates the solenoid if the trigger on the left joystick is triggered
+    	if(joystickLeft.getTrigger().isTriggered()){
+    		gearShift.extend();
+    	}
+    	if(!joystickLeft.getTrigger().isTriggered()){
+    		gearShift.retract();
+    	}
+    	
 
-        cannon.setSpeed(armController.getPitch().read());
     }
 
     @Override
