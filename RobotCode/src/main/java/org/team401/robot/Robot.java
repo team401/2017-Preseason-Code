@@ -21,53 +21,41 @@ package org.team401.robot;
 import edu.wpi.first.wpilibj.IterativeRobot;
 
 import org.strongback.Strongback;
-import org.strongback.components.Motor;
-import org.strongback.components.Relay;
-import org.strongback.components.Solenoid;
-import org.strongback.components.ui.FlightStick;
-import org.strongback.drive.TankDrive;
-import org.strongback.hardware.Hardware;
 
 public class Robot extends IterativeRobot {
 
-    private TankDrive chassis;
-
-    private FlightStick leftDriveController, rightDriveController, armController;
-
-    private Motor dart, cannon;
-
-    private Solenoid s;
-
+    /*
+        For this assignment, you need to get the 2016 robot completely driving in
+        Java, and be able to switch between low and high gear. You should create
+        a new branch off of this one in GitKraken, name it "yourname-drive" without
+        quotes, and push it to GitHub for Liam and I to review by this Saturday, 12/10.
+            - Zach
+     */
 
     @Override
     public void robotInit() {
-        // merging motors into one motor (gearbox)
-        Motor leftGearbox = Motor.compose(
-                Hardware.Motors.talonSRX(1).invert(),
-                Hardware.Motors.talonSRX(2).invert(),
-                Hardware.Motors.talonSRX(0));
-        Motor rightGearbox = Motor.compose(
-                Hardware.Motors.talonSRX(5),
-                Hardware.Motors.talonSRX(6),
-                Hardware.Motors.talonSRX(7).invert());
-
-        dart = Hardware.Motors.talonSRX(4);
-        cannon = Motor.compose(
-                Hardware.Motors.talonSRX(8).invert(),
-                Hardware.Motors.talonSRX(3));
-        // a simple solenoid
-        s = Hardware.Solenoids.doubleSolenoid(4, 3, Solenoid.Direction.RETRACTING);
-        chassis = new TankDrive(leftGearbox, rightGearbox);
-
-        leftDriveController = Hardware.HumanInterfaceDevices.logitechAttack3D(0);
-        rightDriveController = Hardware.HumanInterfaceDevices.logitechAttack3D(1);
-        armController = Hardware.HumanInterfaceDevices.logitechAttack3D(2);
-
         Strongback.configure()
                 .recordDataToFile("/home/lvuser/")
                 .recordEventsToFile("/home/lvuser/", 2097152);
-        Strongback.switchReactor().onTriggered(leftDriveController.getButton(3), () -> s.extend());
-        Strongback.switchReactor().onTriggered(leftDriveController.getButton(4), () -> s.retract());
+
+        /*
+            Initialize your motors here. The gearboxes on the 2016 bot each have 3 motors.
+            The front and rear motors spin one direction while the middle will spin in the opposite.
+            You need to either log into the robot via 10.40.1.2 when your at the shop or
+            look at the motors on the robot to get their CAN IDs. We use TalonSRX.
+         */
+
+        // solenoid initialization
+
+        /*
+            Initialize the solenoid here. You only need one solenoid as it controls
+            the piston in both gearboxes.
+         */
+
+        // solenoid initialization
+
+        // joysticks, LogitechAttack3D
+
     }
 
     @Override
@@ -77,15 +65,12 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void autonomousInit() {
-
+        Strongback.start();
     }
 
     @Override
     public void teleopPeriodic() {
-        // read values from joystick and drive (maybe)
-        chassis.tank(leftDriveController.getPitch().read(), rightDriveController.getPitch().read());
-
-        cannon.setSpeed(armController.getPitch().read());
+        // here is where you should read joystick inputs and set motor speeds
     }
 
     @Override
