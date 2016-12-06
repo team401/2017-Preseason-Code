@@ -9,7 +9,7 @@ buildscript {
     }
     dependencies {
         classpath group: 'jaci.openrio.gradle', name: 'GradleRIO', version: '+'
-        //classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
@@ -17,11 +17,11 @@ apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
 apply plugin: 'GradleRIO'
-//apply plugin: 'kotlin'
+apply plugin: 'kotlin'
 
 gradlerio.robotClass = "org.team401.robot.Robot"  // Main robot class DO NOT CHANGE
-gradlerio.team = "4001"                           // Our team number
-gradlerio.rioIP = "10.40.1.2"                   // Preston whats the IP again
+gradlerio.team = "401"                           // Our team number
+gradlerio.rioIP = "10.4.1.2"                   // Preston whats the IP again
 
 def robotManifest = {
     attributes 'Main-Class': 'edu.wpi.first.wpilibj.RobotBase'
@@ -29,8 +29,9 @@ def robotManifest = {
 }
 
 dependencies {
-    compile files('libs/strongback/java/lib/strongback.jar')
-    //compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile files('libs/strongback.jar')
+    compile files('libs/strongback-testing.jar')
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
 
 jar {

@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 
 import org.strongback.Strongback;
 import org.strongback.components.Motor;
+import org.strongback.components.Relay;
 import org.strongback.components.Solenoid;
 import org.strongback.components.ui.FlightStick;
 import org.strongback.drive.TankDrive;
@@ -40,6 +41,7 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void robotInit() {
+        // merging motors into one motor (gearbox)
         Motor leftGearbox = Motor.compose(
                 Hardware.Motors.talonSRX(1).invert(),
                 Hardware.Motors.talonSRX(2).invert(),
@@ -53,9 +55,8 @@ public class Robot extends IterativeRobot {
         cannon = Motor.compose(
                 Hardware.Motors.talonSRX(8).invert(),
                 Hardware.Motors.talonSRX(3));
-        // TODO add hi/lo gear solenoids
-        s = Hardware.Solenoids.doubleSolenoid(0, 4, Solenoid.Direction.EXTENDING);
-        //Solenoid rightSolenoid = Hardware.Solenoids.doubleSolenoid(0, 1, Solenoid.Direction.STOPPED);
+        // a simple solenoid
+        s = Hardware.Solenoids.doubleSolenoid(4, 3, Solenoid.Direction.RETRACTING);
         chassis = new TankDrive(leftGearbox, rightGearbox);
 
         leftDriveController = Hardware.HumanInterfaceDevices.logitechAttack3D(0);
