@@ -20,22 +20,23 @@ package org.team401.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 
+import edu.wpi.first.wpilibj.Solenoid;
 import org.strongback.Strongback;
-import org.strongback.components.TalonSRX;
+import org.strongback.components.Motor;
+import org.strongback.components.ui.ContinuousRange;
 import org.strongback.components.ui.FlightStick;
+import org.strongback.drive.TankDrive;
 import org.strongback.hardware.Hardware;
 
 public class Robot extends IterativeRobot {
 
-    private TalonSRX test;
-    private FlightStick controller;
-
+    private Solenoid solenoidPneumatics;
+    private FlightStick joysticky;
 
     @Override
     public void robotInit() {
-        // TODO fix motor ports
-        test = Hardware.Motors.talonSRX(9, -7);
-        controller = Hardware.HumanInterfaceDevices.logitechAttack3D(0);
+
+        joysticky = Hardware.HumanInterfaceDevices.logitechAttack3D(0);
 
         Strongback.configure()
                 .recordDataToFile("/home/lvuser/")
@@ -54,10 +55,16 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void teleopPeriodic() {
+
+        //returns a True/False if the joysticky is triggered
+        if (joysticky.getTrigger().isTriggered()){
+            //push the piston
+        }
+        else{
+            //retract the piston
+        }
         // read values from joystick and drive (maybe)
-        double d = controller.getThrottle().read();
-        double pitch = controller.getPitch().read();
-        test.setSpeed(pitch);
+        //chassis.tank(left.read(), right.read());
     }
 
     @Override
