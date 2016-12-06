@@ -25,7 +25,7 @@ public:
     static void w(std::string ld_, std::string data_); //WARNING
     static void e(std::string ld_, std::string data_); //ERROR
     static void x(std::string ld_, std::string data_); //EXCEPTION
-    static void wtfomgy(std::string ld_, std::string data_); //WHAT THE F**K, OH MY GOD WHY?
+    static void wtfomgy(std::string ld_, std::string data_); //WHAT THE FRICK, OH MY GOD WHY?
     static void close();
 private:
     static std::string getDateTime();

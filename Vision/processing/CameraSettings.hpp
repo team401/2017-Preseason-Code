@@ -14,6 +14,10 @@ public:
 
     CameraSettings autoExposure(bool set);
     CameraSettings autoWB(bool set);
+    CameraSettings autoGain(bool set);
+    CameraSettings setExposure(int set);
+    CameraSettings setSaturation(int set);
+    CameraSettings setContrast(int set);
 private:
     int descriptor;
     bool validity;

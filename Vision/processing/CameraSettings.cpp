@@ -59,3 +59,71 @@ CameraSettings CameraSettings::autoWB(bool set) {
     }
     return *this;
 }
+
+CameraSettings CameraSettings::autoGain(bool set) {
+    if (!validity) {
+        Log::w(ld, "Didn't set camera setting AUTO_GAIN because another setting failed");
+        return *this;
+    }
+    v4l2_control c;
+    c.id = V4L2_CID_AUTOGAIN;
+    c.value = set;
+    if(v4l2_ioctl(descriptor, VIDIOC_S_CTRL, &c) == 0) {
+        Log::i(ld, "Modified property AUTO_GAIN to value " + std::to_string(set));
+    } else {
+        Log::e(ld, "Failed to modify property AUTO_GAIN");
+        validity = false;
+    }
+    return *this;
+}
+
+CameraSettings CameraSettings::setExposure(int set){
+    if (!validity) {
+        Log::w(ld, "Didn't set camera setting EXPOSURE because another setting failed");
+        return *this;
+    }
+    v4l2_control c;
+    c.id = V4L2_CID_EXPOSURE;
+    c.value = set;
+    if(v4l2_ioctl(descriptor, VIDIOC_S_CTRL, &c) == 0) {
+        Log::i(ld, "Modified property EXPOSURE to value " + std::to_string(set));
+    } else {
+        Log::e(ld, "Failed to modify property EXPOSURE");
+        validity = false;
+    }
+    return *this;
+}
+
+CameraSettings CameraSettings::setSaturation(int set){
+    if (!validity) {
+        Log::w(ld, "Didn't set camera setting SATURATION because another setting failed");
+        return *this;
+    }
+    v4l2_control c;
+    c.id = V4L2_CID_SATURATION;
+    c.value = set;
+    if(v4l2_ioctl(descriptor, VIDIOC_S_CTRL, &c) == 0) {
+        Log::i(ld, "Modified property SATURATION to value " + std::to_string(set));
+    } else {
+        Log::e(ld, "Failed to modify property SATURATION");
+        validity = false;
+    }
+    return *this;
+}
+
+CameraSettings CameraSettings::setContrast(int set){
+    if (!validity) {
+        Log::w(ld, "Didn't set camera setting CONTRAST because another setting failed");
+        return *this;
+    }
+    v4l2_control c;
+    c.id = V4L2_CID_CONTRAST;
+    c.value = set;
+    if(v4l2_ioctl(descriptor, VIDIOC_S_CTRL, &c) == 0) {
+        Log::i(ld, "Modified property CONTRAST to value " + std::to_string(set));
+    } else {
+        Log::e(ld, "Failed to modify property CONTRAST");
+        validity = false;
+    }
+    return *this;
+}

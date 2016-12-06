@@ -75,7 +75,7 @@ void Log::x(std::string ld_, std::string data_) {
 }
 
 void Log::wtfomgy(std::string ld_, std::string data_){
-    std::string outString = getDateTime() + " [WHAT THE F**K, OH MY GOD WHY?] [" + ld_ + "] " + data_;
+    std::string outString = getDateTime() + " [WHAT THE FRICK, OH MY GOD WHY?] [" + ld_ + "] " + data_;
     std::cerr << outString << std::endl;
     if (useFile) { writeToFile(outString); }
 }
