@@ -13,10 +13,10 @@ message(STATUS "CMAKE_CXX_FLAGS: " ${CMAKE_CXX_FLAGS})
 
 
 file(GLOB vision_SRC
-        "Vision/processing/*.h"
-        "Vision/processing/*.c"
         "Vision/processing/*.hpp"
         "Vision/processing/*.cpp"
+        "Vision/processing/*/*.hpp"
+        "Vision/processing/*/*.cpp"
         )
 
 add_executable(2017-Preseason-Code ${vision_SRC})

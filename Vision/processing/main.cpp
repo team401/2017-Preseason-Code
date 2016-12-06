@@ -17,11 +17,11 @@ int main(){
     Log::init(Log::Level::INFO, true);
     std::string ld = "main";
     Log::i(ld, "Vision Processor Starting!");
-    CameraSettings("/dev/video0").autoExposure(false).autoWB(false).finish();
+    CameraSettings("/dev/video1").autoExposure(false).autoWB(false).finish();
 
     VideoCapture cap;
 
-    if(!cap.open(0)) {
+    if(!cap.open(1)) {
         return 0;
     }
 
@@ -29,6 +29,7 @@ int main(){
     cap.set(CAP_PROP_HUE, 0);
     cap.set(CAP_PROP_SATURATION, 255);
     cap.set(CAP_PROP_CONTRAST, 0);
+    cap.set(CAP_PROP_BRIGHTNESS, 0);
     cap.set(CAP_PROP_EXPOSURE, 15);
     cap.set(CAP_PROP_GAIN, 20);
 
