@@ -12,6 +12,7 @@ public:
     CameraSettings(char* uri);
     bool finish();
 
+    CameraSettings set(int setting, int set);
     CameraSettings autoExposure(bool set);
     CameraSettings autoWB(bool set);
     CameraSettings autoGain(bool set);

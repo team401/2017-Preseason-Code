@@ -1,11 +1,12 @@
 #include <opencv2/videoio/videoio_c.h>
 #include "opencv2/videoio.hpp"
 #include "boost/thread/thread.hpp"
-#include "imgProc/visionProcessing.hpp"
+#include "imgProc/VisionProcessing.hpp"
 #include "iostream"
 #include "MathData.hpp"
 #include "CameraSettings.hpp"
 #include "networking/FrameSender.hpp"
+#include "networking/DataSender.hpp"
 #include "zmq.hpp"
 #include "ThreadManager.hpp"
 #include "dataLogging/Log.hpp"
@@ -17,7 +18,7 @@ int main(){
     Log::init(Log::Level::INFO, true);
     std::string ld = "main";
     Log::i(ld, "Vision Processor Starting!");
-    CameraSettings("/dev/video1")
+    CameraSettings("/dev/video0")
             .autoExposure(false)
             .autoWB(false)
             .autoGain(false)
@@ -28,7 +29,7 @@ int main(){
 
     VideoCapture cap;
 
-    if(!cap.open(1)) {
+    if(!cap.open(0)) {
         return 0;
     }
 
@@ -48,11 +49,13 @@ int main(){
     CannyDetector cannyDetector(cap, mathData, Scalar(50,250,40), Scalar(70,255,160), 30, 60);
 
     FrameSender frameSender(5800);
+    DataSender dataSender(5801);
 
     Log::i(ld, "Setup complete, starting threads");
 
     boost::thread cannyThread(boost::bind(&CannyDetector::run, cannyDetector));
     boost::thread frameSenderThread(boost::bind(&FrameSender::run, frameSender));
+    boost::thread dataSenderThread(boost::bind(&DataSender::run, dataSender));
     cannyThread.join();
     ThreadManager::set(ThreadManager::Thread::GLOBAL, false);
 

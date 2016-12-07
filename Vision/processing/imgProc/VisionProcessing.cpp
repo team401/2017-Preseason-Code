@@ -3,13 +3,14 @@
 //until esc is pressed
 
 
-#include "visionProcessing.hpp"
+#include "VisionProcessing.hpp"
 #include "opencv2/opencv.hpp"
 #include "CreateShapes.hpp"
 #include "../networking/FrameSender.hpp"
 #include "../MathData.hpp"
 #include "../ThreadManager.hpp"
 #include "../MathFunctions.hpp"
+#include "../networking/DataSender.hpp"
 
 using namespace cv;
 using namespace std;
@@ -89,6 +90,8 @@ void CannyDetector::run() {
         float distance = MathFunctions::findDistance(mathData.getFocalLength(), shapePoints[1], shapePoints[2]);
 
         cout << "YAW:" << angles[0] << " | PITCH:" << angles[1] << " | DISTANCE:" << distance << "\n";
+        DataSender::addToQueue(vector<float>{angles[0], angles[1], distance});
+
         // Sends data to the RoboRIO TODO We'll readd this later
         //NetworkTables::sendData(angles[0], angles[1], angles[2], angles[3]);
 

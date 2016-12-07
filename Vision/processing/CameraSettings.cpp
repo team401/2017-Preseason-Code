@@ -18,6 +18,23 @@ bool CameraSettings::finish() {
     return validity;
 }
 
+CameraSettings CameraSettings::set(int setting, int set) {
+    if (!validity) {
+        Log::w(ld, "Didn't set camera setting " + std::to_string(setting) + " because another setting failed");
+        return *this;
+    }
+    v4l2_control c;
+    c.id = setting;
+    c.value = set;
+    if(v4l2_ioctl(descriptor, VIDIOC_S_CTRL, &c) == 0) {
+        Log::i(ld, "Modified property " + std::to_string(setting) + " to value " + std::to_string(set));
+    } else {
+        Log::e(ld, "Failed to modify property " + std::to_string(setting));
+        validity = false;
+    }
+    return *this;
+}
+
 CameraSettings CameraSettings::autoExposure(bool set) {
     if (!validity) {
         Log::w(ld, "Didn't set camera setting AUTO_EXPOSURE because another setting failed");
