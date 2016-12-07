@@ -11,6 +11,7 @@ import java.io.ByteArrayInputStream;
  * Created by cameronearle on 12/4/16.
  */
 public class VideoReceiver {
+
     static ZMQ.Context context = ZMQ.context(1);
     static ZMQ.Socket socket;
     public static void main(String[] args) {
