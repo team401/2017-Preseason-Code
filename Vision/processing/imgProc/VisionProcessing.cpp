@@ -3,12 +3,14 @@
 //until esc is pressed
 
 
-#include "CannyDetector.hpp"
+#include "VisionProcessing.hpp"
 #include "opencv2/opencv.hpp"
 #include "CreateShapes.hpp"
-#include "FrameSender.hpp"
-#include "MathData.hpp"
-#include "Threads.hpp"
+#include "../networking/FrameSender.hpp"
+#include "../MathData.hpp"
+#include "../ThreadManager.hpp"
+#include "../MathFunctions.hpp"
+#include "../networking/DataSender.hpp"
 
 using namespace cv;
 using namespace std;
@@ -38,7 +40,7 @@ void CannyDetector::run() {
 
     bool firstCycle = true;
 
-    while (VisionThreads::get(ThreadName::CANNY_DETECTOR)) {
+    while (ThreadManager::get(ThreadManager::Thread::CANNY_DETECTOR)) {
         if(waitKey(1) == 27) { //If ESC is pressed, break the loop
             break;
         }
@@ -78,11 +80,18 @@ void CannyDetector::run() {
 
 
         // Draws the square on contoursMat and gets the angles we need to turn the robot
-        Point center = CreateShapes::shapes(contoursMat, idx, contours);
-        vector<float> angles = CreateShapes::findAngles(mathData.getCx(), mathData.getCy(), mathData.getFocalLength(), center);
+        vector<Point> shapePoints = CreateShapes::shapes(contoursMat, idx, contours);
+        Point center = shapePoints[0];   // Grabs the circle center point
 
-        //cout << center << "\n";
-        cout << "YAW:" << angles[0] << " | PITCH:" << angles[1] << "\n";
+        // Finds the angles that we need to turn in order to turn the robot
+        vector<float> angles = MathFunctions::findAngles(mathData.getCx(), mathData.getCy(), mathData.getFocalLength(), center);
+
+        // calculates distance from camera to the goal
+        float distance = MathFunctions::findDistance(mathData.getFocalLength(), shapePoints[1], shapePoints[2]);
+
+        cout << "YAW:" << angles[0] << " | PITCH:" << angles[1] << " | DISTANCE:" << distance << "\n";
+        DataSender::addToQueue(vector<float>{angles[0], angles[1], distance});
+
         // Sends data to the RoboRIO TODO We'll readd this later
         //NetworkTables::sendData(angles[0], angles[1], angles[2], angles[3]);
 
