@@ -2,30 +2,26 @@
 #include "opencv2/videoio.hpp"
 #include "boost/thread/thread.hpp"
 #include "imgProc/VisionProcessing.hpp"
-#include "iostream"
 #include "MathData.hpp"
-#include "CameraSettings.hpp"
+#include "camera/CameraSettings.hpp"
 #include "networking/FrameSender.hpp"
 #include "networking/DataSender.hpp"
 #include "zmq.hpp"
 #include "ThreadManager.hpp"
 #include "dataLogging/Log.hpp"
+#include "camera/SetCamera.hpp"
 
 using namespace std;
 using namespace cv;
 
-int main(){
+
+int main(int argc, char *argv[]){
     Log::init(Log::Level::INFO, true);
     std::string ld = "main";
     Log::i(ld, "Vision Processor Starting!");
-    CameraSettings("/dev/video0")
-            .autoExposure(false)
-            .autoWB(false)
-            .autoGain(false)
-            .setExposure(20)
-            .setSaturation(255)
-            .setContrast(0)
-            .finish();
+
+    // Sets the camera up based on command line arguments
+    GrabSettings::defConfig(argc, argv);
 
     VideoCapture cap;
 
@@ -34,11 +30,6 @@ int main(){
     }
 
     cap.set(CV_CAP_PROP_FPS, 30); //TODO: Change this to 60 once Cameron gets a real laptop
-    //cap.set(CAP_PROP_SATURATION, 255);
-    //cap.set(CAP_PROP_CONTRAST, 0);
-    //cap.set(CAP_PROP_BRIGHTNESS, 0);
-    //cap.set(CAP_PROP_EXPOSURE, 20);
-    //cap.set(CAP_PROP_GAIN, 20);
 
     MathData mathData;
     mathData.setFOV((57 * 3.141592) / 180);
