@@ -13,7 +13,6 @@
 #include "../networking/DataSender.hpp"
 
 using namespace cv;
-using namespace std;
 
 void CannyDetector::run() {
     //Initialize all the mats that we will use throughout the program

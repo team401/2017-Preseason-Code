@@ -21,11 +21,11 @@ float MathFunctions::findDistance(float focalLength, cv::Point pt1, cv::Point pt
 }
 
 // Finds the angles the robot needs to turn
-std::vector<float> MathFunctions::findAngles(float cx, float cy, float focalLength, cv::Point circleCenter) {
+vector<float> MathFunctions::findAngles(float cx, float cy, float focalLength, cv::Point circleCenter) {
     if (circleCenter.x == -1 && circleCenter.y == -1) {
         return std::vector<float>({-1,-1});
     }
-    std::vector<float> angles;
+    vector<float> angles;
     // The thing we multiply is degrees per pixel in each direction
     angles.push_back((circleCenter.x - cx) * 0.0890625);   //yaw
     angles.push_back((circleCenter.y - cy) * 0.11875);     //pitch

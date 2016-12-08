@@ -5,14 +5,14 @@
 #include "opencv2/videoio.hpp"
 #ifndef INC_2017_PRESEASON_CODE_CREATESSHAPES_HPP
 #define INC_2017_PRESEASON_CODE_CREATESSHAPES_HPP
-using namespace cv;
+
 using namespace std;
 
 class CreateShapes {
 public:
-    static std::vector<cv::Point> shapes(Mat &frame, int idx, vector<vector<Point>> contours);
+    static vector<cv::Point> shapes(cv::Mat &frame, int idx, vector<vector<cv::Point>> contours);
 private:
-    static std::string ld;
+    static string ld;
 };
 
 

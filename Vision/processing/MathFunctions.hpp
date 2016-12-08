@@ -10,10 +10,11 @@
 #include <vector>
 #include "opencv2/core.hpp"
 
+using namespace cv;
 
 struct MathFunctions {
-    static float findDistance(float focalLength, cv::Point pt1, cv::Point pt2);
-    static std::vector<float> findAngles(float cx, float cy, float focalLength, cv::Point circleCenter);
+    static float findDistance(float focalLength, Point pt1, Point pt2);
+    static std::vector<float> findAngles(float cx, float cy, float focalLength, Point circleCenter);
 };
 
 

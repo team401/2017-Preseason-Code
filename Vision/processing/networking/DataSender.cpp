@@ -11,6 +11,7 @@
 #include "../ThreadManager.hpp"
 #include <iostream>
 
+using namespace std;
 
 boost::lockfree::spsc_queue<std::vector<float>> DataSender::sendQueue(512);
 
@@ -18,14 +19,14 @@ void DataSender::run() {
     zmq::context_t context(1);
     zmq::socket_t socket(context, ZMQ_PUB);
     socket.bind("tcp://*:" + std::to_string(port));
-    std::vector<float> latestData;
-    std::string dataToSend;
+    vector<float> latestData;
+    string dataToSend;
     while (ThreadManager::get(ThreadManager::Thread::DATA_SENDER)) {
         while (sendQueue.pop(latestData)) {
             if (latestData.size() < 3) {
                 break;
             }
-            dataToSend = std::to_string(latestData[0]) + "," + std::to_string(latestData[1]) + "," + std::to_string(latestData[2]);
+            dataToSend = to_string(latestData[0]) + "," + to_string(latestData[1]) + "," + to_string(latestData[2]);
             s_send(socket, dataToSend);
         }
         boost::this_thread::sleep(boost::posix_time::milliseconds(10));

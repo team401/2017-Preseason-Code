@@ -12,18 +12,16 @@
 #include "camera/SetCamera.hpp"
 
 using namespace std;
-using namespace cv;
-
 
 int main(int argc, char *argv[]){
     Log::init(Log::Level::INFO, true);
-    std::string ld = "main";
+    string ld = "main";
     Log::i(ld, "Vision Processor Starting!");
 
     // Sets the camera up based on command line arguments
     GrabSettings::defConfig(argc, argv);
 
-    VideoCapture cap;
+    cv::VideoCapture cap;
 
     if(!cap.open(0)) {
         return 0;
@@ -37,7 +35,7 @@ int main(int argc, char *argv[]){
     mathData.setCx((640 / 2) - 0.5);
     mathData.setFocalLength(480 / (2*tan(mathData.getFOV()/2)));
 
-    CannyDetector cannyDetector(cap, mathData, Scalar(50,250,40), Scalar(70,255,160), 30, 60);
+    CannyDetector cannyDetector(cap, mathData, cv::Scalar(50,250,40), cv::Scalar(70,255,160), 30, 60);
 
     FrameSender frameSender(5800);
     DataSender dataSender(5801);

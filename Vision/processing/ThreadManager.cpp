@@ -5,6 +5,8 @@
 #include "ThreadManager.hpp"
 #include "dataLogging/Log.hpp"
 
+using namespace std;
+
 std::atomic<bool> ThreadManager::GLOBAL_RUNNING(true);
 std::atomic<bool> ThreadManager::CANNY_DETECTOR_RUNNING(true);
 std::atomic<bool> ThreadManager::FRAME_SENDER_RUNNING(true);
@@ -15,19 +17,19 @@ void ThreadManager::set(Thread thread_, bool value_) {
     switch (thread_) {
         case GLOBAL:
             GLOBAL_RUNNING = value_;
-            Log::d(ld, "Set thread GLOBAL to " + std::to_string(value_));
+            Log::d(ld, "Set thread GLOBAL to " + to_string(value_));
             break;
         case CANNY_DETECTOR:
             CANNY_DETECTOR_RUNNING = value_;
-            Log::d(ld, "Set thread CANNY_DETECTOR to " + std::to_string(value_));
+            Log::d(ld, "Set thread CANNY_DETECTOR to " + to_string(value_));
             break;
         case FRAME_SENDER:
             FRAME_SENDER_RUNNING = value_;
-            Log::d(ld, "Set thread FRAME_SENDER to " + std::to_string(value_));
+            Log::d(ld, "Set thread FRAME_SENDER to " + to_string(value_));
             break;
         case DATA_SENDER:
             DATA_SENDER_RUNNING = value_;
-            Log::d(ld, "Set thread DATA_SENDER to " + std::to_string(value_));
+            Log::d(ld, "Set thread DATA_SENDER to " + to_string(value_));
             break;
 
     }

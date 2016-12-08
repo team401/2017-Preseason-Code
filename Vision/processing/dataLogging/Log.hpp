@@ -9,6 +9,7 @@
 #include <mutex>
 #include <fstream>
 
+using namespace std;
 
 class Log {
 public:
@@ -20,20 +21,20 @@ public:
         EXCEPTION=4
     };
     static void init(Level level_, bool useFile_, std::string filePath_="vision.log");
-    static void d(std::string ld_, std::string data_); //DEBUG
-    static void i(std::string ld_, std::string data_); //INFO
-    static void w(std::string ld_, std::string data_); //WARNING
-    static void e(std::string ld_, std::string data_); //ERROR
-    static void x(std::string ld_, std::string data_); //EXCEPTION
-    static void wtfomgy(std::string ld_, std::string data_); //WHAT THE FRICK, OH MY GOD WHY?
+    static void d(string ld_, std::string data_); //DEBUG
+    static void i(string ld_, std::string data_); //INFO
+    static void w(string ld_, std::string data_); //WARNING
+    static void e(string ld_, std::string data_); //ERROR
+    static void x(string ld_, std::string data_); //EXCEPTION
+    static void wtfomgy(string ld_, string data_); //WHAT THE FRICK, OH MY GOD WHY?
     static void close();
 private:
-    static std::string getDateTime();
-    static void writeToFile(std::string outString_);
+    static string getDateTime();
+    static void writeToFile(string outString_);
     static bool useFile;
     static Level useLevel;
-    static std::mutex fileLock;
-    static std::ofstream file;
+    static mutex fileLock;
+    static ofstream file;
 };
 
 

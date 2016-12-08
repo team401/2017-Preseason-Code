@@ -7,9 +7,11 @@
 #ifndef INC_2017_PRESEASON_CODE_CANNY_HPP
 #define INC_2017_PRESEASON_CODE_CANNY_HPP
 
+using namespace cv;
+
 class CannyDetector {
 public:
-    CannyDetector(cv::VideoCapture cap_, MathData data_, cv::Scalar rangeThresh1_, cv::Scalar rangeThresh2_, int thresh1_, int thresh2_) {
+    CannyDetector(VideoCapture cap_, MathData data_, Scalar rangeThresh1_, Scalar rangeThresh2_, int thresh1_, int thresh2_) {
         cap = cap_;
         mathData = data_;
         rangeThreshLower = rangeThresh1_;
@@ -20,10 +22,10 @@ public:
 
     void run();
 private:
-    cv::VideoCapture cap;
+    VideoCapture cap;
     MathData mathData;
-    cv::Scalar rangeThreshLower;
-    cv::Scalar rangeThreshUpper;
+    Scalar rangeThreshLower;
+    Scalar rangeThreshUpper;
     int thresh1;
     int thresh2;
     std::string ld = "CannyDetector";
