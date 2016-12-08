@@ -55,10 +55,10 @@ private FlightStick joystickRight;
     	
     	//initiates the motors on the left and right as essentually one motor
 Motor leftMotor = Motor.compose(Hardware.Motors.talonSRX(REAR_LEFT_MOTOR_PORT),
-		Hardware.Motors.talonSRX(MIDDLE_LEFT_MOTOR_PORT),
+		Hardware.Motors.talonSRX(MIDDLE_LEFT_MOTOR_PORT).invert(),
 		Hardware.Motors.talonSRX(FRONT_LEFT_MOTOR_PORT));
 Motor rightMotor = Motor.compose(Hardware.Motors.talonSRX(REAR_RIGHT_MOTOR_PORT),
-		Hardware.Motors.talonSRX(MIDDLE_RIGHT_MOTOR_PORT),
+		Hardware.Motors.talonSRX(MIDDLE_RIGHT_MOTOR_PORT).invert(),
 		Hardware.Motors.talonSRX(FRONT_RIGHT_MOTOR_PORT));
 
 //initiates the two joysticks
@@ -74,7 +74,7 @@ driveSpeedRight = joystickRight.getPitch().invert();
 
 //initiates the gearShift solenoid
 //NOTE: NEED TO DETERMIN WHICH PORTS THE SOLENOID IS AND HOW FAR IT SHOULD MOVE ETC.
-gearShift = Hardware.Solenoids.doubleSolenoid(0, 1, Solenoid.Direction.STOPPED);
+gearShift = Hardware.Solenoids.doubleSolenoid(4, 1, Solenoid.Direction.RETRACTING);
 
 //starts strongback
         Strongback.configure()
@@ -103,7 +103,8 @@ gearShift = Hardware.Solenoids.doubleSolenoid(0, 1, Solenoid.Direction.STOPPED);
     	if(joystickLeft.getTrigger().isTriggered()){
     		gearShift.extend();
     	}
-    	if(!joystickLeft.getTrigger().isTriggered()){
+    	//retracts the solenoid if the trigger on the right joystick is triggered
+    	if(joystickRight.getTrigger().isTriggered()){
     		gearShift.retract();
     	}
     	
