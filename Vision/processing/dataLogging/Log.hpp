@@ -34,6 +34,7 @@ private:
     static bool useFile;
     static Level useLevel;
     static mutex fileLock;
+    static mutex logLock;
     static ofstream file;
 };
 

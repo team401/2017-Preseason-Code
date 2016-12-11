@@ -13,6 +13,7 @@
 Log::Level Log::useLevel;
 bool Log::useFile;
 std::mutex Log::fileLock;
+std::mutex Log::logLock;
 std::ofstream Log::file;
 
 void Log::init(Level level_, bool useFile_, std::string filePath_) {
@@ -45,37 +46,49 @@ void Log::close() {
 }
 
 void Log::d(std::string ld_, std::string data_) {
+    logLock.lock();
     std::string outString = getDateTime() + " [DEBUG] [" + ld_ + "] " + data_;
     std::cout << outString << std::endl;
     if (useFile && useLevel <= Level::DEBUG) { writeToFile(outString); }
+    logLock.unlock();
 }
 
 void Log::i(std::string ld_, std::string data_) {
+    logLock.lock();
     std::string outString = getDateTime() + " [INFO] [" + ld_ + "] " + data_;
     std::cout << outString << std::endl;
     if (useFile && useLevel <= Level::INFO) { writeToFile(outString); }
+    logLock.unlock();
 }
 
 void Log::w(std::string ld_, std::string data_) {
+    logLock.lock();
     std::string outString = getDateTime() + " [WARNING] [" + ld_ + "] " + data_;
     std::cerr << outString << std::endl;
     if (useFile && useLevel <= Level::WARNING) { writeToFile(outString); }
+    logLock.unlock();
 }
 
 void Log::e(std::string ld_, std::string data_) {
+    logLock.lock();
     std::string outString = getDateTime() + " [ERROR] [" + ld_ + "] " + data_;
     std::cerr << outString << std::endl;
     if (useFile && useLevel <= Level::ERROR) { writeToFile(outString); }
+    logLock.unlock();
 }
 
 void Log::x(std::string ld_, std::string data_) {
+    logLock.lock();
     std::string outString = getDateTime() + " [EXCEPTION] [" + ld_ + "] " + data_;
     std::cerr << outString << std::endl;
     if (useFile && useLevel <= Level::EXCEPTION) { writeToFile(outString); }
+    logLock.unlock();
 }
 
-void Log::wtfomgy(std::string ld_, std::string data_){
+void Log::wtfomgy(std::string ld_, std::string data_) {
+    logLock.lock();
     std::string outString = getDateTime() + " [WHAT THE FRICK, OH MY GOD WHY?] [" + ld_ + "] " + data_;
     std::cerr << outString << std::endl;
     if (useFile) { writeToFile(outString); }
+    logLock.unlock();
 }
