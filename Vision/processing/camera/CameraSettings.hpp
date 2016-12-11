@@ -19,6 +19,7 @@ public:
     CameraSettings setExposure(int set);
     CameraSettings setSaturation(int set);
     CameraSettings setContrast(int set);
+    CameraSettings setGain(int set);
 private:
     int descriptor;
     bool validity;

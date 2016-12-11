@@ -144,3 +144,20 @@ CameraSettings CameraSettings::setContrast(int set){
     }
     return *this;
 }
+
+CameraSettings CameraSettings::setGain(int set){
+    if (!validity) {
+        Log::w(ld, "Didn't set camera setting GAIN because another setting failed");
+        return *this;
+    }
+    v4l2_control c;
+    c.id = V4L2_CID_GAIN;
+    c.value = set;
+    if(v4l2_ioctl(descriptor, VIDIOC_S_CTRL, &c) == 0) {
+        Log::i(ld, "Modified property GAIN to value " + std::to_string(set));
+    } else {
+        Log::e(ld, "Failed to modify property GAIN");
+        validity = false;
+    }
+    return *this;
+}
