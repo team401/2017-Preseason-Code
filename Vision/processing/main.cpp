@@ -1,4 +1,5 @@
 #include <opencv2/videoio/videoio_c.h>
+#include <boost/lexical_cast.hpp>
 #include "opencv2/videoio.hpp"
 #include "boost/thread/thread.hpp"
 #include "imgProc/VisionProcessing.hpp"
@@ -9,7 +10,8 @@
 #include "zmq.hpp"
 #include "ThreadManager.hpp"
 #include "dataLogging/Log.hpp"
-#include "camera/SetCamera.hpp"
+#include "config/ConfigParser.hpp"
+#include "config/ConfigSettings.hpp"
 
 using namespace std;
 
@@ -18,12 +20,12 @@ int main(int argc, char *argv[]){
     string ld = "main";
     Log::i(ld, "Vision Processor Starting!");
 
-    // Sets the camera up based on command line arguments
-    GrabSettings::defConfig(argc, argv);
+    ConfigSettings configSettings = ConfigParser(vector<string>(argv+1, argv + argc)).getSettings();
+    configSettings.setCamera("/dev/video1");
 
     cv::VideoCapture cap;
 
-    if(!cap.open(0)) {
+    if(!cap.open(1)) {
         return 0;
     }
 
@@ -35,7 +37,10 @@ int main(int argc, char *argv[]){
     mathData.setCx((640 / 2) - 0.5);
     mathData.setFocalLength(480 / (2*tan(mathData.getFOV()/2)));
 
-    CannyDetector cannyDetector(cap, mathData, cv::Scalar(50,250,40), cv::Scalar(70,255,160), 30, 60);
+    CannyDetector cannyDetector(cap, mathData, configSettings.getLowerBound(), configSettings.getUpperBound(),
+                                configSettings.getCannyLowerBound(),
+                                configSettings.getCannyUpperBound()
+    );
 
     FrameSender frameSender(5800);
     DataSender dataSender(5801);
@@ -49,4 +54,5 @@ int main(int argc, char *argv[]){
     ThreadManager::set(ThreadManager::Thread::GLOBAL, false);
 
     Log::i(ld, "Program finished, exiting!");
+    Log::close();
 }
