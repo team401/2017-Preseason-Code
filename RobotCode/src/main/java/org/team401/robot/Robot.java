@@ -20,26 +20,37 @@ package org.team401.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 
+import edu.wpi.first.wpilibj.IterativeRobot;
 import org.strongback.Strongback;
-import org.strongback.components.Solenoid;
+import org.strongback.components.Motor;
 import org.strongback.components.ui.FlightStick;
+import org.strongback.drive.TankDrive;
 import org.strongback.hardware.Hardware;
+
 
 public class Robot extends IterativeRobot {
 
-    private Solenoid solenoidPneumatics;
-    private FlightStick joysticky;
+    private FlightStick leftJoysticky;
+    private FlightStick rightJoysticky;
+    private Motor leftDrive;
+    private Motor rightDrive;
+    private TankDrive allDrive;
 
     @Override
     public void robotInit() {
 
-        solenoidPneumatics = Hardware.Solenoids.doubleSolenoid(0,1, Solenoid.Direction.RETRACTING);
-
-        joysticky = Hardware.HumanInterfaceDevices.logitechAttack3D(0);
-
         Strongback.configure()
                 .recordDataToFile("/home/lvuser/")
                 .recordEventsToFile("/home/lvuser/", 2097152);
+
+        leftDrive = Hardware.Motors.talonSRX(0);
+        rightDrive = Hardware.Motors.talonSRX(1);
+
+        allDrive = new TankDrive(leftDrive, rightDrive);
+
+        leftJoysticky = Hardware.HumanInterfaceDevices.logitechAttack3D(0);
+        rightJoysticky = Hardware.HumanInterfaceDevices.logitechAttack3D(1);
+
     }
 
     @Override
@@ -54,15 +65,7 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void teleopPeriodic() {
-
-        //returns a True/False if the joysticky is triggered
-        if (joysticky.getTrigger().isTriggered()){
-            solenoidPneumatics.extend();
-        }
-        else{
-            solenoidPneumatics.retract();
-        }
-
+            allDrive.tank(leftJoysticky.getPitch().read(), rightJoysticky.getPitch().read());
     }
 
     @Override
