@@ -19,8 +19,8 @@
 package org.team401.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-
 import org.strongback.Strongback;
+import org.strongback.components.Motor;
 
 public class Robot extends IterativeRobot {
 
@@ -43,7 +43,10 @@ public class Robot extends IterativeRobot {
             The front and rear motors spin one direction while the middle will spin in the opposite.
             You need to either log into the robot via 10.40.1.2 when your at the shop or
             look at the motors on the robot to get their CAN IDs. We use TalonSRX.
+
          */
+        private Motor leftDrive;
+        private Motor rightDrive;
 
         // solenoid initialization
 
