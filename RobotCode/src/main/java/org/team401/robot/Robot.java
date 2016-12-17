@@ -18,9 +18,7 @@
 */
 package org.team401.robot;
 
-import com.sun.tools.corba.se.idl.constExpr.ShiftRight;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.internal.HardwareHLUsageReporting;
 import org.strongback.Strongback;
 import org.strongback.components.Motor;
 import org.strongback.components.ui.FlightStick;
