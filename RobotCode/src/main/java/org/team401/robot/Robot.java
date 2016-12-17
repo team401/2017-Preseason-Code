@@ -18,9 +18,14 @@
 */
 package org.team401.robot;
 
+import com.sun.tools.corba.se.idl.constExpr.ShiftRight;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.internal.HardwareHLUsageReporting;
 import org.strongback.Strongback;
 import org.strongback.components.Motor;
+import org.strongback.components.ui.FlightStick;
+import org.strongback.drive.TankDrive;
+import org.strongback.hardware.Hardware;
 
 public class Robot extends IterativeRobot {
 
@@ -32,32 +37,33 @@ public class Robot extends IterativeRobot {
             - Zach
      */
 
+    private FlightStick leftJoysticky;
+    private FlightStick rightJoysticky;
+    private Motor leftDrive;
+    private Motor rightDrive;
+    private TankDrive allDrive;
     @Override
     public void robotInit() {
         Strongback.configure()
                 .recordDataToFile("/home/lvuser/")
                 .recordEventsToFile("/home/lvuser/", 2097152);
+        //initializing the motors
+        Motor leftFront = Hardware.Motors.talonSRX(2);
+        Motor leftMiddle = Hardware.Motors.talonSRX(0).invert();
+        Motor leftRear = Hardware.Motors.talonSRX(1);
+        Motor rightFront = Hardware.Motors.talonSRX(6).invert();
+        Motor rightMiddle = Hardware.Motors.talonSRX(7);
+        Motor rightRear = Hardware.Motors.talonSRX(5).invert();
 
-        /*
-            Initialize your motors here. The gearboxes on the 2016 bot each have 3 motors.
-            The front and rear motors spin one direction while the middle will spin in the opposite.
-            You need to either log into the robot via 10.40.1.2 when your at the shop or
-            look at the motors on the robot to get their CAN IDs. We use TalonSRX.
+        leftDrive = Motor.compose(leftFront, leftMiddle, leftRear);
+        rightDrive = Motor.compose(rightFront, rightMiddle, rightRear);
 
-         */
-        private Motor leftDrive;
-        private Motor rightDrive;
+        allDrive = new TankDrive(leftDrive, rightDrive);
 
-        // solenoid initialization
 
-        /*
-            Initialize the solenoid here. You only need one solenoid as it controls
-            the piston in both gearboxes.
-         */
 
-        // solenoid initialization
-
-        // joysticks, LogitechAttack3D
+        leftJoysticky = Hardware.HumanInterfaceDevices.logitechAttack3D(0);
+        rightJoysticky = Hardware.HumanInterfaceDevices.logitechAttack3D(0);
 
     }
 
@@ -73,7 +79,8 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void teleopPeriodic() {
-        // here is where you should read joystick inputs and set motor speeds
+        allDrive.tank(leftJoysticky.getPitch().read(), rightJoysticky.getPitch().read());
+        //cameronEarle.isTriggered = true
     }
 
     @Override
