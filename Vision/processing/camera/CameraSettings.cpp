@@ -8,8 +8,8 @@
 #include "../dataLogging/Log.hpp"
 
 
-CameraSettings::CameraSettings(char *uri) {
-    descriptor = v4l2_open(uri, O_RDWR);
+CameraSettings::CameraSettings(int id) {
+    descriptor = v4l2_open(("/dev/video" + std::to_string(id)).c_str(), O_RDWR);
     validity = true;
 }
 

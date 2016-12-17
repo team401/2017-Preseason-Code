@@ -9,7 +9,7 @@
 
 class CameraSettings {
 public:
-    CameraSettings(char* uri);
+    CameraSettings(int id);
     bool finish();
 
     CameraSettings set(int setting, int set);

@@ -3,6 +3,7 @@
 
 #include "opencv2/videoio.hpp"
 #include "../MathData.hpp"
+#include "../config/ConfigSettings.hpp"
 
 #ifndef INC_2017_PRESEASON_CODE_CANNY_HPP
 #define INC_2017_PRESEASON_CODE_CANNY_HPP
@@ -11,7 +12,8 @@ using namespace cv;
 
 class CannyDetector {
 public:
-    CannyDetector(VideoCapture cap_, MathData data_, Scalar rangeThresh1_, Scalar rangeThresh2_, int thresh1_, int thresh2_) {
+    CannyDetector(ConfigSettings settings_,VideoCapture cap_, MathData data_, Scalar rangeThresh1_, Scalar rangeThresh2_, int thresh1_, int thresh2_) {
+        settings = settings_;
         cap = cap_;
         mathData = data_;
         rangeThreshLower = rangeThresh1_;
@@ -22,6 +24,7 @@ public:
 
     void run();
 private:
+    ConfigSettings settings;
     VideoCapture cap;
     MathData mathData;
     Scalar rangeThreshLower;

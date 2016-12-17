@@ -8,8 +8,8 @@
 
 using namespace std;
 
-bool ConfigSettings::setCamera(char* descriptor) {
-    CameraSettings(descriptor)
+bool ConfigSettings::setCamera() {
+    return CameraSettings(getDeviceNumber())
             .autoExposure(autoExposure)
             .autoWB(autoWB)
             .autoGain(autoGain)
@@ -18,4 +18,10 @@ bool ConfigSettings::setCamera(char* descriptor) {
             .setContrast(contrast)
             .setGain(gain)
             .finish();
+}
+
+cv::VideoCapture ConfigSettings::getCapture() {
+    cv::VideoCapture cap;
+    cap.open(deviceNumber);
+    return cap;
 }

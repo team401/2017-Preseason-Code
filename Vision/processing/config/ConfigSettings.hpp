@@ -6,6 +6,7 @@
 #define INC_2017_PRESEASON_CODE_CONFIGSETTINGS_HPP
 
 #include <string>
+#include <opencv2/opencv.hpp>
 #include "opencv2/core.hpp"
 
 using namespace std;
@@ -27,10 +28,13 @@ private:
     int upperBoundV;
     int cannyLowerBound;
     int cannyUpperBound;
+    bool debugMode;
+    int deviceNumber;
 public:
     ConfigSettings(){}
-    bool setCamera(char* descriptor);
-    ConfigSettings(bool autoExposure_, bool autoWB_, bool autoGain_, int exposure_, int saturation_, int contrast_, int gain_, int lowerBoundH_, int lowerBoundS_, int lowerBoundV_, int upperBoundH_, int upperBoundS_, int upperBoundV_, int cannyLowerBound_, int cannyUpperBound_) {
+    bool setCamera();
+    cv::VideoCapture getCapture();
+    ConfigSettings(bool autoExposure_, bool autoWB_, bool autoGain_, int exposure_, int saturation_, int contrast_, int gain_, int lowerBoundH_, int lowerBoundS_, int lowerBoundV_, int upperBoundH_, int upperBoundS_, int upperBoundV_, int cannyLowerBound_, int cannyUpperBound_, bool debugMode_, int deviceNumber_) {
         autoExposure = autoExposure_;
         autoWB = autoWB_;
         autoGain = autoGain_;
@@ -46,6 +50,7 @@ public:
         upperBoundV = upperBoundV_;
         cannyLowerBound = cannyLowerBound_;
         cannyUpperBound = cannyUpperBound_;
+        deviceNumber = deviceNumber_;
     }
     bool getAutoExposure() { return autoExposure; }
     void setAutoExposure(bool autoExposure_) { autoExposure = autoExposure_; }
@@ -77,6 +82,10 @@ public:
     void setCannyLowerBound(int cannyLowerBound_) { cannyLowerBound = cannyLowerBound_; }
     int getCannyUpperBound() { return cannyUpperBound; }
     void setCannyUpperBound(int cannyUpperBound_) { cannyUpperBound = cannyUpperBound_; }
+    bool getDebugMode() { return debugMode; }
+    void setDebugMode(bool debugMode_) { debugMode = debugMode_; }
+    int getDeviceNumber() { return deviceNumber; }
+    void setDeviceNumber(int deviceNumber_) { deviceNumber = deviceNumber_; }
 };
 
 

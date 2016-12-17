@@ -34,7 +34,9 @@ private:
             make_pair("upperBoundS", "255"),
             make_pair("upperBoundV", "160"),
             make_pair("cannyLowerBound", "30"),
-            make_pair("cannyUpperBound", "60")
+            make_pair("cannyUpperBound", "60"),
+            make_pair("debugMode", "1"),
+            make_pair("deviceNumber", "0")
     };
     map<string, string> finalSettings;
     template <class T>

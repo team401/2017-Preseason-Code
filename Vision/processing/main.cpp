@@ -21,13 +21,10 @@ int main(int argc, char *argv[]){
     Log::i(ld, "Vision Processor Starting!");
 
     ConfigSettings configSettings = ConfigParser(vector<string>(argv+1, argv + argc)).getSettings();
-    configSettings.setCamera("/dev/video1");
+    configSettings.setCamera();
 
     cv::VideoCapture cap;
-
-    if(!cap.open(1)) {
-        return 0;
-    }
+    cap = configSettings.getCapture();
 
     cap.set(CV_CAP_PROP_FPS, 30); //TODO: Change this to 60 once Cameron gets a real laptop
 
@@ -37,7 +34,7 @@ int main(int argc, char *argv[]){
     mathData.setCx((640 / 2) - 0.5);
     mathData.setFocalLength(480 / (2*tan(mathData.getFOV()/2)));
 
-    CannyDetector cannyDetector(cap, mathData, configSettings.getLowerBound(), configSettings.getUpperBound(),
+    CannyDetector cannyDetector(configSettings, cap, mathData, configSettings.getLowerBound(), configSettings.getUpperBound(),
                                 configSettings.getCannyLowerBound(),
                                 configSettings.getCannyUpperBound()
     );

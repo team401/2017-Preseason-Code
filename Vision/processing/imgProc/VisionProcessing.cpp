@@ -26,17 +26,18 @@ void CannyDetector::run() {
 
     vector<vector<Point>> contours; //List of contours
     vector<Vec4i> hierarchy; //Hierarchy of contours
-    vector<pair<int, int>> sortedContours;
 
     //Variables for contours
     int area = 0;
     int idx;
 
-    namedWindow("Original", WINDOW_AUTOSIZE); //Create a window for the original image
-    namedWindow("Canny", WINDOW_AUTOSIZE); //Create a window for the canny image
-    namedWindow("Contours", WINDOW_AUTOSIZE); //Create a window for showing contours
-    namedWindow("HSV", WINDOW_AUTOSIZE);
-    namedWindow("Masked", WINDOW_AUTOSIZE); //Create a window for showing a masked image
+    if (settings.getDebugMode()) {
+        namedWindow("Original", WINDOW_AUTOSIZE); //Create a window for the original image
+        namedWindow("Canny", WINDOW_AUTOSIZE); //Create a window for the canny image
+        namedWindow("Contours", WINDOW_AUTOSIZE); //Create a window for showing contours
+        namedWindow("HSV", WINDOW_AUTOSIZE);
+        namedWindow("Masked", WINDOW_AUTOSIZE); //Create a window for showing a masked image
+    }
 
     bool firstCycle = true;
 
@@ -71,12 +72,7 @@ void CannyDetector::run() {
         //Loop through our contours
         for(int i=0; i<contours.size();i++) {
             cv::drawContours(contoursMat, contours, i, Scalar(0,150,255), 2, 8); //Draw each contour
-            sortedContours.push_back(make_pair(contours[i].size(), i));
         }
-
-        sort(sortedContours.begin(), sortedContours.end());
-        idx = sortedContours.back().second;
-        sortedContours.clear();
 
         frame.copyTo(maskedMat, rangeFrame); //Create a "masked" frame containing original frame data, only matching a certain color
 
@@ -98,10 +94,12 @@ void CannyDetector::run() {
         //NetworkTables::sendData(angles[0], angles[1], angles[2], angles[3]);
 
         // Writes specific frames to their respective windows
-        imshow("Original", frame);
-        imshow("Canny", edges);
-        imshow("Contours", contoursMat);
-        imshow("HSV", hsvFrame);
-        imshow("Masked", maskedMat);
+        if (settings.getDebugMode()) {
+            imshow("Original", frame);
+            imshow("Canny", edges);
+            imshow("Contours", contoursMat);
+            imshow("HSV", hsvFrame);
+            imshow("Masked", maskedMat);
+        }
     }
 }
