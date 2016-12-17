@@ -46,12 +46,12 @@ public class Robot extends IterativeRobot {
                 .recordDataToFile("/home/lvuser/")
                 .recordEventsToFile("/home/lvuser/", 2097152);
         //initializing the motors
-        Motor leftFront = Hardware.Motors.talonSRX(2);
-        Motor leftMiddle = Hardware.Motors.talonSRX(0).invert();
-        Motor leftRear = Hardware.Motors.talonSRX(1);
-        Motor rightFront = Hardware.Motors.talonSRX(6).invert();
-        Motor rightMiddle = Hardware.Motors.talonSRX(7);
-        Motor rightRear = Hardware.Motors.talonSRX(5).invert();
+        Motor leftFront = Hardware.Motors.talonSRX(2).invert();
+        Motor leftMiddle = Hardware.Motors.talonSRX(0);
+        Motor leftRear = Hardware.Motors.talonSRX(1).invert();
+        Motor rightFront = Hardware.Motors.talonSRX(6);
+        Motor rightMiddle = Hardware.Motors.talonSRX(7).invert();
+        Motor rightRear = Hardware.Motors.talonSRX(5);
 
         leftDrive = Motor.compose(leftFront, leftMiddle, leftRear);
         rightDrive = Motor.compose(rightFront, rightMiddle, rightRear);
@@ -61,7 +61,7 @@ public class Robot extends IterativeRobot {
 
 
         leftJoysticky = Hardware.HumanInterfaceDevices.logitechAttack3D(0);
-        rightJoysticky = Hardware.HumanInterfaceDevices.logitechAttack3D(0);
+        rightJoysticky = Hardware.HumanInterfaceDevices.logitechAttack3D(1);
 
     }
 
