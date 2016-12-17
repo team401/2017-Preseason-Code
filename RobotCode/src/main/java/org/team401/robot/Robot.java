@@ -1,19 +1,16 @@
 package org.team401.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.strongback.Strongback;
-import org.strongback.components.Motor;
-import org.strongback.components.Solenoid;
 import org.strongback.components.ui.FlightStick;
-import org.strongback.drive.TankDrive;
+import org.strongback.control.TalonController;
 import org.strongback.hardware.Hardware;
 
 public class Robot extends IterativeRobot {
-    private Motor leftGearbox, rightGearbox;
-    private Solenoid solenoid;
-    private FlightStick leftJoystick, rightJoystick;
-    private TankDrive drive;
+    private FlightStick joystick;
+    private TalonController talonController;
 
     @Override
     public void robotInit() {
@@ -21,21 +18,12 @@ public class Robot extends IterativeRobot {
         Strongback.configure()
                 .recordDataToFile("/home/lvuser/")
                 .recordEventsToFile("/home/lvuser/", 2097152);
-        leftGearbox = Motor.compose(
-                Hardware.Motors.talonSRX(0),
-                Hardware.Motors.talonSRX(1).invert(),
-                Hardware.Motors.talonSRX(2).invert());
 
-        rightGearbox = Motor.compose(
-                Hardware.Motors.talonSRX(5),
-                Hardware.Motors.talonSRX(6),
-                Hardware.Motors.talonSRX(7).invert());
-        drive = new TankDrive(leftGearbox, rightGearbox);
+        talonController = Hardware.Controllers.talonController(9, 1.38, 0);
+        joystick = Hardware.HumanInterfaceDevices.logitechAttack3D(0);
 
-        leftJoystick = Hardware.HumanInterfaceDevices.logitechAttack3D(0);
-        rightJoystick = Hardware.HumanInterfaceDevices.logitechAttack3D(1);
+        talonController.setControlMode(TalonController.ControlMode.SPEED);
 
-        solenoid = Hardware.Solenoids.doubleSolenoid(4, 6, Solenoid.Direction.RETRACTING);
 
     }
 
@@ -51,13 +39,11 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void teleopPeriodic() {
-        drive.tank(leftJoystick.getPitch().read(), rightJoystick.getPitch().read());
+        talonController.withGains(SmartDashboard.getNumber("PValue"),(SmartDashboard.getNumber("IValue")),(SmartDashboard.getNumber("DValue")));
+        talonController.setSpeed(joystick.getPitch().read() * 7 * 1.38);
 
-        if (leftJoystick.getButton(2).isTriggered()){
-            solenoid.extend();
-        }else if(leftJoystick.getButton(3).isTriggered()){
-            solenoid.retract();
-        }
+
+
     }
 
     @Override
