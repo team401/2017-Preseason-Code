@@ -137,6 +137,7 @@ ConfigSettings ConfigParser::getSettings() {
     configSettings.setDeviceNumber(configFind<int>("deviceNumber"));
     configSettings.setNetworkImagePort(configFind<int>("networkImagePort"));
     configSettings.setNetworkDataPort(configFind<int>("networkDataPort"));
+    configSettings.setNetworkHeartbeatPort(configFind<int>("networkHeartbeatPort"));
 
     return configSettings;
 }

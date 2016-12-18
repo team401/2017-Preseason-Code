@@ -34,11 +34,12 @@ private:
     int deviceNumber;
     int networkImagePort;
     int networkDataPort;
+    int networkHeartbeatPort;
 public:
     ConfigSettings(){}
     bool setCamera();
     cv::VideoCapture getCapture();
-    ConfigSettings(bool autoExposure_, bool autoWB_, bool autoGain_, int exposure_, int saturation_, int contrast_, int gain_, int lowerBoundH_, int lowerBoundS_, int lowerBoundV_, int upperBoundH_, int upperBoundS_, int upperBoundV_, int cannyLowerBound_, int cannyUpperBound_, bool debugMode_, int deviceNumber_, int networkImagePort_, int networkDataPort_) {
+    ConfigSettings(bool autoExposure_, bool autoWB_, bool autoGain_, int exposure_, int saturation_, int contrast_, int gain_, int lowerBoundH_, int lowerBoundS_, int lowerBoundV_, int upperBoundH_, int upperBoundS_, int upperBoundV_, int cannyLowerBound_, int cannyUpperBound_, bool debugMode_, int deviceNumber_, int networkImagePort_, int networkDataPort_, int networkHeartbeatPort_) {
         autoExposure = autoExposure_;
         autoWB = autoWB_;
         autoGain = autoGain_;
@@ -57,6 +58,7 @@ public:
         deviceNumber = deviceNumber_;
         networkImagePort = networkImagePort_;
         networkDataPort = networkDataPort_;
+        networkHeartbeatPort = networkHeartbeatPort_;
     }
     bool getAutoExposure() { return autoExposure; }
     void setAutoExposure(bool autoExposure_) { autoExposure = autoExposure_; }
@@ -96,6 +98,8 @@ public:
     void setNetworkImagePort(int networkImagePort_) { networkImagePort = networkImagePort_; }
     int getNetworkDataPort() { return networkDataPort; }
     void setNetworkDataPort(int networkDataPort_) { networkDataPort = networkDataPort_; }
+    int getNetworkHeartbeatPort() { return networkHeartbeatPort; }
+    void setNetworkHeartbeatPort(int networkHeartbeatPort_) { networkHeartbeatPort = networkHeartbeatPort_; }
 };
 
 

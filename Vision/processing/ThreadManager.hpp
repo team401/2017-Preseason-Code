@@ -16,7 +16,8 @@ public:
         GLOBAL,
         CANNY_DETECTOR,
         FRAME_SENDER,
-        DATA_SENDER
+        DATA_SENDER,
+        HEARTBEAT
     };
     static void set(Thread thread_, bool value_);
     static bool get(Thread thread_);
@@ -25,6 +26,7 @@ private:
     static atomic<bool> CANNY_DETECTOR_RUNNING;
     static atomic<bool> FRAME_SENDER_RUNNING;
     static atomic<bool> DATA_SENDER_RUNNING;
+    static atomic<bool> HEARTBEAT_RUNNING;
     static string ld;
 };
 

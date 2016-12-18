@@ -7,6 +7,7 @@
 #include "camera/CameraSettings.hpp"
 #include "networking/FrameSender.hpp"
 #include "networking/DataSender.hpp"
+#include "networking/Heartbeat.hpp"
 #include "zmq.hpp"
 #include "ThreadManager.hpp"
 #include "dataLogging/Log.hpp"
@@ -36,15 +37,17 @@ int main(int argc, char *argv[]){
 
     VisionProcessing visionProcessor(configSettings, cap, mathData);
 
+    Heartbeat heartbeat(configSettings.getNetworkHeartbeatPort());
     FrameSender frameSender(configSettings.getNetworkImagePort());
     DataSender dataSender(configSettings.getNetworkDataPort());
 
     Log::i(ld, "Setup complete, starting threads");
 
-    boost::thread cannyThread(boost::bind(&VisionProcessing::run, visionProcessor));
+    boost::thread processorThread(boost::bind(&VisionProcessing::run, visionProcessor));
+    boost::thread heartbeatThread(boost::bind(&Heartbeat::run, heartbeat));
     boost::thread frameSenderThread(boost::bind(&FrameSender::run, frameSender));
     boost::thread dataSenderThread(boost::bind(&DataSender::run, dataSender));
-    cannyThread.join();
+    processorThread.join();
     ThreadManager::set(ThreadManager::Thread::GLOBAL, false);
 
     Log::i(ld, "Program finished, exiting!");
