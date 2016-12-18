@@ -9,12 +9,13 @@
 
 #include <vector>
 #include "opencv2/core.hpp"
+#include "MathData.hpp"
 
 using namespace cv;
 
 struct MathFunctions {
-    static float findDistance(float focalLength, Point pt1, Point pt2);
-    static std::vector<float> findAngles(float cx, float cy, float focalLength, Point circleCenter);
+    static float findDistance(MathData mathData, Point pt1, Point pt2);
+    static std::vector<float> findAngles(MathData mathData, Point circleCenter);
 };
 
 

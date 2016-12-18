@@ -23,7 +23,8 @@ private:
     map<string, string> defaults = {
             make_pair("autoExposure", "0"),
             make_pair("autoWB", "0"),
-            make_pair("autoGain", "0"), make_pair("exposure", "20"),
+            make_pair("autoGain", "0"),
+            make_pair("exposure", "20"),
             make_pair("saturation", "255"),
             make_pair("contrast", "0"),
             make_pair("gain", "20"),

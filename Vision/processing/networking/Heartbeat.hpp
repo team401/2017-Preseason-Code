@@ -1,7 +1,3 @@
-//
-// Created by cameronearle on 12/17/16.
-//
-
 #ifndef INC_2017_PRESEASON_CODE_HEARTBEAT_HPP
 #define INC_2017_PRESEASON_CODE_HEARTBEAT_HPP
 

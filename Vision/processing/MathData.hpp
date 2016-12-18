@@ -5,7 +5,6 @@
 #ifndef INC_2017_PRESEASON_CODE_MATHDATA_HPP
 #define INC_2017_PRESEASON_CODE_MATHDATA_HPP
 
-//This class follows the "JavaBean" standard
 
 class MathData {
 public:
