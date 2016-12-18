@@ -1,5 +1,6 @@
 package org.team401vision.networkclient.test;
 
+import org.team401vision.networkclient.HeartbeatClient;
 import org.team401vision.networkclient.NetworkClient;
 import org.team401vision.networkclient.VisionData;
 
@@ -8,15 +9,20 @@ import org.team401vision.networkclient.VisionData;
  */
 public class MainTest {
     public static void main(String[] args) {
-        NetworkClient networkClient = new NetworkClient("127.0.0.1", 5801);
+        HeartbeatClient heartbeatClient = new HeartbeatClient("127.0.0.1", 5800);
+        NetworkClient networkClient = new NetworkClient("127.0.0.1", 5802);
+        Thread heartbeatClientThread = new Thread(heartbeatClient);
         Thread networkClientThread = new Thread(networkClient);
+        heartbeatClientThread.start();
         networkClientThread.start();
 
         while (true) {
             VisionData currentData = networkClient.getVisionData();
-            System.out.println(currentData.getYaw());
-            System.out.println(currentData.getPitch());
-            System.out.println(currentData.getDistance());
+            if (heartbeatClient.isConnected()) {
+                System.out.println(currentData.getYaw());
+                System.out.println(currentData.getPitch());
+                System.out.println(currentData.getDistance());
+            }
             try {
                 Thread.sleep(10);
             } catch (InterruptedException ignored) {}
