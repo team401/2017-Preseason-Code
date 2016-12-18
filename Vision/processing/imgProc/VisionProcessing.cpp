@@ -96,10 +96,10 @@ void VisionProcessing::run() {
         Point center = shapePoints[0];   // Grabs the circle center point
 
         // Finds the angles that we need to turn in order to turn the robot
-        vector<float> angles = MathFunctions::findAngles(mathData.getCx(), mathData.getCy(), mathData.getFocalLength(), center);
+        vector<float> angles = MathFunctions::findAngles(mathData, center);
 
         // calculates distance from camera to the goal
-        float distance = MathFunctions::findDistance(mathData.getFocalLength(), shapePoints[1], shapePoints[2]);
+        float distance = MathFunctions::findDistance(mathData, shapePoints[1], shapePoints[2]);
 
 
         DataSender::addToQueue(vector<float>{angles[0], angles[1], distance}); //Add the math data to the network queue
