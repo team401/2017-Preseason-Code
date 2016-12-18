@@ -9,6 +9,8 @@
 #include <opencv2/opencv.hpp>
 #include "opencv2/core.hpp"
 
+//This class follows the "JavaBean" format
+
 using namespace std;
 
 class ConfigSettings {
@@ -30,11 +32,13 @@ private:
     int cannyUpperBound;
     bool debugMode;
     int deviceNumber;
+    int networkImagePort;
+    int networkDataPort;
 public:
     ConfigSettings(){}
     bool setCamera();
     cv::VideoCapture getCapture();
-    ConfigSettings(bool autoExposure_, bool autoWB_, bool autoGain_, int exposure_, int saturation_, int contrast_, int gain_, int lowerBoundH_, int lowerBoundS_, int lowerBoundV_, int upperBoundH_, int upperBoundS_, int upperBoundV_, int cannyLowerBound_, int cannyUpperBound_, bool debugMode_, int deviceNumber_) {
+    ConfigSettings(bool autoExposure_, bool autoWB_, bool autoGain_, int exposure_, int saturation_, int contrast_, int gain_, int lowerBoundH_, int lowerBoundS_, int lowerBoundV_, int upperBoundH_, int upperBoundS_, int upperBoundV_, int cannyLowerBound_, int cannyUpperBound_, bool debugMode_, int deviceNumber_, int networkImagePort_, int networkDataPort_) {
         autoExposure = autoExposure_;
         autoWB = autoWB_;
         autoGain = autoGain_;
@@ -51,6 +55,8 @@ public:
         cannyLowerBound = cannyLowerBound_;
         cannyUpperBound = cannyUpperBound_;
         deviceNumber = deviceNumber_;
+        networkImagePort = networkImagePort_;
+        networkDataPort = networkDataPort_;
     }
     bool getAutoExposure() { return autoExposure; }
     void setAutoExposure(bool autoExposure_) { autoExposure = autoExposure_; }
@@ -86,6 +92,10 @@ public:
     void setDebugMode(bool debugMode_) { debugMode = debugMode_; }
     int getDeviceNumber() { return deviceNumber; }
     void setDeviceNumber(int deviceNumber_) { deviceNumber = deviceNumber_; }
+    int getNetworkImagePort() { return networkImagePort; }
+    void setNetworkImagePort(int networkImagePort_) { networkImagePort = networkImagePort_; }
+    int getNetworkDataPort() { return networkDataPort; }
+    void setNetworkDataPort(int networkDataPort_) { networkDataPort = networkDataPort_; }
 };
 
 

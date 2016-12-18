@@ -1,6 +1,6 @@
-//
-// Created by cameronearle on 12/5/16.
-//
+//ThreadManager
+//A static control class to manage threads
+//Pretty much a bunch of atomic public static booleans
 
 #include "ThreadManager.hpp"
 #include "dataLogging/Log.hpp"

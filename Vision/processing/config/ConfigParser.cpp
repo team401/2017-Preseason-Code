@@ -135,6 +135,8 @@ ConfigSettings ConfigParser::getSettings() {
     configSettings.setCannyUpperBound(configFind<int>("cannyUpperBound"));
     configSettings.setDebugMode(configFind<bool>("debugMode"));
     configSettings.setDeviceNumber(configFind<int>("deviceNumber"));
+    configSettings.setNetworkImagePort(configFind<int>("networkImagePort"));
+    configSettings.setNetworkDataPort(configFind<int>("networkDataPort"));
 
     return configSettings;
 }

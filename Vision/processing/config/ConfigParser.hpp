@@ -36,7 +36,9 @@ private:
             make_pair("cannyLowerBound", "30"),
             make_pair("cannyUpperBound", "60"),
             make_pair("debugMode", "1"),
-            make_pair("deviceNumber", "0")
+            make_pair("deviceNumber", "0"),
+            make_pair("networkImagePort", "5800"),
+            make_pair("networkDataPort", "5801")
     };
     map<string, string> finalSettings;
     template <class T>

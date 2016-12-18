@@ -10,16 +10,15 @@
 
 using namespace cv;
 
-class CannyDetector {
+class VisionProcessing {
 public:
-    CannyDetector(ConfigSettings settings_,VideoCapture cap_, MathData data_, Scalar rangeThresh1_, Scalar rangeThresh2_, int thresh1_, int thresh2_) {
+    VisionProcessing(ConfigSettings settings_, VideoCapture cap_, MathData data_) {
         settings = settings_;
         cap = cap_;
-        mathData = data_;
-        rangeThreshLower = rangeThresh1_;
-        rangeThreshUpper = rangeThresh2_;
-        thresh1 = thresh1_;
-        thresh2 = thresh2_;
+        rangeThreshLower = settings.getLowerBound();
+        rangeThreshUpper = settings.getUpperBound();
+        thresh1 = settings.getCannyLowerBound();
+        thresh2 = settings.getCannyUpperBound();
     }
 
     void run();

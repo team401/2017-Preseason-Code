@@ -34,17 +34,14 @@ int main(int argc, char *argv[]){
     mathData.setCx((640 / 2) - 0.5);
     mathData.setFocalLength(480 / (2*tan(mathData.getFOV()/2)));
 
-    CannyDetector cannyDetector(configSettings, cap, mathData, configSettings.getLowerBound(), configSettings.getUpperBound(),
-                                configSettings.getCannyLowerBound(),
-                                configSettings.getCannyUpperBound()
-    );
+    VisionProcessing visionProcessor(configSettings, cap, mathData);
 
-    FrameSender frameSender(5800);
-    DataSender dataSender(5801);
+    FrameSender frameSender(configSettings.getNetworkImagePort());
+    DataSender dataSender(configSettings.getNetworkDataPort());
 
     Log::i(ld, "Setup complete, starting threads");
 
-    boost::thread cannyThread(boost::bind(&CannyDetector::run, cannyDetector));
+    boost::thread cannyThread(boost::bind(&VisionProcessing::run, visionProcessor));
     boost::thread frameSenderThread(boost::bind(&FrameSender::run, frameSender));
     boost::thread dataSenderThread(boost::bind(&DataSender::run, dataSender));
     cannyThread.join();

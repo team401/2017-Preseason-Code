@@ -9,31 +9,33 @@
 
 
 CameraSettings::CameraSettings(int id) {
-    descriptor = v4l2_open(("/dev/video" + std::to_string(id)).c_str(), O_RDWR);
-    validity = true;
+    descriptor = v4l2_open(("/dev/video" + std::to_string(id)).c_str(), O_RDWR); //A number that linux uses to reference the camera object
+    validity = true; //While our settings are still valid
 }
 
 bool CameraSettings::finish() {
-    v4l2_close(descriptor);
+    v4l2_close(descriptor); //Close the camera file
     return validity;
 }
 
 CameraSettings CameraSettings::set(int setting, int set) {
-    if (!validity) {
+    if (!validity) { //If previous settings didn't succeed
         Log::w(ld, "Didn't set camera setting " + std::to_string(setting) + " because another setting failed");
-        return *this;
+        return *this; //We always return an instance of ourself so we can string commands
     }
-    v4l2_control c;
+    v4l2_control c; //A video4linux control that we will use to change a specific setting
     c.id = setting;
     c.value = set;
-    if(v4l2_ioctl(descriptor, VIDIOC_S_CTRL, &c) == 0) {
+    if(v4l2_ioctl(descriptor, VIDIOC_S_CTRL, &c) == 0) { //Try to modify the setting and see if it worked
         Log::i(ld, "Modified property " + std::to_string(setting) + " to value " + std::to_string(set));
-    } else {
+    } else { //It didn't work
         Log::e(ld, "Failed to modify property " + std::to_string(setting));
-        validity = false;
+        validity = false; //This will break all future settings to make you fix your mistake
     }
     return *this;
 }
+
+//Read comments above for structure, it's all exactly the same
 
 CameraSettings CameraSettings::autoExposure(bool set) {
     if (!validity) {

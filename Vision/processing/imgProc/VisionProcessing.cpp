@@ -14,7 +14,7 @@
 
 using namespace cv;
 
-void CannyDetector::run() {
+void VisionProcessing::run() {
     //Initialize all the mats that we will use throughout the program
     Mat frame;       //Original from camera
     Mat edges;       //Canny binary
@@ -28,8 +28,9 @@ void CannyDetector::run() {
     vector<Vec4i> hierarchy; //Hierarchy of contours
 
     //Variables for contours
-    int area = 0;
-    int idx;
+    int currentArea = -1;
+    int largestArea = -1;
+    int idx = -1;
 
     if (settings.getDebugMode()) {
         namedWindow("Original", WINDOW_AUTOSIZE); //Create a window for the original image
@@ -47,11 +48,13 @@ void CannyDetector::run() {
         }
 
         cap >> frame; //Grab a Mat frame from the capture stream
-        FrameSender::addToQueue(frame);
+        FrameSender::addToQueue(frame); //Add the camera frame to the network queue
 
         //Initialize "dynamic" mats
-        contoursMat = Mat::zeros(frame.size(), frame.type());
-        maskedMat = Mat::zeros(frame.size(), frame.type());
+        if (settings.getDebugMode()) { //Only if we need to, we don't have to draw anything on these if we don't need to see them
+            contoursMat = Mat::zeros(frame.size(), frame.type());
+            maskedMat = Mat::zeros(frame.size(), frame.type());
+        }
 
         //Initialize "static" mats
         if (firstCycle) {
@@ -64,18 +67,29 @@ void CannyDetector::run() {
 
         cvtColor(frame, hsvFrame, CV_BGR2HSV);  //Convert the original image to HSV, and write it to hsvFrame
         inRange(hsvFrame, rangeThreshLower, rangeThreshUpper, rangeFrame); //Get a binary mask of our desired colors, and write it to rangeFrame
-        erode( rangeFrame, erosionMat,  Mat(), Point(-1, -1), 1, 0, 1); //Filter noise from the rangeFrame and write it to erosionMat TODO Is this right? Shouldn't we erode the original frame?
-        Canny(erosionMat, edges, thresh1, thresh2); //Run canny on our ranged frame, and write the binary to edges
+        erode( rangeFrame, erosionMat,  Mat(), Point(-1, -1), 1, 0, 1); //Filter noise from the rangeFrame and write it to erosionMat
+        Canny(erosionMat, edges, thresh1, thresh2); //Run canny on our eroded frame, and write the binary to edges
 
         findContours(edges, contours, hierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE, Point(0, 0) ); //Find the contours from the canny data, and get list and hierarchy info
 
         //Loop through our contours
+        currentArea = -1;
+        largestArea = -1;
+        idx = -1;
         for(int i=0; i<contours.size();i++) {
-            cv::drawContours(contoursMat, contours, i, Scalar(0,150,255), 2, 8); //Draw each contour
+            currentArea = contours[i].size(); //Store the area of the current contour
+            if (currentArea > largestArea) { //If the area of the current contour is greater than the area of the largest contour
+                largestArea = currentArea; //Make the area of the largest contour the area of the current contour
+                idx = i; //Store the index of the current largest contour for later use
+            }
+            if (settings.getDebugMode()) {
+                cv::drawContours(contoursMat, contours, i, Scalar(0,150,255), 2, 8); //Draw each contour
+            }
         }
 
-        frame.copyTo(maskedMat, rangeFrame); //Create a "masked" frame containing original frame data, only matching a certain color
-
+        if (settings.getDebugMode()) {
+            frame.copyTo(maskedMat, rangeFrame); //Create a "masked" frame containing original frame data, only matching a certain color
+        }
 
         // Draws the square on contoursMat and gets the angles we need to turn the robot
         vector<Point> shapePoints = CreateShapes::shapes(contoursMat, idx, contours);
@@ -87,14 +101,13 @@ void CannyDetector::run() {
         // calculates distance from camera to the goal
         float distance = MathFunctions::findDistance(mathData.getFocalLength(), shapePoints[1], shapePoints[2]);
 
-        cout << "YAW:" << angles[0] << " | PITCH:" << angles[1] << " | DISTANCE:" << distance << "\n";
-        DataSender::addToQueue(vector<float>{angles[0], angles[1], distance});
 
-        // Sends data to the RoboRIO TODO We'll readd this later
-        //NetworkTables::sendData(angles[0], angles[1], angles[2], angles[3]);
+        DataSender::addToQueue(vector<float>{angles[0], angles[1], distance}); //Add the math data to the network queue
 
-        // Writes specific frames to their respective windows
+
+        // Writes specific frames to their respective windows if debug mode is enabled, as well as print debug info
         if (settings.getDebugMode()) {
+            cout << "YAW:" << angles[0] << " | PITCH:" << angles[1] << " | DISTANCE:" << distance << "\n";
             imshow("Original", frame);
             imshow("Canny", edges);
             imshow("Contours", contoursMat);
