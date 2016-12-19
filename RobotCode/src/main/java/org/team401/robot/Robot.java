@@ -20,7 +20,6 @@ package org.team401.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 
-import edu.wpi.first.wpilibj.IterativeRobot;
 import org.strongback.Strongback;
 import org.strongback.components.Motor;
 import org.strongback.components.ui.FlightStick;
@@ -31,19 +30,16 @@ import org.strongback.hardware.Hardware;
 public class Robot extends IterativeRobot {
 
     private FlightStick joysticky;
-    private Motor leftDrive;
-    private Motor rightDrive;
     private TankDrive allDrive;
 
     @Override
     public void robotInit() {
-
         Strongback.configure()
                 .recordDataToFile("/home/lvuser/")
                 .recordEventsToFile("/home/lvuser/", 2097152);
 
-        leftDrive = Hardware.Motors.talon(0);
-        rightDrive = Hardware.Motors.talon(1);
+        Motor leftDrive = Hardware.Motors.talon(0);
+        Motor rightDrive = Hardware.Motors.talon(1).invert();
 
         allDrive = new TankDrive(leftDrive, rightDrive);
 
