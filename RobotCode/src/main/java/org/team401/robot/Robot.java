@@ -30,8 +30,7 @@ import org.strongback.hardware.Hardware;
 
 public class Robot extends IterativeRobot {
 
-    private FlightStick leftJoysticky;
-    private FlightStick rightJoysticky;
+    private FlightStick joysticky;
     private Motor leftDrive;
     private Motor rightDrive;
     private TankDrive allDrive;
@@ -43,13 +42,12 @@ public class Robot extends IterativeRobot {
                 .recordDataToFile("/home/lvuser/")
                 .recordEventsToFile("/home/lvuser/", 2097152);
 
-        leftDrive = Hardware.Motors.talonSRX(0);
-        rightDrive = Hardware.Motors.talonSRX(1);
+        leftDrive = Hardware.Motors.talon(0);
+        rightDrive = Hardware.Motors.talon(1);
 
         allDrive = new TankDrive(leftDrive, rightDrive);
 
-        leftJoysticky = Hardware.HumanInterfaceDevices.logitechAttack3D(0);
-        rightJoysticky = Hardware.HumanInterfaceDevices.logitechAttack3D(1);
+        joysticky = Hardware.HumanInterfaceDevices.logitechAttack3D(0);
 
     }
 
@@ -65,8 +63,7 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void teleopPeriodic() {
-            allDrive.tank(leftJoysticky.getPitch().read() - leftJoysticky.getRoll().read(),
-                    rightJoysticky.getPitch().read() - rightJoysticky.getRoll().read());
+            allDrive.arcade(joysticky.getPitch().read(), joysticky.getRoll().read());
     }
 
     @Override
