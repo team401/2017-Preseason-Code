@@ -15,8 +15,12 @@ public class VideoReceiver {
     static ZMQ.Context context = ZMQ.context(1);
     static ZMQ.Socket socket;
     public static void main(String[] args) {
+        AddressSelector addressSelector = new AddressSelector();
+        addressSelector.pack();
+        addressSelector.setVisible(true);
+        String address = addressSelector.getAddress();
         socket = context.socket(ZMQ.SUB);
-        socket.connect("tcp://127.0.0.1:5800");
+        socket.connect("tcp://" + address);
         socket.subscribe("".getBytes());
         ImagePanel panel = new ImagePanel(640,480);
         ShowImages.showWindow(panel, "Robot Camera Feed", true);

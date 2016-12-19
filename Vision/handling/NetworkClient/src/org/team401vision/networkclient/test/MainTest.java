@@ -11,10 +11,9 @@ public class MainTest {
     public static void main(String[] args) {
         HeartbeatClient heartbeatClient = new HeartbeatClient("127.0.0.1", 5800);
         NetworkClient networkClient = new NetworkClient("127.0.0.1", 5802);
-        Thread heartbeatClientThread = new Thread(heartbeatClient);
-        Thread networkClientThread = new Thread(networkClient);
-        heartbeatClientThread.start();
-        networkClientThread.start();
+        heartbeatClient.start();
+        networkClient.start();
+
 
         while (true) {
             VisionData currentData = networkClient.getVisionData();

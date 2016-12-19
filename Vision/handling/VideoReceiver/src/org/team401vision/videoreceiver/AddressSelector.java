@@ -1,19 +1,15 @@
-package org.team401vision.configeditor.gui;
+package org.team401vision.videoreceiver;
 
 import javax.swing.*;
 import java.awt.event.*;
 
-public class FileSelectDialog extends JDialog {
+public class AddressSelector extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JTextField filePathTextField;
-    private JButton chooseFileButton;
+    private JTextField textField1;
 
-    private final JFileChooser fc = new JFileChooser();
-    private String filePath;
-
-    public FileSelectDialog() {
+    public AddressSelector() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -27,13 +23,6 @@ public class FileSelectDialog extends JDialog {
         buttonCancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onCancel();
-            }
-        });
-
-        chooseFileButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onChooseFile();
             }
         });
 
@@ -54,26 +43,16 @@ public class FileSelectDialog extends JDialog {
     }
 
     private void onOK() {
-        if (filePath != null) {
-            dispose();
-        }
+        // add your code here
+        dispose();
     }
 
     private void onCancel() {
         // add your code here if necessary
         dispose();
-        System.exit(0);
     }
 
-    private void onChooseFile() {
-        int returnVal = fc.showOpenDialog(this);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            filePath = fc.getSelectedFile().getPath();
-            filePathTextField.setText(filePath);
-        }
-    }
-
-    public String getFilePath() {
-        return filePath;
+    public String getAddress() {
+        return textField1.getText();
     }
 }
