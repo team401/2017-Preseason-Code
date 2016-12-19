@@ -20,7 +20,7 @@ public :
 private:
     vector<string> splitElements(string str, char delimiter='=');
     ifstream file;
-    map<string, string> defaults = {
+    map<string, string> defaults = { //DEFAULTS LIST
             make_pair("autoExposure", "0"),
             make_pair("autoWB", "0"),
             make_pair("autoGain", "0"),

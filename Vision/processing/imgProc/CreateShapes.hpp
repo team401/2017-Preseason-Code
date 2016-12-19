@@ -10,7 +10,7 @@ using namespace std;
 
 class CreateShapes {
 public:
-    static vector<cv::Point> shapes(cv::Mat &frame, int idx, vector<vector<cv::Point>> contours);
+    static vector<cv::Point> shapes(cv::Mat &frame, int idx, vector<vector<cv::Point>> contours, bool drawShapes=true);
 private:
     static string ld;
 };

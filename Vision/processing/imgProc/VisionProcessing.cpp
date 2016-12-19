@@ -11,9 +11,13 @@
 #include "../ThreadManager.hpp"
 #include "../MathFunctions.hpp"
 #include "../networking/DataSender.hpp"
+#include "../dataLogging/Log.hpp"
 
 using namespace cv;
 
+/* Function run
+ * Description: The function to run when the thread starts
+ */
 void VisionProcessing::run() {
     //Initialize all the mats that we will use throughout the program
     Mat frame;       //Original from camera
@@ -92,7 +96,7 @@ void VisionProcessing::run() {
         }
 
         // Draws the square on contoursMat and gets the angles we need to turn the robot
-        vector<Point> shapePoints = CreateShapes::shapes(contoursMat, idx, contours);
+        vector<Point> shapePoints = CreateShapes::shapes(contoursMat, idx, contours, settings.getDebugMode());
         Point center = shapePoints[0];   // Grabs the circle center point
 
         // Finds the angles that we need to turn in order to turn the robot

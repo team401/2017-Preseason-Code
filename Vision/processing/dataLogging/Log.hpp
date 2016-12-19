@@ -21,6 +21,7 @@ public:
         EXCEPTION=4
     };
     static void init(Level level_, bool useFile_, std::string filePath_="vision.log");
+    static void setDoDebug(bool value);
     static void d(string ld_, std::string data_); //DEBUG
     static void i(string ld_, std::string data_); //INFO
     static void w(string ld_, std::string data_); //WARNING
@@ -32,6 +33,7 @@ private:
     static string getDateTime();
     static void writeToFile(string outString_);
     static bool useFile;
+    static bool doDebug;
     static Level useLevel;
     static mutex fileLock;
     static mutex logLock;

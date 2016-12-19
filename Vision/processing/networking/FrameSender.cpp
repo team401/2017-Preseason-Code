@@ -9,8 +9,11 @@
 #include "../ThreadManager.hpp"
 
 
-boost::lockfree::spsc_queue<cv::Mat> FrameSender::sendQueue(512);
+boost::lockfree::spsc_queue<cv::Mat> FrameSender::sendQueue(512); //The queue to hold the incoming images
 
+/* Function run
+ * Definition: The function to run when the thread starts
+ */
 void FrameSender::run() {
     zmq::context_t context(1); //Create a context for our socket
     zmq::socket_t socket(context, ZMQ_PUB); //Create a publisher socket to send images
@@ -25,6 +28,7 @@ void FrameSender::run() {
         }
         boost::this_thread::sleep(boost::posix_time::milliseconds(10)); //Keep the CPU load reasonable
     }
+    socket.close(); //Disconnect from the socket when we are done with it
 }
 
 

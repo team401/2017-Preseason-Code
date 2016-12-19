@@ -85,13 +85,13 @@ T ConfigParser::configFind(string key_) {
             return boost::lexical_cast<T>(finalSettings[key_]); //Try to cast to the requested type
         } catch (...) { //Casting failed
             Log::e(ld, "Couldn't lexically cast key [" + key_ + "] to class [" + typeid(T).name() + "]");
-            return NULL; //Hopefully this doesn't happen, but it should be a brisk reminder that you screwed up
+            return NULL; //You screwed up a little
         }
-    } else {
+    } else { //We couldn't find the value in the map
         Log::w(ld, "Couldn't find value with key [" + key_ + "], using default");
         if (defaults.find(key_) == defaults.end()) { //This should never happen
             Log::wtfomgy(ld, "Couldn't find value with key [" + key_ + "] in defaults. This is a problem!");
-            return NULL;
+            return NULL; //You screwed up a lot
         }
         ofstream writeFile;
         writeFile.open(filePath, ios::app);
@@ -102,7 +102,7 @@ T ConfigParser::configFind(string key_) {
             return boost::lexical_cast<T>(defaults[key_]); //Return the default we just wrote
         } catch (...) {
             Log::e(ld, "Couldn't lexically cast DEFAULT key [" + key_ + "] to class [" + typeid(T).name() + "]");
-            return NULL; //This really shouldn't ever happen.
+            return NULL; //You should stop programming and take a career in dance therapy
         }
     }
 }
@@ -113,7 +113,7 @@ T ConfigParser::configFind(string key_) {
  * When adding new config values, we must
  * put them here as well
  */
-ConfigSettings ConfigParser::getSettings() {
+ConfigSettings ConfigParser::getSettings() { //GET SETTINGS
     //This is all pretty self explanatory
     //We use configFind() to get each value
     //And set the appropriate value in the config object

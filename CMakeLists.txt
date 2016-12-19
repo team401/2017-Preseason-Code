@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 2.8)
 project(2017-Preseason-Code)
 
 include(Vision/processing/cmake_modules/FindOpenCV.txt)
@@ -18,6 +18,11 @@ file(GLOB vision_SRC
         "Vision/processing/*/*.hpp"
         "Vision/processing/*/*.cpp"
         )
+
+add_library(VisionProcessing SHARED ${vision_SRC})
+
+add_subdirectory(Vision/tests)
+
 
 add_executable(2017-Preseason-Code ${vision_SRC})
 target_link_libraries(2017-Preseason-Code ${OpenCV_LIBS} ${Boost_LIBRARIES} ${LIBV4L2_LIBRARY} ${ZMQ_LIBRARY})

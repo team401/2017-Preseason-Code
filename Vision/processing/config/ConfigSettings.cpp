@@ -3,6 +3,8 @@
 //
 #include "ConfigSettings.hpp"
 #include "../camera/CameraSettings.hpp"
+#include "../dataLogging/Log.hpp"
+#include "../ThreadManager.hpp"
 
 #include <string>
 
@@ -23,5 +25,10 @@ bool ConfigSettings::setCamera() {
 cv::VideoCapture ConfigSettings::getCapture() {
     cv::VideoCapture cap;
     cap.open(deviceNumber);
+    if (!cap.isOpened()) {
+        Log::x(ld, "Couldn't open device number " + to_string(deviceNumber));
+        ThreadManager::set(ThreadManager::Thread::GLOBAL, false); //Stop the global thread, this should happen before any threads start, but just in case
+        exit(0xDEADBEEF); //Dead Beef is the best beef
+    }
     return cap;
 }

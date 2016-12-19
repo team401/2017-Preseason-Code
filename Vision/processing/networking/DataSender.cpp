@@ -10,11 +10,15 @@
 #include "boost/date_time/posix_time/posix_time.hpp"
 #include "../ThreadManager.hpp"
 #include <iostream>
+#include <iostream>
 
 using namespace std;
 
-boost::lockfree::spsc_queue<std::vector<float>> DataSender::sendQueue(512);
+boost::lockfree::spsc_queue<std::vector<float>> DataSender::sendQueue(512); //The queue to hold the incoming data
 
+/* Function run
+ * Definition: The function to run when the thread starts
+ */
 void DataSender::run() {
     zmq::context_t context(1); //Create a context to store our socket
     zmq::socket_t socket(context, ZMQ_PUB); //Create a publisher socket to send data
@@ -31,6 +35,7 @@ void DataSender::run() {
         }
         boost::this_thread::sleep(boost::posix_time::milliseconds(10)); //Keep the CPU load reasonable
     }
+    socket.close(); //Disconnect from the socket when we are done with it
 }
 
 

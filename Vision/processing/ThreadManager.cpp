@@ -42,7 +42,7 @@ void ThreadManager::set(Thread thread, bool value_) {
             break;
         case HEARTBEAT:
             HEARTBEAT_RUNNING = value_;
-            Log::d(ld, "Set thread HEARTBEAT to" + to_string(value_));
+            Log::d(ld, "Set thread HEARTBEAT to " + to_string(value_));
             break;
 
     }

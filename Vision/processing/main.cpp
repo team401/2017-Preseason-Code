@@ -18,6 +18,7 @@ int main(int argc, char *argv[]){
     Log::i(ld, "Vision Processor Starting!");
 
     ConfigSettings configSettings = ConfigParser(vector<string>(argv+1, argv + argc)).getSettings(); //Parse the config and inject command line arguments
+    Log::setDoDebug(configSettings.getDebugMode()); //Tell the logger whether or not it should waste time even dealing with debug log messages
     configSettings.setCamera(); //Set up the camera using the device number found in the config
 
     cv::VideoCapture cap; //Capture device holder

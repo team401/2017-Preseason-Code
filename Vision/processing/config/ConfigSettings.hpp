@@ -15,6 +15,8 @@ using namespace std;
 
 class ConfigSettings {
 private:
+    string ld = "ConfigSettings";
+    //DECLARATIONS
     bool autoExposure;
     bool autoWB;
     bool autoGain;
@@ -35,11 +37,36 @@ private:
     int networkImagePort;
     int networkDataPort;
     int networkHeartbeatPort;
+    //END DECLARATIONS
 public:
     ConfigSettings(){}
     bool setCamera();
     cv::VideoCapture getCapture();
-    ConfigSettings(bool autoExposure_, bool autoWB_, bool autoGain_, int exposure_, int saturation_, int contrast_, int gain_, int lowerBoundH_, int lowerBoundS_, int lowerBoundV_, int upperBoundH_, int upperBoundS_, int upperBoundV_, int cannyLowerBound_, int cannyUpperBound_, bool debugMode_, int deviceNumber_, int networkImagePort_, int networkDataPort_, int networkHeartbeatPort_) {
+    ConfigSettings(
+                   //CONSTRUCTOR ARGUMENTS
+                   bool autoExposure_,
+                   bool autoWB_,
+                   bool autoGain_,
+                   int exposure_,
+                   int saturation_,
+                   int contrast_,
+                   int gain_,
+                   int lowerBoundH_,
+                   int lowerBoundS_,
+                   int lowerBoundV_,
+                   int upperBoundH_,
+                   int upperBoundS_,
+                   int upperBoundV_,
+                   int cannyLowerBound_,
+                   int cannyUpperBound_,
+                   bool debugMode_,
+                   int deviceNumber_,
+                   int networkImagePort_,
+                   int networkDataPort_,
+                   int networkHeartbeatPort_
+                   //END CONSTRUCTOR ARGUMENTS
+    ) {
+        //CONSTRUCTOR DECLARATIONS
         autoExposure = autoExposure_;
         autoWB = autoWB_;
         autoGain = autoGain_;
@@ -59,7 +86,9 @@ public:
         networkImagePort = networkImagePort_;
         networkDataPort = networkDataPort_;
         networkHeartbeatPort = networkHeartbeatPort_;
+        //END CONSTRUCTOR DECLARATIONS
     }
+    //ACCESSORS
     bool getAutoExposure() { return autoExposure; }
     void setAutoExposure(bool autoExposure_) { autoExposure = autoExposure_; }
     bool getAutoWB() { return autoWB; }
@@ -100,6 +129,7 @@ public:
     void setNetworkDataPort(int networkDataPort_) { networkDataPort = networkDataPort_; }
     int getNetworkHeartbeatPort() { return networkHeartbeatPort; }
     void setNetworkHeartbeatPort(int networkHeartbeatPort_) { networkHeartbeatPort = networkHeartbeatPort_; }
+    //END ACCESSORS
 };
 
 
