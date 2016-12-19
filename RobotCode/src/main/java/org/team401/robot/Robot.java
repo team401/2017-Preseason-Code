@@ -20,6 +20,7 @@ package org.team401.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.strongback.Strongback;
 import org.strongback.components.Motor;
 import org.strongback.components.ui.FlightStick;
@@ -38,8 +39,15 @@ public class Robot extends IterativeRobot {
                 .recordDataToFile("/home/lvuser/")
                 .recordEventsToFile("/home/lvuser/", 2097152);
 
+        boolean invert = SmartDashboard.getBoolean("Invert Drive", false);
+
         Motor leftDrive = Hardware.Motors.talon(0);
-        Motor rightDrive = Hardware.Motors.talon(1).invert();
+        Motor rightDrive = Hardware.Motors.talon(1);
+
+        if (invert)
+            rightDrive = rightDrive.invert();
+        else
+            leftDrive = leftDrive.invert();
 
         allDrive = new TankDrive(leftDrive, rightDrive);
 
@@ -54,7 +62,7 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void autonomousInit() {
-
+        Strongback.start();
     }
 
     @Override
