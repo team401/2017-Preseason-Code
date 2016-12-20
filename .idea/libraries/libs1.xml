@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="libs1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/RobotCode/build/libs/RobotCode.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RobotCode/build/libs/RobotCode-javadoc.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="GradleRIO">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/RobotCode/gradle/libs/GradleRIO.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

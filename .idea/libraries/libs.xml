@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="libs">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/RobotCode/libs/junit-4.11-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RobotCode/libs/strongback-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RobotCode/libs/strongback-testing.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RobotCode/libs/strongback-testing-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RobotCode/libs/strongback.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RobotCode/libs/junit-4.11.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
