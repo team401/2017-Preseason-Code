@@ -8,7 +8,9 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Created by cameronearle on 12/17/16.
  */
-public class HeartbeatClient implements Runnable {
+
+@Deprecated
+public class HeartbeatClient extends Thread {
     private ZMQ.Context context;
     private ZMQ.Socket socket;
     private AtomicBoolean connected = new AtomicBoolean(false);
@@ -24,9 +26,13 @@ public class HeartbeatClient implements Runnable {
         return connected.get();
     }
 
+    public Thread getThread() {
+        return currentThread();
+    }
+
     @Override
     public void run() {
-        while (true) {
+        while (!currentThread().isInterrupted()) {
             connected.set(socket.recvStr() != null);
         }
     }

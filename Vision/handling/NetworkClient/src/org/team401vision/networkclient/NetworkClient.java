@@ -5,7 +5,7 @@ import org.zeromq.ZMQ;
 import java.util.concurrent.atomic.AtomicReference;
 
 
-public class NetworkClient implements Runnable {
+public class NetworkClient extends Thread {
     private ZMQ.Context context;
     private ZMQ.Socket socket;
     private AtomicReference<VisionData> currentData = new AtomicReference<>();
@@ -17,6 +17,7 @@ public class NetworkClient implements Runnable {
         socket.connect("tcp://" + address + ":" + port);
     }
 
+
     public VisionData getVisionData() {
         return currentData.get();
     }
@@ -25,9 +26,13 @@ public class NetworkClient implements Runnable {
         currentData.set(visionData);
     }
 
+    public Thread getThread() {
+        return currentThread();
+    }
+
     @Override
     public void run() {
-        while (true) {
+        while (!currentThread().isInterrupted()) {
             setVisionData(new VisionData(new String(socket.recv())));
             try {
                 Thread.sleep(10);
