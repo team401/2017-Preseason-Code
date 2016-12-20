@@ -2,13 +2,13 @@
 #include <boost/lexical_cast.hpp>
 #include "opencv2/videoio.hpp"
 #include "boost/thread/thread.hpp"
-#include "imgProc/VisionProcessing.hpp"
-#include "networking/FrameSender.hpp"
-#include "networking/DataSender.hpp"
-#include "networking/Heartbeat.hpp"
-#include "ThreadManager.hpp"
-#include "dataLogging/Log.hpp"
-#include "config/ConfigParser.hpp"
+#include "src/imgProc/VisionProcessing.hpp"
+#include "src/networking/FrameSender.hpp"
+#include "src/networking/DataSender.hpp"
+#include "src/networking/Heartbeat.hpp"
+#include "src/ThreadManager.hpp"
+#include "src/dataLogging/Log.hpp"
+#include "src/config/ConfigParser.hpp"
 
 using namespace std;
 
@@ -35,14 +35,14 @@ int main(int argc, char *argv[]){
     //Initialize instances of threaded objects
     VisionProcessing visionProcessor(configSettings, cap, mathData); //Initialize the vision processing code
 
-    Heartbeat heartbeat(configSettings.getNetworkHeartbeatPort()); //Initialize the heartbeat sender
+    //Heartbeat heartbeat(configSettings.getNetworkHeartbeatPort()); //Initialize the heartbeat sender
     FrameSender frameSender(configSettings.getNetworkImagePort()); //Initialize the camera view sender
     DataSender dataSender(configSettings.getNetworkDataPort()); //Initialize the network data sender
 
     Log::i(ld, "Setup complete, starting threads");
 
     boost::thread processorThread(boost::bind(&VisionProcessing::run, visionProcessor)); //Start the vision processor
-    boost::thread heartbeatThread(boost::bind(&Heartbeat::run, heartbeat)); //Start the heartbeat
+    //boost::thread heartbeatThread(boost::bind(&Heartbeat::run, heartbeat)); //Start the heartbeat
     boost::thread frameSenderThread(boost::bind(&FrameSender::run, frameSender)); //Start the camera view sender
     boost::thread dataSenderThread(boost::bind(&DataSender::run, dataSender)); //Start the network data sender
     processorThread.join(); //Join the control thread so we know when to stop

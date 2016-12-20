@@ -5,10 +5,11 @@
 #include <boost/thread/thread.hpp>
 #include "gtest/gtest.h"
 #include "zhelpers.hpp"
-#include "../../processing/networking/Heartbeat.hpp"
-#include "../../processing/ThreadManager.hpp"
-#include "../../processing/networking/DataSender.hpp"
-#include "../../processing/networking/FrameSender.hpp"
+
+#include "../../processing/src/networking/Heartbeat.hpp"
+#include "../../processing/src/ThreadManager.hpp"
+#include "../../processing/src/networking/DataSender.hpp"
+#include "../../processing/src/networking/FrameSender.hpp"
 #include "opencv2/opencv.hpp"
 #include <iostream>
 
