@@ -8,7 +8,5 @@ public interface LinearActuator extends Stoppable {
 
     boolean isBottomLimitSwitchTriggered();
 
-    void driveOut(double speed);
-
-    void driveIn(double speed);
+    void drive(double speed);
 }

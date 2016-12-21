@@ -16,6 +16,14 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+
+/**
+ * Two wheel shooter system with pneumatic kick out
+ *
+ * @author Neema
+ * @version 12/21/16.
+ */
+
 package org.team401.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -33,6 +41,9 @@ public class Robot extends IterativeRobot {
     private TankDrive allDrive;
     private Arm captArmy;
 
+    /**
+     * Initializes the motors and defines later used variables
+     */
     @Override
     public void robotInit() {
         Strongback.configure()
@@ -67,16 +78,25 @@ public class Robot extends IterativeRobot {
         rightJoysticky = Hardware.HumanInterfaceDevices.logitechAttack3D(2);
     }
 
+    /**
+     * Restarts strongback
+     */
     @Override
     public void teleopInit() {
         Strongback.restart();
     }
 
+    /**
+     *Starts strongback
+     */
     @Override
     public void autonomousInit() {
         Strongback.start();
     }
 
+    /**
+     *Runs the robot code every 20 ms.
+     */
     @Override
     public void teleopPeriodic() {
         if (!rightJoysticky.getButton(2).isTriggered()) {
@@ -84,7 +104,7 @@ public class Robot extends IterativeRobot {
         }
 
         if (rightJoysticky.getButton(2).isTriggered()){
-        captArmy.drive(rightJoysticky.getPitch().read());
+        captArmy.drive((rightJoysticky.getPitch().read())*0.5);
         }
         else {
             captArmy.drive(0);
@@ -107,9 +127,6 @@ public class Robot extends IterativeRobot {
             captArmy.getPropulzion().sssStop();
         }
 
-
-
-
         //cameronEarle.isTriggered = true
     }
 
@@ -118,6 +135,9 @@ public class Robot extends IterativeRobot {
 
     }
 
+    /**
+     *Disables strongback
+     */
     @Override
     public void disabledInit() {
         Strongback.disable();
