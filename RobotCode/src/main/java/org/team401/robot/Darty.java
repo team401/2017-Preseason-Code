@@ -2,7 +2,6 @@ package org.team401.robot;
 
 import org.strongback.components.Motor;
 import org.strongback.components.Switch;
-import org.strongback.hardware.Hardware;
 
 /**
  * Created by Neema on 12/21/16.

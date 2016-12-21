@@ -1,20 +1,15 @@
 package org.team401.robot;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.strongback.components.Motor;
-import org.strongback.components.Switch;
-import org.strongback.hardware.Hardware;
-
 public class Arm {
 
     private LinearActuator dart;
+    private Shooty propulzion;
 
-    public Arm(Motor motor, Switch topLimitSwitch, Switch bottomLimitSwitch) {
-        // take in a motor and two switches
+    public Arm(LinearActuator dardo, Shooty propulzion) {
 
-        // you need to create your own implementation of LinearActuator and then initialize the one here
+        dart = dardo;
+        this.propulzion = propulzion;
 
-        dart = new Darty(motor, topLimitSwitch, bottomLimitSwitch);
     }
 
     public void drive(double pitch) {
@@ -29,6 +24,10 @@ public class Arm {
         else {
             dart.driveOut(pitch);
         }
+    }
+
+    public Shooty getPropulzion(){
+        return propulzion;
     }
 
 }

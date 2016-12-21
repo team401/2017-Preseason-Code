@@ -19,6 +19,7 @@
 package org.team401.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import org.strongback.components.Solenoid;
 import org.strongback.Strongback;
 import org.strongback.components.Motor;
 import org.strongback.components.Switch;
@@ -28,47 +29,42 @@ import org.strongback.hardware.Hardware;
 
 public class Robot extends IterativeRobot {
 
-    /*
-        For this assignment, you need to get the 2016 robot completely driving in
-        Java, and be able to switch between low and high gear. You should create
-        a new branch off of this one in GitKraken, name it "yourname-drive" without
-        quotes, and push it to GitHub for Liam and I to review by this Saturday, 12/10.
-            - Zach
-     */
-
-    private FlightStick leftJoysticky, rightJoysticky, strangeJoysticky;
-    private Motor leftDrive;
-    private Motor rightDrive;
+    private FlightStick leftJoysticky, rightJoysticky;
     private TankDrive allDrive;
     private Arm captArmy;
+
     @Override
     public void robotInit() {
         Strongback.configure()
                 .recordDataToFile("/home/lvuser/")
                 .recordEventsToFile("/home/lvuser/", 2097152);
-        Motor dodoMoto = Hardware.Motors.talonSRX(4);
+        Solenoid moreUselessThanCameron = Hardware.Solenoids.doubleSolenoid(5, 1, Solenoid.Direction.RETRACTING);
         Switch topLimity = Hardware.Switches.normallyClosed(0);
         Switch bottomLimity = Hardware.Switches.normallyClosed(1);
-        captArmy = new Arm(dodoMoto, topLimity, bottomLimity);
 
         //initializing the motors
+        Motor leftShooter = Hardware.Motors.talonSRX(3);
+        Motor rightShooter = Hardware.Motors.talonSRX(8);
+        Motor dodoMoto = Hardware.Motors.talonSRX(4);
         Motor leftFront = Hardware.Motors.talonSRX(2).invert();
         Motor leftMiddle = Hardware.Motors.talonSRX(0);
         Motor leftRear = Hardware.Motors.talonSRX(1).invert();
         Motor rightFront = Hardware.Motors.talonSRX(6);
         Motor rightMiddle = Hardware.Motors.talonSRX(7).invert();
         Motor rightRear = Hardware.Motors.talonSRX(5);
+        LinearActuator dart = new Darty(dodoMoto, topLimity, bottomLimity);
+        Shooty cannon = new Shooty(leftShooter, rightShooter, moreUselessThanCameron);
+        captArmy = new Arm(dart, cannon);
 
-        leftDrive = Motor.compose(leftFront, leftMiddle, leftRear);
-        rightDrive = Motor.compose(rightFront, rightMiddle, rightRear);
+        Motor leftDrive = Motor.compose(leftFront, leftMiddle, leftRear);
+        Motor rightDrive = Motor.compose(rightFront, rightMiddle, rightRear);
 
         allDrive = new TankDrive(leftDrive, rightDrive);
 
 
 
-        leftJoysticky = Hardware.HumanInterfaceDevices.logitechAttack3D(0);
-        rightJoysticky = Hardware.HumanInterfaceDevices.logitechAttack3D(1);
-        strangeJoysticky = Hardware.HumanInterfaceDevices.logitechAttack3D(2);
+        leftJoysticky = Hardware.HumanInterfaceDevices.logitechAttack3D(1);
+        rightJoysticky = Hardware.HumanInterfaceDevices.logitechAttack3D(2);
     }
 
     @Override
@@ -83,13 +79,37 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void teleopPeriodic() {
-        allDrive.tank(leftJoysticky.getPitch().read(), rightJoysticky.getPitch().read());
-        if (strangeJoysticky.getButton(2).isTriggered()){
-        captArmy.drive(strangeJoysticky.getPitch().read());
+        if (!rightJoysticky.getButton(2).isTriggered()) {
+            allDrive.tank(leftJoysticky.getPitch().read(), rightJoysticky.getPitch().read());
+        }
+
+        if (rightJoysticky.getButton(2).isTriggered()){
+        captArmy.drive(rightJoysticky.getPitch().read());
         }
         else {
             captArmy.drive(0);
         }
+
+        if (rightJoysticky.getButton(1).isTriggered()){
+            captArmy.getPropulzion().pppPushIt();
+        }
+        else{
+            captArmy.getPropulzion().rrrRetractic();
+        }
+
+        if (rightJoysticky.getButton(4).isTriggered()){
+            captArmy.getPropulzion().shoot(rightJoysticky.getThrottle().read());
+        }
+        else if (rightJoysticky.getButton(3).isTriggered()){
+            captArmy.getPropulzion().intake();
+        }
+        else {
+            captArmy.getPropulzion().sssStop();
+        }
+
+
+
+
         //cameronEarle.isTriggered = true
     }
 
