@@ -1,7 +1,8 @@
 
+.DS_Store
 /.gradle/
 /GradleRIO4Dummies.txt
 /build/
 /RobotCode.iws
-/RobotCode.ipr
-/.idea/
+/.idea/workspace.xml
+/.idea/libraries
