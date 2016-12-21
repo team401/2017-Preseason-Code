@@ -21,10 +21,6 @@ package org.team401.robot;
 import edu.wpi.first.wpilibj.IterativeRobot;
 
 import org.strongback.Strongback;
-import org.strongback.components.Motor;
-import org.strongback.components.Solenoid;
-import org.strongback.components.ui.FlightStick;
-import org.strongback.hardware.Hardware;
 
 public class Robot extends IterativeRobot {
 
@@ -33,14 +29,7 @@ public class Robot extends IterativeRobot {
         Strongback.configure()
                 .recordDataToFile("/home/lvuser/")
                 .recordEventsToFile("/home/lvuser/", 2097152);
-
-        // initializing a motor
-        Motor m = Hardware.Motors.talonSRX(1);
-
-        // initializing a solenoid
-        Solenoid s = Hardware.Solenoids.doubleSolenoid(0, 1, Solenoid.Direction.RETRACTING);
-
-        FlightStick joystick = Hardware.HumanInterfaceDevices.logitechAttack3D(0);
+        // code
     }
 
     @Override
@@ -55,7 +44,7 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void teleopPeriodic() {
-        // do stuff when robot is enabled
+
     }
 
     @Override
