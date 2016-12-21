@@ -21,6 +21,7 @@ package org.team401.robot;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import org.strongback.Strongback;
 import org.strongback.components.Motor;
+import org.strongback.components.Switch;
 import org.strongback.components.ui.FlightStick;
 import org.strongback.drive.TankDrive;
 import org.strongback.hardware.Hardware;
@@ -35,16 +36,21 @@ public class Robot extends IterativeRobot {
             - Zach
      */
 
-    private FlightStick leftJoysticky;
-    private FlightStick rightJoysticky;
+    private FlightStick leftJoysticky, rightJoysticky, strangeJoysticky;
     private Motor leftDrive;
     private Motor rightDrive;
     private TankDrive allDrive;
+    private Arm captArmy;
     @Override
     public void robotInit() {
         Strongback.configure()
                 .recordDataToFile("/home/lvuser/")
                 .recordEventsToFile("/home/lvuser/", 2097152);
+        Motor dodoMoto = Hardware.Motors.talonSRX(4);
+        Switch topLimity = Hardware.Switches.normallyOpen(0);
+        Switch bottomLimity = Hardware.Switches.normallyOpen(1);
+        captArmy = new Arm(dodoMoto, topLimity, bottomLimity);
+
         //initializing the motors
         Motor leftFront = Hardware.Motors.talonSRX(2).invert();
         Motor leftMiddle = Hardware.Motors.talonSRX(0);
@@ -62,7 +68,7 @@ public class Robot extends IterativeRobot {
 
         leftJoysticky = Hardware.HumanInterfaceDevices.logitechAttack3D(0);
         rightJoysticky = Hardware.HumanInterfaceDevices.logitechAttack3D(1);
-
+        strangeJoysticky = Hardware.HumanInterfaceDevices.logitechAttack3D(2);
     }
 
     @Override
@@ -78,6 +84,10 @@ public class Robot extends IterativeRobot {
     @Override
     public void teleopPeriodic() {
         allDrive.tank(leftJoysticky.getPitch().read(), rightJoysticky.getPitch().read());
+        if (strangeJoysticky.getThumb().isTriggered()){
+            captArmy.drive(strangeJoysticky.getPitch().read());
+        }
+
         //cameronEarle.isTriggered = true
     }
 
