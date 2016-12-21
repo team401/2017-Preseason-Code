@@ -23,7 +23,6 @@ public class Darty implements LinearActuator{
     @Override
     public boolean isTopLimitSwitchTriggered() {
         return topSvitcy.isTriggered();
-
     }
 
     @Override

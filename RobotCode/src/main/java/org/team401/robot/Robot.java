@@ -47,8 +47,8 @@ public class Robot extends IterativeRobot {
                 .recordDataToFile("/home/lvuser/")
                 .recordEventsToFile("/home/lvuser/", 2097152);
         Motor dodoMoto = Hardware.Motors.talonSRX(4);
-        Switch topLimity = Hardware.Switches.normallyOpen(0);
-        Switch bottomLimity = Hardware.Switches.normallyOpen(1);
+        Switch topLimity = Hardware.Switches.normallyClosed(0);
+        Switch bottomLimity = Hardware.Switches.normallyClosed(1);
         captArmy = new Arm(dodoMoto, topLimity, bottomLimity);
 
         //initializing the motors
@@ -84,10 +84,12 @@ public class Robot extends IterativeRobot {
     @Override
     public void teleopPeriodic() {
         allDrive.tank(leftJoysticky.getPitch().read(), rightJoysticky.getPitch().read());
-        if (strangeJoysticky.getThumb().isTriggered()){
-            captArmy.drive(strangeJoysticky.getPitch().read());
+        if (strangeJoysticky.getButton(2).isTriggered()){
+        captArmy.drive(strangeJoysticky.getPitch().read());
         }
-
+        else {
+            captArmy.drive(0);
+        }
         //cameronEarle.isTriggered = true
     }
 

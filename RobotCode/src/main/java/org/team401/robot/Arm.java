@@ -1,5 +1,6 @@
 package org.team401.robot;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.strongback.components.Motor;
 import org.strongback.components.Switch;
 import org.strongback.hardware.Hardware;
@@ -13,20 +14,20 @@ public class Arm {
 
         // you need to create your own implementation of LinearActuator and then initialize the one here
 
-        // dart = YOUR IMPLEMENTATION
+        dart = new Darty(motor, topLimitSwitch, bottomLimitSwitch);
     }
 
-    public void drive(double speed) {
+    public void drive(double pitch) {
         // drive the dart here, you will need to use the limit switch methods of the LinearActuator interface to tell
         // if it has been driven too far
-        if (dart.isTopLimitSwitchTriggered() && speed > 0){
+        if (dart.isTopLimitSwitchTriggered() && pitch > 0){
             dart.stop();
         }
-        else if (dart.isBottomLimitSwitchTriggered() && speed < 0){
+        else if (dart.isBottomLimitSwitchTriggered() && pitch < 0){
             dart.stop();
         }
         else {
-            dart.driveOut(speed);
+            dart.driveOut(pitch);
         }
     }
 
