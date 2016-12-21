@@ -16,7 +16,7 @@ using namespace std;
  * Returns [float]: The distance between the two points
  */
 float MathFunctions::findDistance(MathData mathData, cv::Point pt1, cv::Point pt2) {
-    if (pt1.x == -1 && pt1.y == -1 && pt2.x == -1 & pt2.y == -1) { //If any of the values from the input points is invalid
+    if (pt1.x == -1 || pt1.y == -1 || pt2.x == -1 || pt2.y == -1) { //If any of the values from the input points is invalid
         return -1; //Return our invalid number
     }
     float pixelWidth = (pt1.x - pt2.x); //The distance in pixels from each point
@@ -31,7 +31,7 @@ float MathFunctions::findDistance(MathData mathData, cv::Point pt1, cv::Point pt
  * Returns [vector<float>]: Returns a group of angles {yaw, pitch}
  */
 vector<float> MathFunctions::findAngles(MathData mathData, cv::Point circleCenter) {
-    if (circleCenter.x == -1 && circleCenter.y == -1) { //If the values from the circle center are invalid
+    if (circleCenter.x == -1 || circleCenter.y == -1) { //If the values from the circle center are invalid
         return std::vector<float>({-1,-1}); //Return our invalid pair
     }
     vector<float> angles;
