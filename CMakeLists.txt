@@ -1,18 +1,28 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 2.8)
 project(2017-Preseason-Code)
-find_package(OpenCV REQUIRED)
-find_package(Boost 1.62.0 REQUIRED COMPONENTS system thread)
+
+include(Vision/processing/cmake_modules/FindOpenCV.txt)
+include(Vision/processing/cmake_modules/FindBoost.txt)
+include(Vision/processing/cmake_modules/FindLibv4l2.txt)
+include(Vision/processing/cmake_modules/FindZMQ.txt)
+
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
+message(STATUS "CMAKE_CXX_FLAGS: " ${CMAKE_CXX_FLAGS})
+
+
 file(GLOB vision_SRC
-        "Vision/*.h"
-        "Vision/*.c"
-        "Vision/*.hpp"
-        "Vision/*.cpp"
+        "Vision/processing/*.hpp"
+        "Vision/processing/*.cpp"
+        "Vision/processing/*/*.hpp"
+        "Vision/processing/*/*.cpp"
         )
 
-include_directories(${Boost_INCLUDE_DIRS})
+add_library(VisionProcessing SHARED ${vision_SRC})
+
+add_subdirectory(Vision/tests)
+
+
 add_executable(2017-Preseason-Code ${vision_SRC})
-target_link_libraries(2017-Preseason-Code ${OpenCV_LIBS} ${Boost_LIBRARIES})
-#TODO build network table binaries and then add it to the link libraries
+target_link_libraries(2017-Preseason-Code ${OpenCV_LIBS} ${Boost_LIBRARIES} ${LIBV4L2_LIBRARY} ${ZMQ_LIBRARY})
