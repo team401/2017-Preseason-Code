@@ -66,6 +66,8 @@
   </component>
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../../FRC-Examples/JAVA_MotionProfileExample/JAVA_MotionProfileExample.iml" filepath="$PROJECT_DIR$/../../FRC-Examples/JAVA_MotionProfileExample/JAVA_MotionProfileExample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../SmoothPathPlanner/PathPlanner.iml" filepath="$PROJECT_DIR$/../../SmoothPathPlanner/PathPlanner.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/RobotCode.iml" filepath="$PROJECT_DIR$/.idea/modules/RobotCode.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/RobotCode_main.iml" filepath="$PROJECT_DIR$/.idea/modules/RobotCode_main.iml" group="RobotCode" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/RobotCode_test.iml" filepath="$PROJECT_DIR$/.idea/modules/RobotCode_test.iml" group="RobotCode" />
@@ -79,7 +81,7 @@
   </component>
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../../SmoothPathPlanner" vcs="Git" />
   </component>
   <component name="libraryTable">
     <library name="Gradle: edu.wpi.first.wpilib.networktables.java:NetworkTables:arm:3.1.2">

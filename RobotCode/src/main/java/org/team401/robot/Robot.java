@@ -18,53 +18,60 @@
 */
 package org.team401.robot;
 
+import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.IterativeRobot;
-
-import org.strongback.Strongback;
-import org.strongback.components.Motor;
-import org.strongback.components.Solenoid;
-import org.strongback.components.ui.FlightStick;
-import org.strongback.hardware.Hardware;
+import org.usfirst.frc.team3539.robot.MotionProfileExample;
 
 public class Robot extends IterativeRobot {
 
-    @Override
-    public void robotInit() {
-        Strongback.configure()
-                .recordDataToFile("/home/lvuser/")
-                .recordEventsToFile("/home/lvuser/", 2097152);
+    /**
+     * The Talon we want to motion profile.
+     */
+    CANTalon talon = new CANTalon(9);
 
-        // initializing a motor
-        Motor m = Hardware.Motors.talonSRX(1);
+    /**
+     * some example logic on how one can manage an MP
+     */
+    MotionProfileExample example = new MotionProfileExample(talon);
 
-        // initializing a solenoid
-        Solenoid s = Hardware.Solenoids.doubleSolenoid(0, 1, Solenoid.Direction.RETRACTING);
-
-        FlightStick joystick = Hardware.HumanInterfaceDevices.logitechAttack3D(0);
+    public Robot() { // could also use RobotInit()
+        talon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+        talon.reverseSensor(false); /* keep sensor and motor in phase */
     }
 
-    @Override
     public void teleopInit() {
-        Strongback.restart();
+        example.startMotionProfile();
     }
 
-    @Override
-    public void autonomousInit() {
-        Strongback.start();
-    }
-
-    @Override
+    /**
+     * function is called periodically during operator control
+     */
     public void teleopPeriodic() {
-        // do stuff when robot is enabled
+        /* Button5 is held down so switch to motion profile control mode => This is done in MotionProfileControl.
+		 * When we transition from no-press to press,
+		 * pass a "true" once to MotionProfileControl.
+	     */
+        example.control();
+
+        talon.changeControlMode(CANTalon.TalonControlMode.MotionProfile);
+
+        CANTalon.SetValueMotionProfile setOutput = example.getSetValue();
+
+        talon.set(setOutput.value);
+
     }
 
-    @Override
-    public void autonomousPeriodic() {
-
-    }
-
-    @Override
-    public void disabledInit() {
-        Strongback.disable();
+    /**
+     * function is called periodically during disable
+     */
+    public void disabledPeriodic() {
+		/* it's generally a good idea to put motor controllers back
+		 * into a known state when robot is disabled.  That way when you
+		 * enable the robot doesn't just continue doing what it was doing before.
+		 * BUT if that's what the application/testing requires than modify this accordingly */
+        talon.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
+        talon.set(0);
+		/* clear our buffer and put everything into a known state */
+        example.reset();
     }
 }
