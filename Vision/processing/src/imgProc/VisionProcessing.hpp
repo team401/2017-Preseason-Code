@@ -15,6 +15,7 @@ public:
     VisionProcessing(ConfigSettings settings_, VideoCapture cap_, MathData data_) {
         settings = settings_;
         cap = cap_;
+        mathData = data_;
         rangeThreshLower = settings.getLowerBound();
         rangeThreshUpper = settings.getUpperBound();
         thresh1 = settings.getCannyLowerBound();

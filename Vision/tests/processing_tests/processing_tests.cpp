@@ -11,7 +11,7 @@
 #include "../../processing/src/ThreadManager.hpp"
 #include "../../processing/src/config/ConfigParser.hpp"
 
-TEST(processing_tests, DISABLED_processing_main_test) {
+TEST(processing_tests, processing_main_test) {
     ThreadManager::set(ThreadManager::Thread::DATA_SENDER, true);
     ThreadManager::set(ThreadManager::CANNY_DETECTOR, true);
     ThreadManager::set(ThreadManager::Thread::GLOBAL, true);
@@ -39,9 +39,12 @@ TEST(processing_tests, DISABLED_processing_main_test) {
     boost::thread(boost::bind(&VisionProcessing::run, visionProcessing));
     boost::thread(boost::bind(&DataSender::run, dataSender));
 
-    ASSERT_EQ(s_recv(socket), "-91084780195545088.000000,17.456249,-0.000000"); //Alright the yaw is completely screwed
+
+    ASSERT_EQ(s_recv(socket), "-11.889844,-10.984375,-45.335907"); //Alright the yaw is completely screwed
 
     ThreadManager::set(ThreadManager::Thread::GLOBAL, false);
     socket.close();
     cap.release();
+
+    SUCCEED();
 }
