@@ -19,27 +19,41 @@
 package org.team401.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.strongback.Strongback;
-import org.strongback.components.Solenoid;
+import org.strongback.components.Motor;
 import org.strongback.components.ui.FlightStick;
+import org.strongback.drive.TankDrive;
 import org.strongback.hardware.Hardware;
+
 
 public class Robot extends IterativeRobot {
 
-    private Solenoid solenoidPneumatics;
     private FlightStick joysticky;
+    private TankDrive allDrive;
+    private double pitch;
+    private double turnSpeed;
+    private double throttle = 0.4;
 
     @Override
     public void robotInit() {
+        //Strongback.configure()
+        //        .recordDataToFile("/home");
 
-        solenoidPneumatics = Hardware.Solenoids.doubleSolenoid(0,1, Solenoid.Direction.RETRACTING);
+        boolean invert = SmartDashboard.getBoolean("Invert Drive", false);
+
+        Motor leftDrive = Hardware.Motors.talon(0);
+        Motor rightDrive = Hardware.Motors.talon(1);
+
+        if (invert)
+            rightDrive = rightDrive.invert();
+        else
+            leftDrive = leftDrive.invert();
 
         joysticky = Hardware.HumanInterfaceDevices.logitechAttack3D(0);
 
-        Strongback.configure()
-                .recordDataToFile("/home/lvuser/")
-                .recordEventsToFile("/home/lvuser/", 2097152);
+        allDrive = new TankDrive(leftDrive, rightDrive);
     }
 
     @Override
@@ -49,20 +63,23 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void autonomousInit() {
-
+        Strongback.start();
     }
 
     @Override
     public void teleopPeriodic() {
-
-        //returns a True/False if the joysticky is triggered
-        if (joysticky.getTrigger().isTriggered()){
-            solenoidPneumatics.extend();
+        double accelerationDivident;
+        accelerationDivident = 10 * joysticky.getThrottle().invert().read();
+        pitch = joysticky.getPitch().read();
+        turnSpeed = joysticky.getRoll().invert().read();
+        if (pitch < 0) {
+            throttle = throttle + Math.pow((pitch - throttle)/accelerationDivident, 2);
+            allDrive.arcade(pitch*throttle, joysticky.getRoll().read());
         }
-        else{
-            solenoidPneumatics.retract();
+        if (pitch > 0 || pitch == 0) {
+            allDrive.stop();
+            throttle = 0.4;
         }
-
     }
 
     @Override
