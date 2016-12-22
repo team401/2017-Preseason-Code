@@ -33,11 +33,16 @@ public class Robot extends IterativeRobot {
     private FlightStick joysticky;
     private TankDrive allDrive;
 
+    private double output, lastInput;
+    private int mode;
+
     @Override
     public void robotInit() {
         Strongback.configure()
                 .recordDataToFile("/home/lvuser/")
                 .recordEventsToFile("/home/lvuser/", 2097152);
+
+        SmartDashboard.putBoolean("y this no work", true);
 
         boolean invert = SmartDashboard.getBoolean("Invert Drive", false);
 
@@ -52,7 +57,6 @@ public class Robot extends IterativeRobot {
         allDrive = new TankDrive(leftDrive, rightDrive);
 
         joysticky = Hardware.HumanInterfaceDevices.logitechAttack3D(0);
-
     }
 
     @Override
@@ -67,7 +71,43 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void teleopPeriodic() {
-            allDrive.arcade(joysticky.getPitch().read(), joysticky.getRoll().read());
+        //rate of change in joystick values.
+        double input = joysticky.getPitch().read();
+        SmartDashboard.putNumber("Input", input);
+        double delta = input - lastInput;
+        SmartDashboard.putNumber("Delta", delta);
+
+        //is joystick being moved too fast?
+        if(delta >= .15)
+            mode = 1;
+        else if(delta <= -.45)
+            mode = -1;
+        SmartDashboard.putNumber("Mode", mode);
+
+        //output integration
+        switch(mode) {
+            case 1: // ramp up
+                output += 0.01;
+                if (output >= input)
+                    mode = 0;
+                break;
+
+            case -1: // ramp down
+                output -= 0.20;
+                if (output <= input)
+                    mode = 0;
+                break;
+
+            case 0: // nothing
+                output = input;
+                break;
+
+            default:
+                break;
+        }
+        lastInput = input;
+        SmartDashboard.putNumber("Output", output);
+        allDrive.arcade(output, joysticky.getRoll().read());
     }
 
     @Override
