@@ -13,6 +13,8 @@
 #include "../networking/DataSender.hpp"
 #include "../dataLogging/Log.hpp"
 
+#include "boost/thread.hpp"
+
 using namespace cv;
 
 /* Function run
@@ -118,5 +120,7 @@ void VisionProcessing::run() {
             imshow("HSV", hsvFrame);
             imshow("Masked", maskedMat);
         }
+
+        //sleep(1);
     }
 }
