@@ -45,6 +45,4 @@ TEST(processing_tests, processing_main_test) {
     ThreadManager::set(ThreadManager::Thread::GLOBAL, false);
     socket.close();
     cap.release();
-
-    SUCCEED();
 }

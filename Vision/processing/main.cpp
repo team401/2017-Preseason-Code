@@ -22,9 +22,7 @@ int main(int argc, char *argv[]){
     configSettings.setCamera(); //Set up the camera using the device number found in the config
 
     cv::VideoCapture cap; //Capture device holder
-    //cap = configSettings.getCapture(); //Get the capture device from the list in the config
-
-    cap.open("/home/cameronearle/Desktop/goal.mov");
+    cap = configSettings.getCapture(); //Get the capture device from the list in the config
 
     cap.set(CV_CAP_PROP_FPS, 30); //Set the camera FPS //TODO: Change this to 60 once Cameron gets a real laptop
 
