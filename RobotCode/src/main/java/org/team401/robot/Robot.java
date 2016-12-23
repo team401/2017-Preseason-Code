@@ -33,8 +33,13 @@ public class Robot extends IterativeRobot {
 
     private FlightStick joysticky;
     private TankDrive allDrive;
+    //gyro variables
     private Gyro myGyro;
     double kp = 0.1;
+    //acceleration control variables
+    private double pitch;
+    private double turnSpeed;
+    private double throttle = 0.4;
 
     @Override
     public void robotInit() {
@@ -75,14 +80,27 @@ public class Robot extends IterativeRobot {
     @Override
     public void teleopPeriodic() {
         //kp = SmartDashboard.getNumber("kp");
+        if (!joysticky.getTrigger().isTriggered()) {
+            double accelerationDivident;
+            accelerationDivident = 10 * joysticky.getThrottle().invert().read();
+            pitch = joysticky.getPitch().read();
+            turnSpeed = joysticky.getRoll().invert().read();
+            if (pitch < 0.1) {
+                throttle = throttle + Math.pow((pitch - throttle)/accelerationDivident, 2);
+                allDrive.arcade(pitch*throttle, joysticky.getRoll().read());
+            }
+            if (pitch > 0.1 || pitch == 0.1) {
+                allDrive.stop();
+                throttle = 0.4;
+            }
+        }
         if (joysticky.getTrigger().isTriggered()){
             double angle = myGyro.getAngle();
             allDrive.arcade(joysticky.getPitch().read()*0.8, -angle*kp);
             SmartDashboard.putNumber("Angle: ", angle);
             SmartDashboard.putNumber("Turning: ", -angle*kp);
         }
-        if (!joysticky.getTrigger().isTriggered())
-            allDrive.arcade(joysticky.getPitch().read()*0.8, joysticky.getRoll().read());
+
     }
 
     @Override
