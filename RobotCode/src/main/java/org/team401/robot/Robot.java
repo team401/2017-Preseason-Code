@@ -19,8 +19,8 @@
 package org.team401.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.strongback.Strongback;
 import org.strongback.components.Motor;
 import org.strongback.components.ui.FlightStick;
@@ -32,14 +32,12 @@ public class Robot extends IterativeRobot {
 
     private FlightStick joysticky;
     private TankDrive allDrive;
-    private double pitch;
-    private double turnSpeed;
-    private double throttle = 0.4;
 
     @Override
     public void robotInit() {
-        //Strongback.configure()
-        //        .recordDataToFile("/home");
+        Strongback.configure()
+                .recordDataToFile("/home/lvuser/")
+                .recordEventsToFile("/home/lvuser/", 2097152);
 
         boolean invert = SmartDashboard.getBoolean("Invert Drive", false);
 
@@ -51,9 +49,10 @@ public class Robot extends IterativeRobot {
         else
             leftDrive = leftDrive.invert();
 
+        allDrive = new TankDrive(leftDrive, rightDrive);
+
         joysticky = Hardware.HumanInterfaceDevices.logitechAttack3D(0);
 
-        allDrive = new TankDrive(leftDrive, rightDrive);
     }
 
     @Override
@@ -68,18 +67,7 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void teleopPeriodic() {
-        double accelerationDivident;
-        accelerationDivident = 10 * joysticky.getThrottle().invert().read();
-        pitch = joysticky.getPitch().read();
-        turnSpeed = joysticky.getRoll().invert().read();
-        if (pitch < 0) {
-            throttle = throttle + Math.pow((pitch - throttle)/accelerationDivident, 2);
-            allDrive.arcade(pitch*throttle, joysticky.getRoll().read());
-        }
-        if (pitch > 0 || pitch == 0) {
-            allDrive.stop();
-            throttle = 0.4;
-        }
+        allDrive.arcade(joysticky.getPitch().read(), joysticky.getRoll().read());
     }
 
     @Override
