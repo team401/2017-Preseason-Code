@@ -18,8 +18,9 @@
 */
 package org.team401.robot;
 
-import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.*;
 
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.strongback.Strongback;
 import org.strongback.components.Motor;
@@ -32,6 +33,8 @@ public class Robot extends IterativeRobot {
 
     private FlightStick joysticky;
     private TankDrive allDrive;
+    private Gyro myGyro;
+    double kp = 0.1;
 
     @Override
     public void robotInit() {
@@ -41,8 +44,9 @@ public class Robot extends IterativeRobot {
 
         boolean invert = SmartDashboard.getBoolean("Invert Drive", false);
 
-        Motor leftDrive = Hardware.Motors.talon(0);
-        Motor rightDrive = Hardware.Motors.talon(1);
+        Motor leftDrive = Hardware.Motors.talon(1);
+        Motor rightDrive = Hardware.Motors.talon(0);
+        myGyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
 
         if (invert)
             rightDrive = rightDrive.invert();
@@ -52,6 +56,9 @@ public class Robot extends IterativeRobot {
         allDrive = new TankDrive(leftDrive, rightDrive);
 
         joysticky = Hardware.HumanInterfaceDevices.logitechAttack3D(0);
+
+        Strongback.switchReactor().onTriggered(joysticky.getTrigger(), () -> myGyro.reset());
+        SmartDashboard.putNumber("Multiplier: ", kp);
 
     }
 
@@ -67,12 +74,27 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void teleopPeriodic() {
-        allDrive.arcade(joysticky.getPitch().read(), joysticky.getRoll().read());
+        //kp = SmartDashboard.getNumber("kp");
+        if (joysticky.getTrigger().isTriggered()){
+            double angle = myGyro.getAngle();
+            allDrive.arcade(joysticky.getPitch().read()*0.8, -angle*kp);
+            SmartDashboard.putNumber("Angle: ", angle);
+            SmartDashboard.putNumber("Turning: ", -angle*kp);
+        }
+        if (!joysticky.getTrigger().isTriggered())
+            allDrive.arcade(joysticky.getPitch().read()*0.8, joysticky.getRoll().read());
     }
 
     @Override
     public void autonomousPeriodic() {
-
+        double angle = myGyro.getAngle();
+        double speed = -0.6;
+        //kp = SmartDashboard.getNumber("kp");
+        //speed = SmartDashboard.getNumber("speed");
+        allDrive.arcade(speed, -angle*kp);
+        SmartDashboard.putNumber("Angle: ", angle);
+        SmartDashboard.putNumber("Turning: ", -angle*kp);
+        SmartDashboard.putNumber("Speed: ", speed);
     }
 
     @Override
