@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.8) #This is as low as we can go for OpenCV 3
 project(2017-Preseason-Code)
 
+enable_testing()
+
 include(Vision/processing/src/cmake_modules/FindOpenCV.txt)
 include(Vision/processing/src/cmake_modules/FindBoost.txt)
 include(Vision/processing/src/cmake_modules/FindLibv4l2.txt)
