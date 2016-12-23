@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8) #This is as low as we can go for OpenCV 3
+cmake_minimum_required(VERSION 2.8) #This is as low as we can go for needed CMake functions
 project(2017-Preseason-Code)
 
 enable_testing()

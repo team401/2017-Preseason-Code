@@ -9,14 +9,24 @@
 #include "../../processing/src/imgProc/VisionProcessing.hpp"
 #include "../../processing/src/networking/DataSender.hpp"
 #include "../../processing/src/ThreadManager.hpp"
-#include "../../processing/src/config/ConfigParser.hpp"
+#include "../../processing/src/config/ConfigSettings.hpp"
 
 TEST(processing_tests, processing_main_test) {
     ThreadManager::set(ThreadManager::Thread::DATA_SENDER, true);
     ThreadManager::set(ThreadManager::CANNY_DETECTOR, true);
     ThreadManager::set(ThreadManager::Thread::GLOBAL, true);
 
-    ConfigSettings configSettings = ConfigParser(std::vector<string>(), "testconfig.txt").getSettings();
+    ConfigSettings configSettings;
+    configSettings.setNetworkDataPort(5800);
+    configSettings.setLowerBoundH(50);
+    configSettings.setLowerBoundS(250);
+    configSettings.setLowerBoundV(40);
+    configSettings.setUpperBoundH(70);
+    configSettings.setUpperBoundS(255);
+    configSettings.setUpperBoundV(254);
+    configSettings.setCannyLowerBound(30);
+    configSettings.setCannyUpperBound(60);
+    configSettings.setDebugMode(false);
 
     MathData mathData; //Calculation value holder
     mathData.setFOV((57 * 3.141592) / 180);
@@ -25,7 +35,7 @@ TEST(processing_tests, processing_main_test) {
     mathData.setFocalLength(480 / (2*tan(mathData.getFOV()/2)));
 
     cv::VideoCapture cap;
-    cap.open("/home/cameronearle/Desktop/goal.mov");
+    cap.open("res/goal.mov");
 
     VisionProcessing visionProcessing(configSettings, cap, mathData);
     DataSender dataSender(configSettings.getNetworkDataPort());
@@ -34,7 +44,7 @@ TEST(processing_tests, processing_main_test) {
     zmq::socket_t socket(context, ZMQ_SUB);
     socket.setsockopt(ZMQ_RCVTIMEO, 10000);
     socket.setsockopt(ZMQ_SUBSCRIBE, "", 0);
-    socket.connect("tcp://127.0.0.1:5801");
+    socket.connect("tcp://127.0.0.1:5800");
 
     boost::thread(boost::bind(&VisionProcessing::run, visionProcessing));
     boost::thread(boost::bind(&DataSender::run, dataSender));
