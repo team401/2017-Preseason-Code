@@ -18,15 +18,18 @@
 */
 package org.team401.robot;
 
+import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.IterativeRobot;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.strongback.Strongback;
-import org.strongback.components.Motor;
-import org.strongback.components.Solenoid;
 import org.strongback.components.ui.FlightStick;
 import org.strongback.hardware.Hardware;
 
 public class Robot extends IterativeRobot {
+
+    CANTalon talon;
+    FlightStick controller;
 
     @Override
     public void robotInit() {
@@ -34,13 +37,15 @@ public class Robot extends IterativeRobot {
                 .recordDataToFile("/home/lvuser/")
                 .recordEventsToFile("/home/lvuser/", 2097152);
 
-        // initializing a motor
-        Motor m = Hardware.Motors.talonSRX(1);
+        talon = new CANTalon(9);
+        talon.setControlMode(CANTalon.TalonControlMode.Speed.value);
+        talon.setPID(1.2, 0, 0);
+        talon.configEncoderCodesPerRev(497);
+        talon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
 
-        // initializing a solenoid
-        Solenoid s = Hardware.Solenoids.doubleSolenoid(0, 1, Solenoid.Direction.RETRACTING);
+        talon.enable();
 
-        FlightStick joystick = Hardware.HumanInterfaceDevices.logitechAttack3D(0);
+        controller = Hardware.HumanInterfaceDevices.logitechAttack3D(0);
     }
 
     @Override
@@ -55,7 +60,10 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void teleopPeriodic() {
-        // do stuff when robot is enabled
+        double target = toRange(controller.getThrottle().read()*-1, -1, 1, 0, 87);
+        SmartDashboard.putNumber("Target Speed", target);
+        talon.setSetpoint(target*4);
+        SmartDashboard.putNumber("Actual Speed", talon.getSpeed());
     }
 
     @Override
@@ -66,5 +74,9 @@ public class Robot extends IterativeRobot {
     @Override
     public void disabledInit() {
         Strongback.disable();
+    }
+
+    double toRange(double x, double min, double max, double newMin, double newMax) {
+        return (newMax - newMin) * (x - min) / (max - min) + newMin;
     }
 }
