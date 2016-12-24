@@ -47,7 +47,7 @@ mkdir build
 cd build
 
 cmake -DWITH_CUDA=ON -DCUDA_ARCH_BIN="3.2" -DCUDA_ARCH_PTX="" -DBUILD_TESTS=OFF -DBUILD_PERF_TESTS=OFF ..
-sudo make -j4 install
+sudo make -j8 install
 
 cd ../..
 else
@@ -63,7 +63,7 @@ mkdir build
 cd build
 
 cmake ..
-sudo make -j4 install
+sudo make -j8 install
 
 cd ../..
 else
