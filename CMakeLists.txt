@@ -9,7 +9,7 @@ include(Vision/processing/src/cmake_modules/FindLibv4l2.txt)
 include(Vision/processing/src/cmake_modules/FindZMQ.txt)
 
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11") #C++11 is as high as we can go
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage -std=c++11") #C++11 is as high as we can go
 
 message(STATUS "CMAKE_CXX_FLAGS: " ${CMAKE_CXX_FLAGS})
 
