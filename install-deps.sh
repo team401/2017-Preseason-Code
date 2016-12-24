@@ -102,6 +102,7 @@ fi
 #V4L2#
 
 sudo apt-get -y install v4l-utils
+sudo apt-get -y install qv4l2
 
 sudo ldconfig #Refresh everything
 
