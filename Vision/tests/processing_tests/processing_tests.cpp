@@ -7,6 +7,7 @@
 #include <zhelpers.hpp>
 #include "gtest/gtest.h"
 #include "../../processing/src/imgProc/VisionProcessing.hpp"
+#include "../../processing/src/imgProc/CreateShapes.hpp"
 #include "../../processing/src/networking/DataSender.hpp"
 #include "../../processing/src/ThreadManager.hpp"
 #include "../../processing/src/config/ConfigSettings.hpp"
@@ -55,4 +56,21 @@ TEST(processing_tests, processing_main_test) {
     ThreadManager::set(ThreadManager::Thread::GLOBAL, false);
     socket.close();
     cap.release();
+}
+
+TEST(processing_tests, processing_createshapes_bad_data_test) {
+    cv::Mat mat;
+    vector<cv::Point> result = CreateShapes::shapes(mat, 1, vector<vector<cv::Point>>());
+    ASSERT_EQ(result[0], cv::Point(-1, -1));
+    ASSERT_EQ(result[1], cv::Point(-1, -1));
+    ASSERT_EQ(result[2], cv::Point(-1, -1));
+}
+
+TEST(processing_tests, processing_createshapes_good_data_test) {
+    cv::Mat mat;
+    vector<vector<cv::Point>> contours({{cv::Point(10, 10), cv::Point(20, 20)}});
+    vector<cv::Point> result = CreateShapes::shapes(mat, 0, contours, false);
+    ASSERT_EQ(result[0], cv::Point(15, 15));
+    ASSERT_EQ(result[1], cv::Point(10, 10));
+    ASSERT_EQ(result[2], cv::Point(21, 21));
 }

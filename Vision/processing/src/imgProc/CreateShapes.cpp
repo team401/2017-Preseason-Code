@@ -20,6 +20,7 @@ string CreateShapes::ld = "CreateShapes";
  * Returns [vector<Point>]: A group of information about the shapes
  */
 vector<cv::Point> CreateShapes::shapes(cv::Mat &frame, int idx, vector<vector<cv::Point>> contours, bool drawShapes) {
+
     if (contours.size() <= 0) {
         return vector<cv::Point>{cv::Point(-1, -1),cv::Point(-1, -1),cv::Point(-1, -1)}; //VERY VERY IMPORTANT!!! If there are no contours, just return a blank point!!!
     }
