@@ -13,5 +13,5 @@ before_install:
   - pip install --user cpp-coveralls
 script:
   - ./install-deps && mkdir build && cd build && cmake .. && make && make test
-  notifications:
+notifications:
   slack: team-401:onrGUBYH0HkkphR3GEkPjdaT
