@@ -4,14 +4,26 @@ addons:
     apt:
       packages:
         - cmake
+        - lcov
+        - curl
       sources:
         - kalakris-cmake
 language: cpp
 compiler:
   - gcc
 before_install:
+  - npm install codecov.io --save
   - pip install --user cpp-coveralls
 script:
-  - ./install-deps.sh && mkdir build && cd build && cmake .. && make && make test
+  - ./install-deps.sh && mkdir build && cd build && cmake -DCOVERAGE=ON .. && make && make test
+after_success:
+  - echo ${TRAVIS_BUILD_DIR}
+  - cd ${TRAVIS_BUILD_DIR}/build
+  - lcov --directory . --capture --initial --output-file zero_coverage.info #Capture all files as zero
+  - lcov --directory . --capture --output-file imp_coverage.info #Capture implemented coverage
+  - lcov --add-tracefile zero_coverage.info --add-tracefile imp_coverage.info --output-file all_coverage.info #Merge the files to get all coverage
+  - lcov --remove all_coverage.info 'Vision/processing/main.cpp' 'Vision/tests/*' '/usr/*' --output-file act_coverage.info #Remove main functions coverage, test functions coverage, and external functions coverage
+  - lcov --list act_coverage.info #List our coverage
+  - cat act_coverage.info | ../node_modules/.bin/codecov #Push to codecov
 notifications:
   slack: team-401:onrGUBYH0HkkphR3GEkPjdaT

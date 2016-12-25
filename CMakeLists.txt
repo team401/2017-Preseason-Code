@@ -8,8 +8,12 @@ include(Vision/processing/src/cmake_modules/FindBoost.txt)
 include(Vision/processing/src/cmake_modules/FindLibv4l2.txt)
 include(Vision/processing/src/cmake_modules/FindZMQ.txt)
 
+option(COVERAGE "Generate coverage data" OFF)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage -std=c++11") #C++11 is as high as we can go
+if (COVERAGE)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage")
+endif()
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 message(STATUS "CMAKE_CXX_FLAGS: " ${CMAKE_CXX_FLAGS})
 
