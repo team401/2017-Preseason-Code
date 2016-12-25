@@ -13,6 +13,7 @@
 
 using namespace std;
 
+//LCOV_EXCL_START
 class ConfigSettings {
 private:
     string ld = "ConfigSettings";
@@ -131,6 +132,7 @@ public:
     void setNetworkHeartbeatPort(int networkHeartbeatPort_) { networkHeartbeatPort = networkHeartbeatPort_; }
     //END ACCESSORS
 };
+//LCOV_EXCL_STOP
 
 
 #endif //INC_2017_PRESEASON_CODE_CONFIGSETTINGS_HPP

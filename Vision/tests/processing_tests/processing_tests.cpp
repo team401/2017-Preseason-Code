@@ -67,9 +67,21 @@ TEST(processing_tests, processing_createshapes_bad_data_test) {
 }
 
 TEST(processing_tests, processing_createshapes_good_data_test) {
-    cv::Mat mat;
+    cv::Mat mat(640, 480, CV_8UC3);
     vector<vector<cv::Point>> contours({{cv::Point(10, 10), cv::Point(20, 20)}});
-    vector<cv::Point> result = CreateShapes::shapes(mat, 0, contours, false);
+    vector<cv::Point> result = CreateShapes::shapes(mat, 0, contours, true);
+    Vec3b centerColor = mat.at<Vec3b>(15,15);
+    Vec3b pt1Color = mat.at<Vec3b>(10, 10);
+    Vec3b pt2Color = mat.at<Vec3b>(21, 21);
+    ASSERT_EQ(centerColor[0], 255);
+    ASSERT_EQ(centerColor[1], 204);
+    ASSERT_EQ(centerColor[2], 10);
+    ASSERT_EQ(pt1Color[0], 255);
+    ASSERT_EQ(pt1Color[1], 204);
+    ASSERT_EQ(pt1Color[2], 0);
+    ASSERT_EQ(pt2Color[0], 255);
+    ASSERT_EQ(pt2Color[1], 204);
+    ASSERT_EQ(pt2Color[2], 0);
     ASSERT_EQ(result[0], cv::Point(15, 15));
     ASSERT_EQ(result[1], cv::Point(10, 10));
     ASSERT_EQ(result[2], cv::Point(21, 21));

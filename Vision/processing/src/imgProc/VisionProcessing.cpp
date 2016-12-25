@@ -38,6 +38,7 @@ void VisionProcessing::run() {
     int largestArea = -1;
     int idx = -1;
 
+    //LCOV_EXCL_START
     if (settings.getDebugMode()) {
         namedWindow("Original", WINDOW_AUTOSIZE); //Create a window for the original image
         namedWindow("Canny", WINDOW_AUTOSIZE); //Create a window for the canny image
@@ -45,6 +46,7 @@ void VisionProcessing::run() {
         namedWindow("HSV", WINDOW_AUTOSIZE);
         namedWindow("Masked", WINDOW_AUTOSIZE); //Create a window for showing a masked image
     }
+    //LCOV_EXCL_STOP
 
     bool firstCycle = true;
 
@@ -57,10 +59,12 @@ void VisionProcessing::run() {
         FrameSender::addToQueue(frame); //Add the camera frame to the network queue
 
         //Initialize "dynamic" mats
+        //LCOV_EXCL_START
         if (settings.getDebugMode()) { //Only if we need to, we don't have to draw anything on these if we don't need to see them
             contoursMat = Mat::zeros(frame.size(), frame.type());
             maskedMat = Mat::zeros(frame.size(), frame.type());
         }
+        //LCOV_EXCL_STOP
 
         //Initialize "static" mats
         if (firstCycle) {
@@ -88,14 +92,18 @@ void VisionProcessing::run() {
                 largestArea = currentArea; //Make the area of the largest contour the area of the current contour
                 idx = i; //Store the index of the current largest contour for later use
             }
+            //LCOV_EXCL_START
             if (settings.getDebugMode()) {
                 cv::drawContours(contoursMat, contours, i, Scalar(0,150,255), 2, 8); //Draw each contour
             }
+            //LCOV_EXCL_STOP
         }
 
+        //LCOV_EXCL_START
         if (settings.getDebugMode()) {
             frame.copyTo(maskedMat, rangeFrame); //Create a "masked" frame containing original frame data, only matching a certain color
         }
+        //LCOV_EXCL_STOP
 
         // Draws the square on contoursMat and gets the angles we need to turn the robot
         vector<Point> shapePoints = CreateShapes::shapes(contoursMat, idx, contours, settings.getDebugMode());
@@ -112,6 +120,7 @@ void VisionProcessing::run() {
 
 
         // Writes specific frames to their respective windows if debug mode is enabled, as well as print debug info
+        //LCOV_EXCL_START
         if (settings.getDebugMode()) {
             cout << "YAW:" << angles[0] << " | PITCH:" << angles[1] << " | DISTANCE:" << distance << "\n";
             imshow("Original", frame);
@@ -120,7 +129,7 @@ void VisionProcessing::run() {
             imshow("HSV", hsvFrame);
             imshow("Masked", maskedMat);
         }
-
+        //LCOV_EXCL_STOP
         //sleep(1);
     }
 }

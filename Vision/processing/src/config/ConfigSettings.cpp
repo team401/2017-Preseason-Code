@@ -10,6 +10,7 @@
 
 using namespace std;
 
+//LCOV_EXCL_START
 bool ConfigSettings::setCamera() {
     return CameraSettings(getDeviceNumber())
             .autoExposure(autoExposure)
@@ -32,3 +33,4 @@ cv::VideoCapture ConfigSettings::getCapture() {
     }
     return cap;
 }
+//LCOV_EXCL_STOP

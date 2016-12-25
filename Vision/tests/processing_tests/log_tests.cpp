@@ -17,6 +17,31 @@ vector<string> splitElements(string str, char delimiter) {
     return internal;
 }
 
+TEST(log_tests, log_setdebugmode_test) {
+    testing::internal::CaptureStdout();
+    Log::setDoDebug(false);
+    string result = testing::internal::GetCapturedStdout();
+    vector<string> resultsplit = splitElements(result, ' ');
+    ASSERT_EQ(resultsplit[1], "[INFO]");
+    ASSERT_EQ(resultsplit[2], "[Log]");
+    ASSERT_EQ(resultsplit[3], "DEBUG");
+    ASSERT_EQ(resultsplit[4], "messages");
+    ASSERT_EQ(resultsplit[5], "are");
+    ASSERT_EQ(resultsplit[6], "now");
+    ASSERT_EQ(resultsplit[7], "disabled\n");
+    testing::internal::CaptureStdout();
+    Log::setDoDebug(true);
+    result = testing::internal::GetCapturedStdout();
+    resultsplit = splitElements(result, ' ');
+    ASSERT_EQ(resultsplit[1], "[INFO]");
+    ASSERT_EQ(resultsplit[2], "[Log]");
+    ASSERT_EQ(resultsplit[3], "DEBUG");
+    ASSERT_EQ(resultsplit[4], "messages");
+    ASSERT_EQ(resultsplit[5], "are");
+    ASSERT_EQ(resultsplit[6], "now");
+    ASSERT_EQ(resultsplit[7], "enabled\n");
+}
+
 TEST(log_tests, log_debug_nofile_test) {
     Log::init(Log::Level::DEBUG, false);
     testing::internal::CaptureStdout();
