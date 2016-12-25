@@ -10,7 +10,6 @@ language: cpp
 compiler:
   - gcc
 before_install:
-  - ./install-deps
   - pip install --user cpp-coveralls
 script:
-  - mkdir build && cd build && cmake .. && make && make test
+  - ./install-deps && mkdir build && cd build && cmake .. && make && make test
