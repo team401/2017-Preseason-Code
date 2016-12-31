@@ -22,49 +22,52 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 
 import org.strongback.Strongback;
 import org.strongback.components.Motor;
-import org.strongback.components.Solenoid;
 import org.strongback.components.ui.FlightStick;
+import org.strongback.drive.TankDrive;
 import org.strongback.hardware.Hardware;
 
 public class Robot extends IterativeRobot {
+    Motor leftDrive;
+    Motor rightDrive;
+    TankDrive tankDrive;
+    ScaledRange joyPitch;
+    ScaledRange joyRoll;
+    float multiplier;
 
     @Override
     public void robotInit() {
-        Strongback.configure()
-                .recordDataToFile("/home/lvuser/")
-                .recordEventsToFile("/home/lvuser/", 2097152);
-
-        // initializing a motor
-        Motor m = Hardware.Motors.talonSRX(1);
-
-        // initializing a solenoid
-        Solenoid s = Hardware.Solenoids.doubleSolenoid(0, 1, Solenoid.Direction.RETRACTING);
-
-        FlightStick joystick = Hardware.HumanInterfaceDevices.logitechAttack3D(0);
-    }
-
-    @Override
-    public void teleopInit() {
-        Strongback.restart();
-    }
-
-    @Override
-    public void autonomousInit() {
-        Strongback.start();
-    }
-
-    @Override
-    public void teleopPeriodic() {
-        // do stuff when robot is enabled
-    }
-
-    @Override
-    public void autonomousPeriodic() {
-
+        Strongback.start(); //Start strongback
+        multiplier = .8F; //A multiplier to reduce the motor power below max at all times
+        leftDrive = Hardware.Motors.talon(1).invert(); //Set up the left motor and invert it
+        rightDrive = Hardware.Motors.talon(0); //Set up the right motor
+        tankDrive = new TankDrive(leftDrive, rightDrive); //Create a tankdrive to allow easy motor control
+        FlightStick joystick = Hardware.HumanInterfaceDevices.logitechAttack3D(0); //Bind the joystick
+        joyPitch = new ScaledRange(joystick.getPitch(), multiplier); //Get scaled ranges from the joystick
+        joyRoll = new ScaledRange(joystick.getRoll(), multiplier);
     }
 
     @Override
     public void disabledInit() {
-        Strongback.disable();
+        Strongback.disable(); //Stop strongback when the robot is disabled
+    }
+
+    @Override
+    public void autonomousInit() {
+        Strongback.restart(); //Restart strongback on a mode change
+    }
+
+    @Override
+    public void teleopInit() {
+        Strongback.restart(); //Restart strongback on a mode change
+    }
+
+    @Override
+    public void autonomousPeriodic() {
+        tankDrive.tank(.3, .3); //Drive the robot forward while it's in auto at low speed.
+    }
+
+    @Override
+    public void teleopPeriodic() {
+        tankDrive.arcade(joyPitch.readScaled(), joyRoll.readScaled()); //Arcade the robot scaled to a multiplier
     }
 }
