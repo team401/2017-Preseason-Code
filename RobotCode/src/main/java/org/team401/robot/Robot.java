@@ -32,11 +32,11 @@ public class Robot extends IterativeRobot {
     //gyro variables
     private Gyro myGyro;
     double kp = 0.1;
-    //acceleration control variables
+    double ki;
+    double cumulativeError;
+    //driving control variables
     private double pitch;
     private double turnSpeed;
-    private double throttle = 0.4;
-    private PIDController pidController;
 
     @Override
     public void robotInit() {
@@ -59,7 +59,10 @@ public class Robot extends IterativeRobot {
 
         joysticky = Hardware.HumanInterfaceDevices.logitechAttack3D(0);
 
-        Strongback.switchReactor().onTriggered(joysticky.getTrigger(), () -> myGyro.reset());
+        Strongback.switchReactor().onTriggered(joysticky.getTrigger(), () -> {
+            myGyro.reset();
+            cumulativeError = 0;
+        });
         SmartDashboard.putNumber("Multiplier: ", kp);
 
     }
@@ -80,11 +83,12 @@ public class Robot extends IterativeRobot {
         if (!joysticky.getTrigger().isTriggered()) {
             pitch = joysticky.getPitch().read();
             turnSpeed = joysticky.getRoll().read();
-            allDrive.arcade(pitch, turnSpeed * 0.9);
+            allDrive.arcade(pitch, turnSpeed * 0.5);
         }
         else {
             double angle = myGyro.getAngle();
-            allDrive.arcade(joysticky.getPitch().read()*0.8, -angle*kp);
+            cumulativeError += cumulativeError + angle * 0.3;
+            allDrive.arcade(joysticky.getPitch().read()*0.8, -cumulativeError);
             SmartDashboard.putNumber("Angle: ", angle);
             SmartDashboard.putNumber("Turning: ", -angle*kp);
         }
