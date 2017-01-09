@@ -16,9 +16,9 @@
 
 /*
    Pixy Links:
-   -
-   -
-   -
+   -https://www.chiefdelphi.com/forums/showthread.php?t=134384
+   -http://cmucam.org/projects/cmucam5/wiki/Porting_Guide
+   -http://cmucam.org/projects/cmucam5/wiki/Powering_Pixy
  */
 
 package org.team401.robot;
